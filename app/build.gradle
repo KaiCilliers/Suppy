@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs.kotlin' // Fragment Navigation
 
 android {
     compileSdkVersion 29
@@ -26,6 +27,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        dataBinding = true
+    }
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -41,7 +45,21 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
 
+    // SharedPreferences
+    implementation 'androidx.preference:preference-ktx:1.1.1'
 
+    // XMPP
+    implementation 'org.igniterealtime.smack:smack-android:4.3.4'
+    implementation 'org.igniterealtime.smack:smack-tcp:4.3.4'
+    implementation 'org.igniterealtime.smack:smack-im:4.3.4'
+    implementation 'org.igniterealtime.smack:smack-android-extensions:4.3.4'
+
+    // Logging
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
