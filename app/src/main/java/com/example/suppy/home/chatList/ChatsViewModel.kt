@@ -1,4 +1,4 @@
-package com.example.suppy
+package com.example.suppy.home.chatList
 
 import androidx.lifecycle.ViewModel
 
