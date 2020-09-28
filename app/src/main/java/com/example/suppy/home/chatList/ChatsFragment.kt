@@ -8,14 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.suppy.databinding.FragmentFirstBinding
+import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.MyRCAdapter
-import kotlinx.android.synthetic.main.fragment_first.*
+import kotlinx.android.synthetic.main.fragment_chats.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class ChatsFragment : Fragment() {
 
     private lateinit var viewModel: ChatsViewModel
 
@@ -23,9 +23,10 @@ class FirstFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentFirstBinding.inflate(inflater)
+        val binding = FragmentChatsBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
         binding.viewModel = viewModel
+        viewModel
         return binding.root
     }
 

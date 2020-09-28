@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.suppy.SomeDataModel
-import com.example.suppy.databinding.RowChatBinding
+import com.example.suppy.databinding.RowChatsBinding
 import com.google.android.material.snackbar.Snackbar
 
 class MyRCAdapter(val items: ArrayList<SomeDataModel>, val context: Context) : RecyclerView.Adapter<MyViewHolder>(){
     // Inflates the item views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val infl = LayoutInflater.from(parent.context)
-        val binding = RowChatBinding.inflate(infl)
+        val binding = RowChatsBinding.inflate(infl)
         return MyViewHolder(binding)
     }
 
@@ -24,7 +24,7 @@ class MyRCAdapter(val items: ArrayList<SomeDataModel>, val context: Context) : R
         holder.bind(items[position])
     }
 }
-class MyViewHolder(val binding: RowChatBinding) : RecyclerView.ViewHolder(binding.root) {
+class MyViewHolder(val binding: RowChatsBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: SomeDataModel) {
         binding.item = item
         binding.root.setOnClickListener{
