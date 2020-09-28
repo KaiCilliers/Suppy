@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.suppy.SomeDataModel
+import com.example.suppy.move_out.SomeDataModel
 import com.example.suppy.databinding.RowChatsBinding
 import com.google.android.material.snackbar.Snackbar
 
