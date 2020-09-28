@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.suppy.R
 import com.example.suppy.SomeDataModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.row_chat.view.*
 
 class MyRCAdapter(val items: ArrayList<SomeDataModel>, val context: Context) : RecyclerView.Adapter<MyViewHolder>(){
@@ -28,9 +29,14 @@ class MyRCAdapter(val items: ArrayList<SomeDataModel>, val context: Context) : R
 
     // Binds each item in the arraylist to a view
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder?.items?.text = items.get(position).name
+        holder?.name?.text = items.get(position).name
+        holder?.desc?.text = items.get(position).description
+        holder?.name.setOnClickListener{
+            Snackbar.make(it,"${items.get(position).name}", 2000).show()
+        }
     }
 }
 class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val items = view.item_chats
+    val name = view.item_chats
+    val desc = view.item_chats_desc
 }
