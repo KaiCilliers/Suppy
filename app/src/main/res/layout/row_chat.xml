@@ -8,36 +8,82 @@
             name="item"
             type="com.example.suppy.SomeDataModel" />
     </data>
-
+    <!-- Constraint layout might render slower than other layouts -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rc_chats_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10sp"
         android:layout_marginBottom="5sp"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/img_status_icon"
+            android:layout_width="37dp"
+            android:layout_height="36dp"
+            app:layout_constraintBottom_toBottomOf="@+id/img_profile_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/tv_chat_latest_activity"
+            app:srcCompat="@drawable/scyther" />
+
         <TextView
-            android:id="@+id/item_chats"
-            android:layout_width="110dp"
+            android:id="@+id/tv_chat_name"
+            android:layout_width="wrap_content"
             android:layout_height="41dp"
             android:layout_margin="3sp"
+            android:layout_marginStart="4dp"
             android:text="@{item.name}"
+            android:textAlignment="textStart"
             android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/img_profile_icon"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Chat with 1234" />
 
         <TextView
-            android:id="@+id/item_chats_desc"
-            android:layout_width="174dp"
-            android:layout_height="41dp"
+            android:id="@+id/tv_chat_latest_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
             android:layout_margin="3sp"
-            android:layout_marginStart="64dp"
             android:text="@{item.description}"
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/item_chats"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textAlignment="textStart"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@+id/img_profile_icon"
+            app:layout_constraintStart_toEndOf="@+id/img_profile_icon"
             tools:text="Description 1234" />
+
+        <ImageView
+            android:id="@+id/img_profile_icon"
+            android:layout_width="94dp"
+            android:layout_height="87dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/scyther" />
+
+        <TextView
+            android:id="@+id/tv_last_message_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yesterday"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/tv_chat_name"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Yesterday" />
+
+        <ImageView
+            android:id="@+id/img_chat_mute_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/img_status_icon"
+            app:layout_constraintEnd_toStartOf="@+id/tv_last_message_timestamp"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/tv_chat_name"
+            app:layout_constraintTop_toTopOf="@+id/tv_last_message_timestamp"
+            app:layout_constraintVertical_bias="0.49"
+            app:srcCompat="@android:drawable/ic_lock_silent_mode" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
