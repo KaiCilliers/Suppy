@@ -21,7 +21,6 @@
             android:layout_width="110dp"
             android:layout_height="41dp"
             android:layout_margin="3sp"
-            android:onClick="@{() -> item.meth()}"
             android:text="@{item.name}"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"

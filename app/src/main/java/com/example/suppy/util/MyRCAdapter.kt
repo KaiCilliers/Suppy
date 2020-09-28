@@ -10,6 +10,7 @@ import com.example.suppy.SomeDataModel
 import com.example.suppy.databinding.RowChatBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.row_chat.view.*
+import timber.log.Timber
 
 class MyRCAdapter(val items: ArrayList<SomeDataModel>, val context: Context) : RecyclerView.Adapter<MyViewHolder>(){
     // Inflates the item views
@@ -30,6 +31,9 @@ class MyRCAdapter(val items: ArrayList<SomeDataModel>, val context: Context) : R
 class MyViewHolder(val binding: RowChatBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: SomeDataModel) {
         binding.item = item
+        binding.root.setOnClickListener{
+            Snackbar.make(it, "${item.name}", 2000).show()
+        }
         binding.executePendingBindings()
     }
 }
