@@ -5,6 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.suppy.home.HomeActivity
 
+/**
+ * Simple splash screen that immediately loads [HomeActivity]
+ * The splash screen background/theme is set in Manifest
+ */
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

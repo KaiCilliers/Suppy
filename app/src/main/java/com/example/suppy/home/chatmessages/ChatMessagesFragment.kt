@@ -5,16 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatMessagesBinding
 import com.example.suppy.move_out.SomeMessages
-import com.example.suppy.util.RCMessagesAdapter
+import com.example.suppy.util.ChatMessagesAdapter
 import com.example.suppy.util.subscribeToNavigation
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_chat_messages.*
@@ -87,7 +84,7 @@ class ChatMessagesFragment : Fragment() {
         rc_messages.setItemViewCacheSize(20)
 
         rc_messages.layoutManager = LinearLayoutManager(context)
-        rc_messages.adapter = RCMessagesAdapter(
+        rc_messages.adapter = ChatMessagesAdapter(
             print.messages,
             requireContext()
         )

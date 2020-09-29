@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.suppy.databinding.FragmentChatsBinding
-import com.example.suppy.util.MyRCAdapter
+import com.example.suppy.util.ChatsAdapter
 import com.example.suppy.util.subscribeToNavigation
 import kotlinx.android.synthetic.main.fragment_chats.*
 import timber.log.Timber
@@ -33,7 +33,7 @@ class ChatsFragment : Fragment() {
      *
      * The listener calls the [ViewModel]'s navigate method
      *
-     * Broadcast comes from [MyRCAdapter]
+     * Broadcast comes from [ChatsAdapter]
      *
      * TODO place this listener someplace else
      */
@@ -100,6 +100,6 @@ class ChatsFragment : Fragment() {
         rc_chats.addItemDecoration(dividerItemDecoration)
 
         rc_chats.layoutManager = layoutManager
-        rc_chats.adapter = MyRCAdapter(viewModel.data, requireContext(), this)
+        rc_chats.adapter = ChatsAdapter(viewModel.data, requireContext(), this)
     }
 }
