@@ -1,3 +1,4 @@
+include ':models'
 include ':database'
 include ':app'
 rootProject.name = "Suppy"

@@ -17,6 +17,7 @@ buildscript {
         safe_args_version = SAFE_ARGS_VERSION
         shared_pref_version = SHARED_PREF_VERSION
         smack_version = SMACK_VERSION
+        room_version = ROOM_VERSION
         timber_version = TIMBER_VERSION
     }
     repositories {
