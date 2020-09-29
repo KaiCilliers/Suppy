@@ -132,6 +132,7 @@ class ChatsViewModel : ViewModel() {
             )}", "Description ${Random().nextInt(9999)}"
         )
     )
+    lateinit var bundle: Any
     private val _navigateToChatMessages = MutableLiveData<Boolean>()
     val navigateToChatMessages: LiveData<Boolean>
         get() = _navigateToChatMessages
