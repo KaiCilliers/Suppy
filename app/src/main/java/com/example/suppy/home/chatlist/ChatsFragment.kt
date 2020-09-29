@@ -1,4 +1,4 @@
-package com.example.suppy.home.chatList
+package com.example.suppy.home.chatlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.MyRCAdapter
+import com.example.suppy.util.subscribeToNavigation
 import kotlinx.android.synthetic.main.fragment_chats.*
 
 /**
@@ -26,7 +28,6 @@ class ChatsFragment : Fragment() {
         val binding = FragmentChatsBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
         binding.viewModel = viewModel
-        viewModel
         return binding.root
     }
 

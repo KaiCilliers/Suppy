@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.example.suppy.SomeDataModel" />
+            type="com.example.suppy.move_out.SomeDataModel" />
     </data>
     <!-- Constraint layout might render slower than other layouts -->
     <androidx.constraintlayout.widget.ConstraintLayout

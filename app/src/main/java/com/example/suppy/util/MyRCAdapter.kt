@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.suppy.SomeDataModel
+import com.example.suppy.move_out.SomeDataModel
 import com.example.suppy.databinding.RowChatsBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -29,6 +29,9 @@ class MyViewHolder(val binding: RowChatsBinding) : RecyclerView.ViewHolder(bindi
         binding.item = item
         binding.root.setOnClickListener{
             Snackbar.make(it, "${item.name}", 2000).show()
+            /**
+             * NAVIGATE HERE
+             */
         }
         binding.executePendingBindings()
     }

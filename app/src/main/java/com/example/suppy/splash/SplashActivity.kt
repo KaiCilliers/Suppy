@@ -1,4 +1,4 @@
-package com.example.suppy
+package com.example.suppy.splash
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

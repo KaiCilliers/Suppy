@@ -1,4 +1,4 @@
-package com.example.suppy
+package com.example.suppy.move_out
 
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
