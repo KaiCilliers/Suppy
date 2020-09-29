@@ -15,22 +15,33 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.MyRCAdapter
 import com.example.suppy.util.subscribeToNavigation
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_chats.*
 import timber.log.Timber
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ * [Fragment] for UI that displays a user's active
+ * conversations
  */
 class ChatsFragment : Fragment() {
 
     private lateinit var viewModel: ChatsViewModel
 
+    /**
+     * List item onClicks are created in the RecyclerView Adapter
+     * Using the listener, the data of the item clicked can be
+     * passed and captured in the fragment class.
+     *
+     * The listener calls the [ViewModel]'s navigate method
+     *
+     * Broadcast comes from [MyRCAdapter]
+     *
+     * TODO place this listener someplace else
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragmentResultListener("nav"){key, bundle ->
             Timber.d(
-                "Chat with ${bundle.getString("conversation")}" +
+                "${bundle.getString("conversation")}" +
                         "\nGo to ${bundle.get("to")}"
             )
             viewModel.bundle = bundle.getString("conversation")!!
@@ -42,9 +53,12 @@ class ChatsFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        // TODO clean up this binding boilerplate
         val binding = FragmentChatsBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
         binding.viewModel = viewModel
+
+        // TODO find another place to host this navigation code
         viewModel.navigateToChatMessages.subscribeToNavigation(
             owner = this,
             actionsBeforeNavigation = {
@@ -69,6 +83,10 @@ class ChatsFragment : Fragment() {
         setupRecyclerView()
     }
 
+    /**
+     * Configures the recyclerview called in
+     * override fun [onViewCreated]
+     */
     private fun setupRecyclerView() {
         // For efficiency
         rc_chats.setHasFixedSize(true)

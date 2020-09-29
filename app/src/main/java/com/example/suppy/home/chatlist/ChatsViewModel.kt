@@ -7,9 +7,29 @@ import com.example.suppy.move_out.SomeDataModel
 import java.util.*
 
 /**
- * NOTE user [AndroidViewModel] only if your view model requires context
+ * NOTE use [AndroidViewModel] only if your view model requires context
  */
 class ChatsViewModel : ViewModel() {
+    // Temporary way of passing data between recyclerview and fragment
+    lateinit var bundle: Any
+
+    /**
+     * Standard UI navigation code
+     */
+    private val _navigateToChatMessages = MutableLiveData<Boolean>()
+    val navigateToChatMessages: LiveData<Boolean>
+        get() = _navigateToChatMessages
+    fun navigate() {
+        _navigateToChatMessages.value = true
+    }
+    fun onNavigatedToChatMessages() {
+        _navigateToChatMessages.value = false
+    }
+    /**
+     * Dummy data
+     *
+     * TODO Replace with real data :)
+     */
     val data = arrayListOf(
         SomeDataModel(
             "Chat with ${Random().nextInt(
@@ -132,14 +152,4 @@ class ChatsViewModel : ViewModel() {
             )}", "Description ${Random().nextInt(9999)}"
         )
     )
-    lateinit var bundle: Any
-    private val _navigateToChatMessages = MutableLiveData<Boolean>()
-    val navigateToChatMessages: LiveData<Boolean>
-        get() = _navigateToChatMessages
-    fun navigate() {
-        _navigateToChatMessages.value = true
-    }
-    fun onNavigatedToChatMessages() {
-        _navigateToChatMessages.value = false
-    }
 }
