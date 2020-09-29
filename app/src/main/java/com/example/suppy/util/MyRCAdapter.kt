@@ -29,6 +29,9 @@ class MyViewHolder(val binding: RowChatsBinding) : RecyclerView.ViewHolder(bindi
         binding.item = item
         binding.root.setOnClickListener{
             Snackbar.make(it, "${item.name}", 2000).show()
+            /**
+             * NAVIGATE HERE
+             */
         }
         binding.executePendingBindings()
     }

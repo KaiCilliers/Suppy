@@ -6,7 +6,7 @@
     app:startDestination="@id/chatsFragment">
     <fragment
         android:id="@+id/chatsFragment"
-        android:name="com.example.suppy.home.chatList.ChatsFragment"
+        android:name="com.example.suppy.home.chatlist.ChatsFragment"
         android:label="fragment_chats"
         tools:layout="@layout/fragment_chats" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatMessagesFragment"
-        android:name="com.example.suppy.home.second.ChatMessagesFragment"
+        android:name="com.example.suppy.home.chatmessages.ChatMessagesFragment"
         android:label="fragment_chat_messages"
         tools:layout="@layout/fragment_chat_messages" >
         <action

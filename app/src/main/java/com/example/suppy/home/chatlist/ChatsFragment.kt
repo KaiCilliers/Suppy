@@ -1,4 +1,4 @@
-package com.example.suppy.home.chatList
+package com.example.suppy.home.chatlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,16 +28,6 @@ class ChatsFragment : Fragment() {
         val binding = FragmentChatsBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
         binding.viewModel = viewModel
-        viewModel.navigateToChatMessages.subscribeToNavigation(
-            owner = this,
-            actionsBeforeNavigation = {},
-            navigation = {
-                findNavController().navigate(
-                    ChatsFragmentDirections.actionChatsFragmentToChatMessagesFragment()
-                )
-            },
-            resetBool = { viewModel.onNavigatedToChatMessages() }
-        )
         return binding.root
     }
 

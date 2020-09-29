@@ -1,4 +1,4 @@
-package com.example.suppy.home.second
+package com.example.suppy.home.chatmessages
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

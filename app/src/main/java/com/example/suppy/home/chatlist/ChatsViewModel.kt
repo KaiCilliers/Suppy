@@ -1,4 +1,4 @@
-package com.example.suppy.home.chatList
+package com.example.suppy.home.chatlist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
