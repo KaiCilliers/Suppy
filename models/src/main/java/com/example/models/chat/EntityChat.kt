@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
 
-@Entity(tableName = "chat")
+@Entity(tableName = "table_chat")
 data class EntityChat(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "chat_id")

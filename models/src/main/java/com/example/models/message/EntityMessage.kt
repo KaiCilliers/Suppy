@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "message")
+@Entity(tableName = "table_message")
 data class EntityMessage(
     @PrimaryKey
     @ColumnInfo(name = "message_id")
