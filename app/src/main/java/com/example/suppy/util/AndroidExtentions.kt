@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.example.suppy.experimental.SingleLiveEvent
+import com.example.suppy.experimental.VoidEvent
 import java.io.Serializable
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -27,6 +29,30 @@ inline fun LiveData<Boolean>.subscribeToNavigation(
         resetBool()
     }
 })
+
+/**
+ * Extension function to better observe events that require content
+ * @sample viewModel.variable.observeEvent(owner) { myString ->
+ *      // your action that may require data
+ * }
+ * @author https://gist.github.com/JoseAlcerreca/e0bba240d9b3cffa258777f12e5c0ae9
+ */
+fun <T> LiveData<out SingleLiveEvent<T>>.observeEvent(owner: LifecycleOwner, onEventUnhandledContent: (T) -> Unit) {
+    observe(owner, Observer{
+        it?.content()?.let(onEventUnhandledContent)
+    })
+}
+
+/**
+ * Extension function to better observe events that require no content
+ * @sample viewModel.variable.observeEvent(owner) {
+ *      // your action that requires no data
+ * }
+ * @author https://gist.github.com/JoseAlcerreca/e0bba240d9b3cffa258777f12e5c0ae9
+ */
+fun LiveData<out VoidEvent>.observeEvent(owner: LifecycleOwner, onEventUnhandledContent: () -> Unit) {
+    observe(owner, Observer { if (!it.handled()) onEventUnhandledContent() })
+}
 
 /**
  * @desc Shorter way of adding bundle data
