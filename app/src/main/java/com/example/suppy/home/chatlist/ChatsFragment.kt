@@ -56,6 +56,15 @@ class ChatsFragment : Fragment() {
         // TODO clean up this binding boilerplate
         val binding = FragmentChatsBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
+        /**
+         * TODO replace with below
+         * binding.apply { viewModel }
+         * this is useful but needs getting use to
+         * Equals below
+         * binding.viewModel = viewModel
+         * binding.otherVal = otherVal
+         * binding.sameName = sameName
+         */
         binding.viewModel = viewModel
 
         // TODO find another place to host this navigation code
