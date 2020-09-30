@@ -3,6 +3,7 @@ package com.example.suppy.util
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Parcelable
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -77,7 +78,7 @@ fun SharedPreferences.string(
 /**
  * This extension function acts as a delegate for storing
  * Integer values in [SharedPreferences]
- * * @sample var myParam by prefs.int()
+ * @sample var myParam by prefs.int()
  * @author https://proandroiddev.com/kotlin-delegates-in-android-1ab0a715762d
  * TODO determine if it will be useful
  */
@@ -89,4 +90,18 @@ fun SharedPreferences.int(
         = getInt(key(property), defVal)
     override fun setValue(thisRef: Any, property: KProperty<*>, value: Int)
         = edit().putInt(key(property), value).apply()
+}
+
+/**
+ * Extension function on TextView to be used as delegate
+ * @sample var title by tv_title.text()
+ * @author https://proandroiddev.com/kotlin-delegates-in-android-1ab0a715762d
+ * TODO determine if it will be useful
+ */
+fun TextView.text(): ReadWriteProperty<Any, String> = object : ReadWriteProperty<Any, String> {
+    override fun getValue(thisRef: Any, property: KProperty<*>) = text.toString()
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
+        text = value
+    }
 }
