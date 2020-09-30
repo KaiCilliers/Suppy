@@ -2,10 +2,12 @@ package com.example.suppy.util
 
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import java.io.Serializable
+import kotlin.properties.ReadWriteProperty
 
 /**
  * @desc Subscribe to [LiveData]
@@ -45,3 +47,9 @@ inline fun <T> Bundle.put(key: String, value: T) {
         else -> throw IllegalStateException("Type of property $key is not supported")
     }
 }
+
+/**
+ * @desc Convenience function for fragment bundle delegation
+ * TODO See if this is usable for this project
+ */
+fun <T: Any> argument(): ReadWriteProperty<Fragment, T> = FragmentArgumentDelegate()
