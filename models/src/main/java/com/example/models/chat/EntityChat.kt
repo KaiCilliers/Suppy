@@ -16,8 +16,6 @@ data class EntityChat(
     private val lastActivity: String,
     @ColumnInfo(name = "is_mute")
     private val mute: Boolean,
-    @ColumnInfo(name = "last_message")
-    private val lastMessage: String,
     @ColumnInfo(name = "description")
     private val description: String,
     @ColumnInfo(name = "creator")
