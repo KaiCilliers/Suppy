@@ -1,5 +1,6 @@
 package com.example.suppy.util
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import java.io.Serializable
 import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 /**
  * @desc Subscribe to [LiveData]
@@ -50,6 +52,41 @@ inline fun <T> Bundle.put(key: String, value: T) {
 
 /**
  * @desc Convenience function for fragment bundle delegation
+ * @author https://proandroiddev.com/kotlin-delegates-in-android-1ab0a715762d
  * TODO See if this is usable for this project
  */
 fun <T: Any> argument(): ReadWriteProperty<Fragment, T> = FragmentArgumentDelegate()
+
+/**
+ * This extension function acts as a delegate for storing
+ * string values in [SharedPreferences]
+ * @sample var myParam by prefs.string()
+ * @author https://proandroiddev.com/kotlin-delegates-in-android-1ab0a715762d
+ * TODO determine if it will be useful
+ */
+fun SharedPreferences.string(
+    defVal: String = "",
+    key: (KProperty<*>) -> String = KProperty<*>::name
+): ReadWriteProperty<Any, String> = object : ReadWriteProperty<Any, String> {
+    override fun getValue(thisRef: Any, property: KProperty<*>)
+            = getString(key(property), defVal)!!
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: String)
+            = edit().putString(key(property), value).apply()
+}
+
+/**
+ * This extension function acts as a delegate for storing
+ * Integer values in [SharedPreferences]
+ * * @sample var myParam by prefs.int()
+ * @author https://proandroiddev.com/kotlin-delegates-in-android-1ab0a715762d
+ * TODO determine if it will be useful
+ */
+fun SharedPreferences.int(
+    defVal: Int = 0,
+    key: (KProperty<*>) -> String = KProperty<*>::name
+) : ReadWriteProperty<Any, Int> = object : ReadWriteProperty<Any, Int> {
+    override fun getValue(thisRef: Any, property: KProperty<*>)
+        = getInt(key(property), defVal)
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Int)
+        = edit().putInt(key(property), value).apply()
+}
