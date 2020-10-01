@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.suppy.databinding.FragmentChatMessagesBinding
+import com.example.suppy.home.chatlist.ChatsViewModel
 import com.example.suppy.move_out.SomeMessages
 import com.example.suppy.util.ChatMessagesAdapter
 import com.example.suppy.util.subscribeToNavigation
@@ -24,10 +25,13 @@ import timber.log.Timber
 class ChatMessagesFragment : Fragment() {
 
     private lateinit var viewModel: ChatMessagesViewModel
+    private lateinit var data: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        listener()
+        val x = arguments?.getString("data")
+        Timber.d("I got something? ${x}")
+        data = x!!
     }
 
     override fun onCreateView(
@@ -51,6 +55,11 @@ class ChatMessagesFragment : Fragment() {
             resetBool = { viewModel.onNavigatedToChats() }
         )
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView(getIndex("${data}"))
     }
 
     /**
@@ -88,21 +97,6 @@ class ChatMessagesFragment : Fragment() {
             print.messages,
             requireContext()
         )
-    }
-
-    /**
-     * A broadcast is received containing information from the
-     * specific list item that was clicked in order to show
-     * the messages related to that conversation
-     *
-     * Broadcast comes from [ChatsFragment]
-     */
-    private fun listener(){
-        setFragmentResultListener("conversation"){ key, bundle ->
-            val result = bundle.getString("name")
-            Snackbar.make(this.requireView(), "$result :D:D:D", 2000).show()
-            setupRecyclerView(getIndex(result!!))
-        }
     }
 
     /**

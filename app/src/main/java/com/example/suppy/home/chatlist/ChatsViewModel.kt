@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.suppy.move_out.SomeDataModel
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -21,6 +22,7 @@ class ChatsViewModel : ViewModel() {
         get() = _navigateToChatMessages
     fun navigate() {
         _navigateToChatMessages.value = true
+        Timber.d("I navigate with bundle mayhap? $bundle")
     }
     fun onNavigatedToChatMessages() {
         _navigateToChatMessages.value = false
