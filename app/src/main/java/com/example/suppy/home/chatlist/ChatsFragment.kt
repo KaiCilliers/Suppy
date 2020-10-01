@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.ChatsAdapter
 import com.example.suppy.util.subscribeToNavigation
@@ -56,21 +58,35 @@ class ChatsFragment : Fragment() {
         // TODO clean up this binding boilerplate
         val binding = FragmentChatsBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
+        /**
+         * TODO replace with below
+         * binding.apply { viewModel }
+         * this is useful but needs getting use to
+         * Equals below
+         * binding.viewModel = viewModel
+         * binding.otherVal = otherVal
+         * binding.sameName = sameName
+         */
         binding.viewModel = viewModel
 
         // TODO find another place to host this navigation code
+        // TODO remove this extension function and replace with observeEvent
+        // TODO cleanup the code that transports the data from fragment A to B, you got it right, now rest up
         viewModel.navigateToChatMessages.subscribeToNavigation(
             owner = this,
             actionsBeforeNavigation = {
-                setFragmentResult(
-                    "conversation", bundleOf(
-                        "name" to viewModel.bundle
-                    )
-                )
+//                setFragmentResult(
+//                    "conversation", bundleOf(
+//                        "name" to viewModel.bundle
+//                    )
+//                )
             },
             navigation = {
                 findNavController().navigate(
-                    ChatsFragmentDirections.actionChatsFragmentToChatMessagesFragment()
+                    R.id.action_chatsFragment_to_chatMessagesFragment,
+                    bundleOf(
+                        "data" to "${viewModel.bundle}"
+                    )
                 )
             },
             resetBool = { viewModel.onNavigatedToChatMessages() }
@@ -100,6 +116,6 @@ class ChatsFragment : Fragment() {
         rc_chats.addItemDecoration(dividerItemDecoration)
 
         rc_chats.layoutManager = layoutManager
-        rc_chats.adapter = ChatsAdapter(viewModel.data, requireContext(), this)
+        rc_chats.adapter = ChatsAdapter(viewModel.data, requireContext(), this, viewModel)
     }
 }
