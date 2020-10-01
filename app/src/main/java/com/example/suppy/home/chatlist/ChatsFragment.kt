@@ -70,6 +70,8 @@ class ChatsFragment : Fragment() {
         binding.viewModel = viewModel
 
         // TODO find another place to host this navigation code
+        // TODO remove this extension function and replace with observeEvent
+        // TODO cleanup the code that transports the data from fragment A to B, you got it right, now rest up
         viewModel.navigateToChatMessages.subscribeToNavigation(
             owner = this,
             actionsBeforeNavigation = {
