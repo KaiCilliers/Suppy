@@ -14,6 +14,7 @@ import com.example.suppy.home.chatlist.ChatsViewModel
 import com.example.suppy.move_out.SomeMessages
 import com.example.suppy.util.ChatMessagesAdapter
 import com.example.suppy.util.argument
+import com.example.suppy.util.observeEvent
 import com.example.suppy.util.subscribeToNavigation
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_chat_messages.*
@@ -41,18 +42,11 @@ class ChatMessagesFragment : Fragment() {
         val binding = FragmentChatMessagesBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(ChatMessagesViewModel::class.java)
         binding.viewModel = viewModel
-
-        // TODO find another place to host this navigation code
-        viewModel.navigateToChats.subscribeToNavigation(
-            owner = this,
-            actionsBeforeNavigation = {},
-            navigation = {
-                findNavController().navigate(
-                    ChatMessagesFragmentDirections.actionChatMessagesFragmentToChatsFragment()
-                )
-            },
-            resetBool = { viewModel.onNavigatedToChats() }
-        )
+        viewModel.navigateToChats.observeEvent(viewLifecycleOwner){
+            findNavController().navigate(
+                ChatMessagesFragmentDirections.actionChatMessagesFragmentToChatsFragment()
+            )
+        }
         return binding.root
     }
 

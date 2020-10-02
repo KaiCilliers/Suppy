@@ -37,7 +37,7 @@ class ChatItem(val binding: RowChatsBinding) : RecyclerView.ViewHolder(binding.r
     fun bind(item: SomeDataModel, itemClicked: ChatsViewModel) {
         binding.item = item
         binding.root.setOnClickListener{
-            itemClicked.bundle = item
+            itemClicked.bundle = item.name
             Timber.d("RC Chat Item clicked...with data ${itemClicked.bundle}")
             itemClicked.navigate()
         }

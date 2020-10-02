@@ -17,6 +17,7 @@ import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.ChatsAdapter
 import com.example.suppy.util.argument
+import com.example.suppy.util.observeEvent
 import com.example.suppy.util.subscribeToNavigation
 import kotlinx.android.synthetic.main.fragment_chats.*
 import timber.log.Timber
@@ -36,33 +37,17 @@ class ChatsFragment : Fragment() {
         // TODO clean up this binding boilerplate
         val binding = FragmentChatsBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
-        /**
-         * TODO replace with below
-         * binding.apply { viewModel }
-         * this is useful but needs getting use to
-         * Equals below
-         * binding.viewModel = viewModel
-         * binding.otherVal = otherVal
-         * binding.sameName = sameName
-         */
         binding.viewModel = viewModel
 
         // TODO find another place to host this navigation code
         // TODO remove this extension function and replace with observeEvent
         // TODO cleanup the code that transports the data from fragment A to B, you got it right, now rest up
-        viewModel.navigateToChatMessages.subscribeToNavigation(
-            owner = this,
-            actionsBeforeNavigation = {},
-            navigation = {
-                findNavController().navigate(
-                    R.id.action_chatsFragment_to_chatMessagesFragment,
-                    bundleOf(
-                        "chat" to "${viewModel.bundle}"
-                    )
-                )
-            },
-            resetBool = { viewModel.onNavigatedToChatMessages() }
-        )
+        viewModel.navigateToChatMessages.observeEvent(viewLifecycleOwner){
+            findNavController().navigate(
+                R.id.action_chatsFragment_to_chatMessagesFragment,
+                bundleOf("chat" to "${viewModel.bundle}")
+            )
+        }
         return binding.root
     }
 
