@@ -28,29 +28,6 @@ class ChatsFragment : Fragment() {
 
     private lateinit var viewModel: ChatsViewModel
 
-    /**
-     * List item onClicks are created in the RecyclerView Adapter
-     * Using the listener, the data of the item clicked can be
-     * passed and captured in the fragment class.
-     *
-     * The listener calls the [ViewModel]'s navigate method
-     *
-     * Broadcast comes from [ChatsAdapter]
-     *
-     * TODO place this listener someplace else
-     */
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setFragmentResultListener("nav"){key, bundle ->
-            Timber.d(
-                "${bundle.getString("conversation")}" +
-                        "\nGo to ${bundle.get("to")}"
-            )
-            viewModel.bundle = bundle.getString("conversation")!!
-            viewModel.navigate()
-        }
-    }
-
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -74,13 +51,7 @@ class ChatsFragment : Fragment() {
         // TODO cleanup the code that transports the data from fragment A to B, you got it right, now rest up
         viewModel.navigateToChatMessages.subscribeToNavigation(
             owner = this,
-            actionsBeforeNavigation = {
-//                setFragmentResult(
-//                    "conversation", bundleOf(
-//                        "name" to viewModel.bundle
-//                    )
-//                )
-            },
+            actionsBeforeNavigation = {},
             navigation = {
                 findNavController().navigate(
                     R.id.action_chatsFragment_to_chatMessagesFragment,
