@@ -7,6 +7,7 @@ import com.example.suppy.experimental.VoidEvent
 import com.example.suppy.move_out.Message
 import com.example.suppy.move_out.SomeDataModel
 import com.example.suppy.move_out.SomeMessages
+import timber.log.Timber
 import kotlin.random.Random
 
 class ChatMessagesViewModel : ViewModel() {

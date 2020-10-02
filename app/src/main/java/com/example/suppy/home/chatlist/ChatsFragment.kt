@@ -34,20 +34,17 @@ class ChatsFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        // TODO clean up this binding boilerplate
         val binding = FragmentChatsBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
-        binding.viewModel = viewModel
-
-        // TODO find another place to host this navigation code
-        // TODO remove this extension function and replace with observeEvent
-        // TODO cleanup the code that transports the data from fragment A to B, you got it right, now rest up
-        viewModel.navigateToChatMessages.observeEvent(viewLifecycleOwner){
-            findNavController().navigate(
-                R.id.action_chatsFragment_to_chatMessagesFragment,
-                bundleOf("chat" to "${viewModel.bundle}")
-            )
+        viewModel.apply {
+            navigateToChatMessages.observeEvent(viewLifecycleOwner){
+                findNavController().navigate(
+                    R.id.action_chatsFragment_to_chatMessagesFragment,
+                    bundleOf("chat" to "${viewModel.bundle}")
+                )
+            }
         }
+        binding.apply { viewModel }
         return binding.root
     }
 

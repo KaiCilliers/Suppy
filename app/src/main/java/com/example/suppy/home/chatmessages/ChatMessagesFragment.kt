@@ -19,6 +19,7 @@ import com.example.suppy.util.subscribeToNavigation
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_chat_messages.*
 import timber.log.Timber
+import com.example.suppy.R
 
 /**
  * [Fragment] for UI that displays a messages in a
@@ -38,15 +39,17 @@ class ChatMessagesFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        // TODO clean up this binding boilerplate
         val binding = FragmentChatMessagesBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(ChatMessagesViewModel::class.java)
-        binding.viewModel = viewModel
-        viewModel.navigateToChats.observeEvent(viewLifecycleOwner){
-            findNavController().navigate(
-                ChatMessagesFragmentDirections.actionChatMessagesFragmentToChatsFragment()
-            )
+        viewModel.apply {
+            navigateToChats.observeEvent(viewLifecycleOwner){
+                findNavController().navigate(
+                    ChatMessagesFragmentDirections.actionChatMessagesFragmentToChatsFragment()
+                )
+            }
         }
+        //TODO Navigation does not work with binding.apply{viewModel}
+        binding.viewModel = viewModel
         return binding.root
     }
 
