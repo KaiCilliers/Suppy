@@ -30,7 +30,7 @@ class MessageItem(val binding: RowMessagesBinding) : RecyclerView.ViewHolder(bin
     fun bind(item: Message) {
         binding.data = item
         binding.root.setOnClickListener{
-            Timber.d("${item.content}")
+            Timber.d("Message item clicked with data: ${item.content}")
         }
         binding.executePendingBindings()
     }

@@ -56,7 +56,7 @@ class ChatsFragment : Fragment() {
                 findNavController().navigate(
                     R.id.action_chatsFragment_to_chatMessagesFragment,
                     bundleOf(
-                        "data" to "${viewModel.bundle}"
+                        "chatClicked" to "${viewModel.bundle}"
                     )
                 )
             },
@@ -87,6 +87,6 @@ class ChatsFragment : Fragment() {
         rc_chats.addItemDecoration(dividerItemDecoration)
 
         rc_chats.layoutManager = layoutManager
-        rc_chats.adapter = ChatsAdapter(viewModel.data, requireContext(), this, viewModel)
+        rc_chats.adapter = ChatsAdapter(viewModel.data, requireContext(), viewModel)
     }
 }

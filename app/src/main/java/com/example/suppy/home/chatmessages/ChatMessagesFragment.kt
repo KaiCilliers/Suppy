@@ -25,13 +25,12 @@ import timber.log.Timber
 class ChatMessagesFragment : Fragment() {
 
     private lateinit var viewModel: ChatMessagesViewModel
-    private lateinit var data: String
+    private lateinit var chat: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val x = arguments?.getString("data")
-        Timber.d("I got something? ${x}")
-        data = x!!
+        chat = arguments?.getString("chatClicked")?: "NO DATA"
+        Timber.d("Chat clicked was: $chat")
     }
 
     override fun onCreateView(
@@ -59,7 +58,8 @@ class ChatMessagesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView(getIndex("${data}"))
+        Timber.d("Heya: $chat")
+        setupRecyclerView(getIndex("${chat}"))
     }
 
     /**
