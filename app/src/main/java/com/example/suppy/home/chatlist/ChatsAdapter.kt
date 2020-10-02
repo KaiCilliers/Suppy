@@ -2,6 +2,7 @@ package com.example.suppy.home.chatlist
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.suppy.move_out.SomeDataModel
@@ -33,12 +34,14 @@ class ChatsAdapter(val items: ArrayList<SomeDataModel>, val context: Context, va
  */
 class ChatItem(val binding: RowChatsBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: SomeDataModel, itemClicked: ChatsViewModel) {
-        binding.item = item
-        binding.root.setOnClickListener{
-            itemClicked.bundle = item.name
-            Timber.d("RC Chat Item clicked...with data ${itemClicked.bundle}")
-            itemClicked.navigate()
+        binding.apply{
+            root.setOnClickListener {
+                itemClicked.bundle = item.name
+                Timber.d("RC Chat Item clicked...with data ${itemClicked.bundle}")
+                itemClicked.navigate()
+            }
+            item
+            executePendingBindings()
         }
-        binding.executePendingBindings()
     }
 }

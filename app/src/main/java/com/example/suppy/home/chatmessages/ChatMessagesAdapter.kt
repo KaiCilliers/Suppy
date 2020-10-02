@@ -27,11 +27,13 @@ class ChatMessagesAdapter (val items: ArrayList<Message>, val context: Context) 
  * Represents a single item in recyclerview
  */
 class MessageItem(val binding: RowMessagesBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: Message) {
-        binding.data = item
-        binding.root.setOnClickListener{
-            Timber.d("Message item clicked with data: ${item.content}")
+    fun bind(data: Message) {
+        binding.apply {
+            root.setOnClickListener {
+                Timber.d("Message item clicked with data: ${data.content}")
+            }
+            this.data = data
+            executePendingBindings()
         }
-        binding.executePendingBindings()
     }
 }
