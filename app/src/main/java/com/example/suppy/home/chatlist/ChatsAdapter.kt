@@ -1,13 +1,11 @@
-package com.example.suppy.util
+package com.example.suppy.home.chatlist
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.suppy.move_out.SomeDataModel
 import com.example.suppy.databinding.RowChatsBinding
-import com.example.suppy.home.chatlist.ChatsViewModel
 import timber.log.Timber
 
 /**

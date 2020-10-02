@@ -3,11 +3,10 @@ package com.example.suppy.home.chatmessages
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.suppy.experimental.VoidEvent
+import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.Message
 import com.example.suppy.move_out.SomeDataModel
 import com.example.suppy.move_out.SomeMessages
-import timber.log.Timber
 import kotlin.random.Random
 
 class ChatMessagesViewModel : ViewModel() {

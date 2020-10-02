@@ -5,21 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.suppy.databinding.FragmentChatMessagesBinding
-import com.example.suppy.home.chatlist.ChatsViewModel
 import com.example.suppy.move_out.SomeMessages
-import com.example.suppy.util.ChatMessagesAdapter
 import com.example.suppy.util.argument
 import com.example.suppy.util.observeEvent
-import com.example.suppy.util.subscribeToNavigation
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_chat_messages.*
 import timber.log.Timber
-import com.example.suppy.R
 
 /**
  * [Fragment] for UI that displays a messages in a

@@ -3,7 +3,7 @@ package com.example.suppy.home.chatlist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.suppy.experimental.VoidEvent
+import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.SomeDataModel
 import timber.log.Timber
 import java.util.*

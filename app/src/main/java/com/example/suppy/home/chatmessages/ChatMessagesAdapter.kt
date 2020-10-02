@@ -1,4 +1,4 @@
-package com.example.suppy.util
+package com.example.suppy.home.chatmessages
 
 import android.content.Context
 import android.view.LayoutInflater
