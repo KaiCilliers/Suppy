@@ -81,7 +81,6 @@ inline fun <T> Bundle.put(key: String, value: T) {
  * @desc Convenience function for fragment bundle delegation
  * @sample var param2: String by argument()
  * @author https://proandroiddev.com/kotlin-delegates-in-android-1ab0a715762d
- * TODO See if this is usable for this project
  */
 fun <T: Any> argument(): ReadWriteProperty<Fragment, T> = FragmentArgumentDelegate()
 

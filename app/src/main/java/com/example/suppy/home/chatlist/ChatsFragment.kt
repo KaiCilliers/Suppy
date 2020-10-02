@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.ChatsAdapter
+import com.example.suppy.util.argument
 import com.example.suppy.util.subscribeToNavigation
 import kotlinx.android.synthetic.main.fragment_chats.*
 import timber.log.Timber
@@ -56,7 +57,7 @@ class ChatsFragment : Fragment() {
                 findNavController().navigate(
                     R.id.action_chatsFragment_to_chatMessagesFragment,
                     bundleOf(
-                        "chatClicked" to "${viewModel.bundle}"
+                        "chat" to "${viewModel.bundle}"
                     )
                 )
             },

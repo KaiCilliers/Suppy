@@ -13,6 +13,7 @@ import com.example.suppy.databinding.FragmentChatMessagesBinding
 import com.example.suppy.home.chatlist.ChatsViewModel
 import com.example.suppy.move_out.SomeMessages
 import com.example.suppy.util.ChatMessagesAdapter
+import com.example.suppy.util.argument
 import com.example.suppy.util.subscribeToNavigation
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_chat_messages.*
@@ -25,11 +26,10 @@ import timber.log.Timber
 class ChatMessagesFragment : Fragment() {
 
     private lateinit var viewModel: ChatMessagesViewModel
-    private lateinit var chat: String
+    private var chat: String by argument()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        chat = arguments?.getString("chatClicked")?: "NO DATA"
         Timber.d("Chat clicked was: $chat")
     }
 
@@ -58,8 +58,7 @@ class ChatMessagesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.d("Heya: $chat")
-        setupRecyclerView(getIndex("${chat}"))
+        setupRecyclerView(getIndex("$chat"))
     }
 
     /**
