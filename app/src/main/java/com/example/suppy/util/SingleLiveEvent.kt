@@ -1,4 +1,4 @@
-package com.example.suppy.experimental
+package com.example.suppy.util
 
 /**
  * Class to properly handle events with [LiveData]

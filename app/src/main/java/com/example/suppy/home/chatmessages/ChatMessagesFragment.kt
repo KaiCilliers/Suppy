@@ -5,16 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.suppy.databinding.FragmentChatMessagesBinding
-import com.example.suppy.home.chatlist.ChatsViewModel
 import com.example.suppy.move_out.SomeMessages
-import com.example.suppy.util.ChatMessagesAdapter
-import com.example.suppy.util.subscribeToNavigation
-import com.google.android.material.snackbar.Snackbar
+import com.example.suppy.util.argument
+import com.example.suppy.util.observeEvent
 import kotlinx.android.synthetic.main.fragment_chat_messages.*
 import timber.log.Timber
 
@@ -25,41 +22,34 @@ import timber.log.Timber
 class ChatMessagesFragment : Fragment() {
 
     private lateinit var viewModel: ChatMessagesViewModel
-    private lateinit var data: String
+    private var chat: String by argument()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val x = arguments?.getString("data")
-        Timber.d("I got something? ${x}")
-        data = x!!
+        Timber.d("Chat clicked was: $chat")
     }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        // TODO clean up this binding boilerplate
         val binding = FragmentChatMessagesBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(ChatMessagesViewModel::class.java)
-        binding.viewModel = viewModel
-
-        // TODO find another place to host this navigation code
-        viewModel.navigateToChats.subscribeToNavigation(
-            owner = this,
-            actionsBeforeNavigation = {},
-            navigation = {
+        viewModel.apply {
+            navigateToChats.observeEvent(viewLifecycleOwner){
                 findNavController().navigate(
                     ChatMessagesFragmentDirections.actionChatMessagesFragmentToChatsFragment()
                 )
-            },
-            resetBool = { viewModel.onNavigatedToChats() }
-        )
+            }
+        }
+        //TODO Navigation does not work with binding.apply{viewModel}
+        binding.viewModel = viewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView(getIndex("${data}"))
+        setupRecyclerView(getIndex("$chat"))
     }
 
     /**

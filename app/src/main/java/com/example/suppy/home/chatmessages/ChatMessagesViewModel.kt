@@ -3,6 +3,7 @@ package com.example.suppy.home.chatmessages
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.Message
 import com.example.suppy.move_out.SomeDataModel
 import com.example.suppy.move_out.SomeMessages
@@ -116,13 +117,10 @@ class ChatMessagesViewModel : ViewModel() {
             Message("message ${Random.nextInt(999)}")
         )
     )
-    private val _navigateToChats = MutableLiveData<Boolean>()
-    val navigateToChats: LiveData<Boolean>
+    private val _navigateToChats = MutableLiveData<VoidEvent>()
+    val navigateToChats: LiveData<VoidEvent>
         get() = _navigateToChats
     fun navigate() {
-        _navigateToChats.value = true
-    }
-    fun onNavigatedToChats() {
-        _navigateToChats.value = false
+        _navigateToChats.value = VoidEvent()
     }
 }

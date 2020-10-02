@@ -8,8 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.example.suppy.experimental.SingleLiveEvent
-import com.example.suppy.experimental.VoidEvent
 import java.io.Serializable
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -81,7 +79,6 @@ inline fun <T> Bundle.put(key: String, value: T) {
  * @desc Convenience function for fragment bundle delegation
  * @sample var param2: String by argument()
  * @author https://proandroiddev.com/kotlin-delegates-in-android-1ab0a715762d
- * TODO See if this is usable for this project
  */
 fun <T: Any> argument(): ReadWriteProperty<Fragment, T> = FragmentArgumentDelegate()
 

@@ -10,7 +10,6 @@ import kotlin.reflect.KProperty
  * Delegate to handle fragment bundle reads and writes
  * @sample var param1: Int by argument()
  * @author https://proandroiddev.com/kotlin-delegates-in-android-1ab0a715762d
- * TODO see if this is usable for this project
  */
 class FragmentArgumentDelegate<T : Any> : ReadWriteProperty<Fragment, T> {
     override fun getValue(thisRef: Fragment, property: KProperty<*>): T {
