@@ -44,6 +44,10 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+    implementation "androidx.legacy:legacy-support-v4:$legacy_version"
+
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
