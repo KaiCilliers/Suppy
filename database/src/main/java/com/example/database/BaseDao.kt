@@ -5,8 +5,7 @@ import androidx.room.Insert
 import androidx.room.Update
 
 /**
- * Interface to share common operations among all
- * the DAOs
+ * Interface for generic DAO operations
  */
 interface BaseDao<T> {
     @Insert
