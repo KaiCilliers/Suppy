@@ -1,9 +1,8 @@
 package com.example.repository.webservicemodule
 
+import com.example.models.roster.RosterGroup
+import org.jivesoftware.smack.*
 import org.jivesoftware.smack.ConnectionListener
-import org.jivesoftware.smack.ReconnectionListener
-import org.jivesoftware.smack.StanzaListener
-import org.jivesoftware.smack.XMPPConnection
 import org.jivesoftware.smack.chat2.IncomingChatMessageListener
 import org.jivesoftware.smack.chat2.OutgoingChatMessageListener
 import org.jivesoftware.smack.packet.Message
@@ -13,6 +12,7 @@ import org.jivesoftware.smack.roster.*
 import org.jivesoftware.smackx.muc.InvitationListener
 import org.jivesoftware.smackx.muc.MultiUserChat
 import org.jivesoftware.smackx.muc.packet.MUCUser
+import com.example.models.roster.RosterEntry as RosterEntryModel
 import org.jxmpp.jid.*
 import timber.log.Timber
 import java.lang.Exception
@@ -21,7 +21,14 @@ class ConnectionListener : ConnectionListener,
     RosterListener, RosterLoadedListener, SubscribeListener,
     OutgoingChatMessageListener, IncomingChatMessageListener,
     PresenceEventListener, StanzaListener, InvitationListener,
-    ReconnectionListener {
+    ReconnectionListener, ConnectionCreationListener {
+    /**
+     * [ConnectionCreationListener]
+     */
+    override fun connectionCreated(connection: XMPPConnection?) {
+        Timber.d("Connection created: $connection...")
+    }
+
     /**
      * [ReconnectionListener]
      */
@@ -77,8 +84,45 @@ class ConnectionListener : ConnectionListener,
      */
     override fun onRosterLoaded(roster: Roster?) {
         Timber.d("Roster - roster loaded: $roster. Individual entries follow:")
+        val entries = arrayListOf<RosterEntryModel>()
         for(entry in roster!!.entries) {
+            val rEntry = RosterEntryModel(
+                name = entry.name,
+                subType = "${entry.type}",
+                semiJID = "${entry.jid}",
+                approved = entry.isApproved,
+                subPending = entry.isSubscriptionPending,
+                commonGroups = arrayListOf()
+            )
             Timber.d("$entry")
+            Timber.d("${entry.name}" +
+                    "\n${entry.type} & ${entry.type.asSymbol()}" +
+                    "\n${entry.jid} & ${entry.groups}" +
+                    "\n${entry.isApproved} & ${entry.canSeeHisPresence()}" +
+                    "\n${entry.canSeeMyPresence()} & ${entry.isSubscriptionPending}")
+            for (group in entry.groups) {
+                var x = arrayListOf<String>()
+                for (value in group.entries) {
+                    x.add(value.name)
+                }
+                val rGroup = RosterGroup(
+                    name = group.name,
+                    entries = x,
+                    memberCount = group.entryCount
+                )
+                rEntry.add(rGroup)
+                Timber.d("${group}" +
+                        "\n${group.name} & ${group.entries}" +
+                        "\n${group.entryCount}")
+                for (re in group.entries) {
+                    Timber.d("${re.name}")
+                }
+            }
+            entries.add(rEntry)
+        }
+        Timber.d("Saved Entries follow:")
+        for (value in entries) {
+            Timber.d("$value")
         }
     }
 

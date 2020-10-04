@@ -3,8 +3,12 @@ package com.example.suppy.home.chatlist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.repository.webservicemodule.Server
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.SomeDataModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
@@ -23,6 +27,15 @@ class ChatsViewModel : ViewModel() {
     fun navigate() {
         _navigateToChatMessages.value = VoidEvent()
         Timber.d("Chat clicked from VM: $bundle")
+    }
+
+    /**
+     * Start server connection
+     */
+    fun startServerConnection() {
+        viewModelScope.launch(Dispatchers.IO) {
+            Server.instance()
+        }
     }
     /**
      * Dummy data

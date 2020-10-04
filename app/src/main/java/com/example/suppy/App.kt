@@ -4,6 +4,8 @@ import android.app.Application
 import com.example.repository.ChatRepo
 import com.example.repository.ContactRepo
 import com.example.repository.MessageRepo
+import com.example.repository.webservicemodule.Server
+import org.jivesoftware.smack.SmackConfiguration
 import timber.log.Timber
 
 /**
@@ -22,12 +24,19 @@ class App : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         Timber.v("App - onCreate...")
-        Timber.v("Repo Testing bitches!")
+        smackDebugger()
+        Timber.v("Smack debugger setup...")
         test()
     }
     fun test() {
         chatRepo.chats()
         messageRepo.messages()
         contactRepo.contacts()
+    }
+    fun smackDebugger(){
+        // Smack Debugger?
+        System.setProperty("smack.debuggerClass","org.jivesoftware.smack.debugger.ConsoleDebugger")
+        System.setProperty("smack.debugEnabled", "true")
+        SmackConfiguration.DEBUG = true
     }
 }

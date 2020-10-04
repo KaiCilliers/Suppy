@@ -38,6 +38,7 @@ class ChatsFragment : Fragment() {
             }
         }
         binding.apply { viewModel }
+        viewModel.startServerConnection()
         return binding.root
     }
 
