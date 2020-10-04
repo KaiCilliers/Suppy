@@ -1,6 +1,7 @@
 package com.example.repository.webservicemodule
 
-import com.example.models.roster.RosterGroup
+import com.example.models.RosterEntry
+import com.example.models.RosterGroup
 import org.jivesoftware.smack.*
 import org.jivesoftware.smack.ConnectionListener
 import org.jivesoftware.smack.chat2.IncomingChatMessageListener
@@ -12,7 +13,6 @@ import org.jivesoftware.smack.roster.*
 import org.jivesoftware.smackx.muc.InvitationListener
 import org.jivesoftware.smackx.muc.MultiUserChat
 import org.jivesoftware.smackx.muc.packet.MUCUser
-import com.example.models.roster.RosterEntry as RosterEntryModel
 import org.jxmpp.jid.*
 import timber.log.Timber
 import java.lang.Exception
@@ -84,12 +84,12 @@ class ConnectionListener : ConnectionListener,
      */
     override fun onRosterLoaded(roster: Roster?) {
         Timber.d("Roster - roster loaded: $roster. Individual entries follow:")
-        val entries = arrayListOf<RosterEntryModel>()
+        val entries = arrayListOf<RosterEntry>()
         roster!!.entries.forEach {contact ->
-            val entry = RosterEntryModel(
+            val entry = RosterEntry(
                 name = contact.name,
                 subType = "${contact.type}",
-                semiJID = "${contact.jid}",
+                bareJid = "${contact.jid}",
                 approved = contact.isApproved,
                 subPending = contact.isSubscriptionPending,
                 commonGroups = arrayListOf()
@@ -110,6 +110,7 @@ class ConnectionListener : ConnectionListener,
         Timber.d("Saved Entries follow:")
         for (value in entries) {
             Timber.d("$value")
+            Timber.d("${value.asRoom()}")
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.models.roster
+package com.example.models
 
 data class RosterGroup(
     private val name: String,

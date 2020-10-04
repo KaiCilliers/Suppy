@@ -9,7 +9,8 @@ import androidx.room.ColumnInfo
 data class EntityChat(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "chat_id")
-    private val id: Int,
+    // Kotlin data classes require a default value
+    private val id: Int = 0,
     @ColumnInfo(name = "chat_name")
     private val chatName: String,
     @ColumnInfo(name = "last_activity")
@@ -21,5 +22,16 @@ data class EntityChat(
     @ColumnInfo(name = "creator")
     private val creator: String,
     @ColumnInfo(name = "created_at")
-    private val createdAt: String
+    private val createdAt: String,
+    @ColumnInfo(name = "subscription_type")
+    private val subType: String,
+    @ColumnInfo(name = "bare_jid")
+    private val bareJid: String,
+    @ColumnInfo(name = "approved")
+    private val approved: Boolean,
+    @ColumnInfo(name = "subscription_pending")
+    private val subPending: Boolean,
+    // TODO implement list values in database storage
+    @ColumnInfo(name = "groups_in_common")
+    private val commonGroups: String
 )
