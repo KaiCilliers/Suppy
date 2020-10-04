@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs.kotlin' // Fragment Navigation
+apply plugin: "kotlin-kapt" // TODO remove
 
 android {
     compileSdkVersion Integer.parseInt(ANDROID_COMPILE_SDK_VERSION)
@@ -36,6 +37,11 @@ android {
 }
 
 dependencies {
+    // Local Dependencies
+    implementation project(":repository")
+    // TODO remove
+    implementation project(":database")
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$androidx_core_version"
@@ -62,6 +68,10 @@ dependencies {
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
     implementation "androidx.legacy:legacy-support-v4:$legacy_version"
+
+    //TODO remove
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"

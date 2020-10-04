@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: "kotlin-kapt" // kotlin annotation processing tool
 
 android {
     compileSdkVersion Integer.parseInt(ANDROID_COMPILE_SDK_VERSION)
@@ -31,6 +32,28 @@ android {
 }
 
 dependencies {
+    /**
+     * TODO module leak fix
+     * Local Dependencies (check for leaks - like being able to access
+     * modules not listed below via one of these modules)
+     */
+    implementation project(":models")
+    implementation project(":database")
+
+    // XMPP
+    implementation 'org.igniterealtime.smack:smack-android:4.3.4'
+    implementation 'org.igniterealtime.smack:smack-tcp:4.3.4'
+    implementation 'org.igniterealtime.smack:smack-im:4.3.4'
+    implementation 'org.igniterealtime.smack:smack-android-extensions:4.3.4'
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+    implementation "androidx.legacy:legacy-support-v4:$legacy_version"
+
+    // Room database
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$androidx_core_version"

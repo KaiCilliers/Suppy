@@ -40,7 +40,7 @@ class ChatItem(val binding: RowChatsBinding) : RecyclerView.ViewHolder(binding.r
                 Timber.d("RC Chat Item clicked...with data ${itemClicked.bundle}")
                 itemClicked.navigate()
             }
-            item
+            this.item = item
             executePendingBindings()
         }
     }
