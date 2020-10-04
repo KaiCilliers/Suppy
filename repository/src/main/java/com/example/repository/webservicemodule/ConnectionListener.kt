@@ -85,40 +85,27 @@ class ConnectionListener : ConnectionListener,
     override fun onRosterLoaded(roster: Roster?) {
         Timber.d("Roster - roster loaded: $roster. Individual entries follow:")
         val entries = arrayListOf<RosterEntryModel>()
-        for(entry in roster!!.entries) {
-            val rEntry = RosterEntryModel(
-                name = entry.name,
-                subType = "${entry.type}",
-                semiJID = "${entry.jid}",
-                approved = entry.isApproved,
-                subPending = entry.isSubscriptionPending,
+        roster!!.entries.forEach {contact ->
+            val entry = RosterEntryModel(
+                name = contact.name,
+                subType = "${contact.type}",
+                semiJID = "${contact.jid}",
+                approved = contact.isApproved,
+                subPending = contact.isSubscriptionPending,
                 commonGroups = arrayListOf()
             )
-            Timber.d("$entry")
-            Timber.d("${entry.name}" +
-                    "\n${entry.type} & ${entry.type.asSymbol()}" +
-                    "\n${entry.jid} & ${entry.groups}" +
-                    "\n${entry.isApproved} & ${entry.canSeeHisPresence()}" +
-                    "\n${entry.canSeeMyPresence()} & ${entry.isSubscriptionPending}")
-            for (group in entry.groups) {
-                var x = arrayListOf<String>()
-                for (value in group.entries) {
-                    x.add(value.name)
-                }
-                val rGroup = RosterGroup(
+            contact.groups.forEach{group ->
+                val groupEntry = RosterGroup(
                     name = group.name,
-                    entries = x,
+                    entries = arrayListOf(),
                     memberCount = group.entryCount
                 )
-                rEntry.add(rGroup)
-                Timber.d("${group}" +
-                        "\n${group.name} & ${group.entries}" +
-                        "\n${group.entryCount}")
-                for (re in group.entries) {
-                    Timber.d("${re.name}")
+                group.entries.forEach {
+                    groupEntry.add(it.name)
                 }
+                entry.add(groupEntry)
             }
-            entries.add(rEntry)
+            entries.add(entry)
         }
         Timber.d("Saved Entries follow:")
         for (value in entries) {
