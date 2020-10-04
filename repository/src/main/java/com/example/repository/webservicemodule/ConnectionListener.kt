@@ -1,7 +1,12 @@
 package com.example.repository.webservicemodule
 
+import android.content.ContentProvider
+import android.content.Context
 import com.example.models.RosterEntry
 import com.example.models.RosterGroup
+import com.example.models.chat.EntityChat
+import com.example.repository.ChatRepo
+import kotlinx.coroutines.withContext
 import org.jivesoftware.smack.*
 import org.jivesoftware.smack.ConnectionListener
 import org.jivesoftware.smack.chat2.IncomingChatMessageListener
@@ -17,7 +22,7 @@ import org.jxmpp.jid.*
 import timber.log.Timber
 import java.lang.Exception
 
-class ConnectionListener : ConnectionListener,
+class ConnectionListener() : ConnectionListener,
     RosterListener, RosterLoadedListener, SubscribeListener,
     OutgoingChatMessageListener, IncomingChatMessageListener,
     PresenceEventListener, StanzaListener, InvitationListener,
@@ -111,6 +116,15 @@ class ConnectionListener : ConnectionListener,
         for (value in entries) {
             Timber.d("$value")
             Timber.d("${value.asRoom()}")
+        }
+        val gogogo = arrayListOf<EntityChat>()
+        entries.forEach {
+            gogogo.add(it.asRoom())
+        }
+        Timber.d("Attempting to call repo method")
+//        ChatRepo().repopulate(gogogo)
+        ChatRepo().chats().forEach {
+            Timber.d("$it")
         }
     }
 

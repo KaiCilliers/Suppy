@@ -27,6 +27,7 @@ class Server {
             .setHost("jabber-hosting.de")
             .setPort(5222)
             .setResource("MobileAndroid")
+            .setConnectTimeout(15000)
             .build()
         Timber.v("Server configured...")
         connection = XMPPTCPConnection(config)

@@ -32,6 +32,12 @@ abstract class LocalDatabase  : RoomDatabase() {
     companion object {
         @Volatile
         private lateinit var INSTANCE: LocalDatabase
+        fun isInit(): Boolean{
+            return ::INSTANCE.isInitialized
+        }
+        fun justgetinstance(): LocalDatabase{
+            return INSTANCE
+        }
         fun instance(context: Context): LocalDatabase {
             synchronized(LocalDatabase::class.java) {
                 if(!::INSTANCE.isInitialized) {

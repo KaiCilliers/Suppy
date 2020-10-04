@@ -5,6 +5,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.example.database.BaseDao
 import com.example.models.chat.EntityChat
+import timber.log.Timber
 
 @Dao
 abstract class ChatDao : BaseDao<EntityChat> {
@@ -31,6 +32,7 @@ abstract class ChatDao : BaseDao<EntityChat> {
      */
     @Transaction
     open fun replaceAll(chats: List<EntityChat>){
+        Timber.d("DAO - calling replace all transaction...")
         clear()
         // The [*] is the spread operator that converts arraylist to vararg
         insert(*chats.toTypedArray())
