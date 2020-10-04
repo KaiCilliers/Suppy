@@ -10,28 +10,28 @@ data class EntityChat(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "chat_id")
     // Kotlin data classes require a default value
-    private val id: Int = 0,
+    val id: Int = 0,
     @ColumnInfo(name = "chat_name")
-    private val chatName: String,
+    val chatName: String,
     @ColumnInfo(name = "last_activity")
-    private val lastActivity: String,
+    val lastActivity: String,
     @ColumnInfo(name = "is_mute")
-    private val mute: Boolean,
+    val mute: Boolean,
     @ColumnInfo(name = "description")
-    private val description: String,
+    val description: String,
     @ColumnInfo(name = "creator")
-    private val creator: String,
+    val creator: String,
     @ColumnInfo(name = "created_at")
-    private val createdAt: String,
+    val createdAt: String,
     @ColumnInfo(name = "subscription_type")
-    private val subType: String,
+    val subType: String,
     @ColumnInfo(name = "bare_jid")
-    private val bareJid: String,
+    val bareJid: String,
     @ColumnInfo(name = "approved")
-    private val approved: Boolean,
+    val approved: Boolean,
     @ColumnInfo(name = "subscription_pending")
-    private val subPending: Boolean,
+    val subPending: Boolean,
     // TODO implement list values in database storage
     @ColumnInfo(name = "groups_in_common")
-    private val commonGroups: String
+    val commonGroups: String
 )
