@@ -6,6 +6,7 @@ import androidx.room.Update
 
 /**
  * Interface for generic DAO operations
+ * TODO make all dao functions suspend functions
  */
 interface BaseDao<T> {
     @Insert

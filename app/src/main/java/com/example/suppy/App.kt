@@ -1,5 +1,6 @@
 package com.example.suppy
-
+// TODO add button to remove item from db and see if rc list updates
+// TODO see if you can fetch the db records and check their IDs
 import android.app.Application
 import com.example.database.LocalDatabase
 import com.example.repository.ChatRepo

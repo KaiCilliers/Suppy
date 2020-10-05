@@ -1,32 +1,31 @@
 package com.example.suppy.util
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Message
 import android.os.Parcelable
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.io.Serializable
+import kotlin.coroutines.CoroutineContext
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
- * @desc Subscribe to [LiveData]
+ * @desc Basic subscribe logic to [LiveData]
  */
-inline fun LiveData<Boolean>.subscribeToNavigation(
-    owner: LifecycleOwner,
-    crossinline actionsBeforeNavigation: () -> Unit,
-    crossinline navigation: () -> Unit,
-    crossinline resetBool: () -> Unit
-) = observe(owner, Observer {navigate ->
-    if(navigate) {
-        actionsBeforeNavigation()
-        navigation()
-        resetBool()
-    }
-})
+inline fun <T> LiveData<T>.subscribe(owner: LifecycleOwner, crossinline onDataReceived: (T) -> Unit) =
+    observe(owner, Observer { onDataReceived(it) })
 
 /**
  * Extension function to better observe events that require content
@@ -129,3 +128,51 @@ fun TextView.text(): ReadWriteProperty<Any, String> = object : ReadWriteProperty
         text = value
     }
 }
+
+/**
+ * @desc Snackbar creation
+ * TODO see if useful
+ */
+fun snackbar(message: String, rootView: View) = Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT).show()
+fun snackbar(@StringRes message: Int, rootView: View) = Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT).show()
+
+/**
+ * @desc Programmatically hide keyboard from view
+ * TODO see if useful
+ */
+fun View.hideKeyboard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+}
+
+/**
+ * @desc Programmatically adding onclick listeners to views
+ */
+inline fun View.onClick(crossinline onClick: () -> Unit) = setOnClickListener { onClick() }
+
+/**
+ * @desc Easier way of launching coroutines from viewmodel scope
+ * TODO see if useful and see how to use it
+ */
+inline fun ViewModel.launch(
+    coroutineContext: CoroutineContext = CoroutineContextSource().main,
+    crossinline block: suspend CoroutineScope.() -> Unit): Job {
+    return viewModelScope.launch(coroutineContext) { block() }
+}
+
+/**
+ * @desc Toggle View visibility
+ * TODO see if useful
+ */
+fun View.visible() {
+    visibility = View.VISIBLE
+}
+fun View.gone() {
+    visibility = View.GONE
+}
+
+/**
+ * @desc Simple toast message creation
+ * TODO see if useful
+ */
+fun Context.toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
