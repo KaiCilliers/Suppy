@@ -1,5 +1,6 @@
 package com.example.database.chat
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -13,7 +14,7 @@ abstract class ChatDao : BaseDao<EntityChat> {
      * Get all data from Chat table ordered by chat name
      */
     @Query("SELECT * FROM table_chat ORDER BY chat_name DESC")
-    abstract fun all(): List<EntityChat>
+    abstract fun all(): LiveData<List<EntityChat>>
 
     /**
      * Clear table of all records
@@ -32,7 +33,7 @@ abstract class ChatDao : BaseDao<EntityChat> {
      */
     @Transaction
     open fun replaceAll(chats: List<EntityChat>){
-        Timber.d("DAO - calling replace all transaction...")
+        Timber.d("DAO - calling replace all transaction... with data $chats")
         clear()
         // The [*] is the spread operator that converts arraylist to vararg
         insert(*chats.toTypedArray())

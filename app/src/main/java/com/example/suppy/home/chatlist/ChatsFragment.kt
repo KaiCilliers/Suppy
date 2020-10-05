@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,6 +15,7 @@ import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.observeEvent
 import kotlinx.android.synthetic.main.fragment_chats.*
+import timber.log.Timber
 
 /**
  * [Fragment] for UI that displays a user's active
@@ -22,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_chats.*
 class ChatsFragment : Fragment() {
 
     private lateinit var viewModel: ChatsViewModel
+    private lateinit var chatAdapter: ChatsAdapter
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -36,14 +39,39 @@ class ChatsFragment : Fragment() {
                     bundleOf("chat" to "${viewModel.bundle}")
                 )
             }
+            getAllChatLocalData().observe(viewLifecycleOwner, Observer {data ->
+                Timber.d("inside the observing code...with $data")
+                val updated = data.map {
+                    it.asDomain()
+                }
+                Timber.d("Just before adapter call for setData with $updated")
+                chatAdapter.setData(updated)
+            })
         }
+        setupAdapter()
         binding.apply { viewModel }
         viewModel.startServerConnection()
         return binding.root
     }
 
+    private fun setupAdapter(){
+        Timber.d("Setup adapter called... where the adapter is initialised with context and VM")
+        chatAdapter = ChatsAdapter(
+            context = requireContext(),
+            itemClicked = viewModel
+        )
+    }
+
+    private fun insertChatFrag(v: View) {
+        viewModel.insertRandomChat()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        btn_add_new_item.setOnClickListener{
+            Timber.d("button click")
+            insertChatFrag(it)
+        }
         setupRecyclerView()
     }
 
@@ -52,6 +80,7 @@ class ChatsFragment : Fragment() {
      * override fun [onViewCreated]
      */
     private fun setupRecyclerView() {
+        Timber.d("setting up RC...")
         // For efficiency
         rc_chats.setHasFixedSize(true)
         rc_chats.setItemViewCacheSize(20)
@@ -63,11 +92,8 @@ class ChatsFragment : Fragment() {
         )
         rc_chats.addItemDecoration(dividerItemDecoration)
 
+        Timber.d("Going to add layout and adapter to RC...")
         rc_chats.layoutManager = layoutManager
-        rc_chats.adapter = ChatsAdapter(
-            viewModel.data,
-            requireContext(),
-            viewModel
-        )
+        rc_chats.adapter = chatAdapter
     }
 }
