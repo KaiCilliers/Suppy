@@ -39,6 +39,7 @@ android {
 dependencies {
     // Local Dependencies
     implementation project(":repository")
+    implementation project(":models")
     // TODO remove
     implementation project(":database")
 

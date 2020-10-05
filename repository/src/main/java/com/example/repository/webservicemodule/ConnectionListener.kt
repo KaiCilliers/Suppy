@@ -117,15 +117,13 @@ class ConnectionListener() : ConnectionListener,
             Timber.d("$value")
             Timber.d("${value.asRoom()}")
         }
-        val gogogo = arrayListOf<EntityChat>()
+        val roomChats = arrayListOf<EntityChat>()
         entries.forEach {
-            gogogo.add(it.asRoom())
+            roomChats.add(it.asRoom())
         }
-        Timber.d("Attempting to call repo method")
-//        ChatRepo().repopulate(gogogo)
-        ChatRepo().chats().forEach {
-            Timber.d("$it")
-        }
+        Timber.d("Attempting to call repo method with $roomChats")
+        ChatRepo().repopulate(roomChats)
+//        ChatRepo().chats()
     }
 
     override fun onRosterLoadingFailed(exception: Exception?) {

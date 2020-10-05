@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.example.suppy.move_out.SomeDataModel" />
+            type="com.example.models.chat.DomainChat" />
     </data>
     <!-- Constraint layout might render slower than other layouts -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +33,7 @@
             android:layout_height="41dp"
             android:layout_margin="3sp"
             android:layout_marginStart="4dp"
-            android:text="@{item.name}"
+            android:text="@{item.chatName}"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold"

@@ -29,11 +29,6 @@ class App : Application() {
         Timber.v("App - onCreate...")
         smackDebugger()
         Timber.v("Smack debugger setup...")
-        MainScope().launch {
-            withContext(Dispatchers.IO) {
-                test()
-            }
-        }
     }
     fun test() {
         /**

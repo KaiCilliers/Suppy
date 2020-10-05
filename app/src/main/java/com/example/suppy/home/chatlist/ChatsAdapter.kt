@@ -2,18 +2,20 @@ package com.example.suppy.home.chatlist
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.example.suppy.move_out.SomeDataModel
+import com.example.models.chat.DomainChat
+import com.example.models.chat.EntityChat
 import com.example.suppy.databinding.RowChatsBinding
 import timber.log.Timber
 
 /**
  * An adapter to bind data to a recyclerview
  * TODO add interfaces for ViewHolders
+ * TODO replace vars with immutable objects
  */
-class ChatsAdapter(val items: ArrayList<SomeDataModel>, val context: Context, val itemClicked: ChatsViewModel) : RecyclerView.Adapter<ChatItem>(){
+class ChatsAdapter(private var items: ArrayList<DomainChat> = arrayListOf(), val context: Context, val itemClicked: ChatsViewModel) : RecyclerView.Adapter<ChatItem>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatItem = ChatItem(
         RowChatsBinding.inflate(
             LayoutInflater.from(parent.context)
@@ -23,6 +25,25 @@ class ChatsAdapter(val items: ArrayList<SomeDataModel>, val context: Context, va
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ChatItem, position: Int) = holder.bind(items[position], itemClicked)
+
+    fun setData(data: List<DomainChat>) {
+        Timber.d("setDAta called with data $data")
+        Timber.d("setData called...")
+        if(data.isNotEmpty()) {
+            Timber.d("data set is not empty and is being replaced...")
+            items.clear()
+            items.addAll(data)
+            notifyDataSetChanged()
+        } else {
+            // first init
+            Timber.d("data set is empty and is being populated now...")
+            items = data.toArrayList()
+        }
+    }
+    private fun <T> List<T>.toArrayList(): ArrayList<T> {
+        Timber.d("List to arraylist conversion of $this to ${ArrayList(this)}")
+        return ArrayList(this)
+    }
 }
 
 /**
@@ -33,10 +54,10 @@ class ChatsAdapter(val items: ArrayList<SomeDataModel>, val context: Context, va
  * TODO extract to own file with interface
  */
 class ChatItem(val binding: RowChatsBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: SomeDataModel, itemClicked: ChatsViewModel) {
+    fun bind(item: DomainChat, itemClicked: ChatsViewModel) {
         binding.apply{
             root.setOnClickListener {
-                itemClicked.bundle = item.name
+                itemClicked.bundle = item.chatName
                 Timber.d("RC Chat Item clicked...with data ${itemClicked.bundle}")
                 itemClicked.navigate()
             }

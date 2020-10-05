@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.models.chat.DomainChat
+import com.example.models.chat.EntityChat
+import com.example.repository.ChatRepo
 import com.example.repository.webservicemodule.Server
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.SomeDataModel
@@ -20,6 +23,7 @@ class ChatsViewModel : ViewModel() {
 
     /**
      * Standard UI navigation code
+     * TODO replace the get with a delegation if possible
      */
     private val _navigateToChatMessages = MutableLiveData<VoidEvent>()
     val navigateToChatMessages: LiveData<VoidEvent>
@@ -36,6 +40,11 @@ class ChatsViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             Server.instance()
         }
+    }
+
+    fun getAllChatLocalData(): LiveData<List<EntityChat>> {
+        Timber.d("Returning live data from VM (calling repo)")
+        return ChatRepo().chats()
     }
     /**
      * Dummy data
