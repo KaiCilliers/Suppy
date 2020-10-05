@@ -11,10 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.models.chat.DomainChat
 import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
-import com.example.suppy.home.HomeActivity
 import com.example.suppy.util.observeEvent
 import kotlinx.android.synthetic.main.fragment_chats.*
 import timber.log.Timber
@@ -64,8 +62,16 @@ class ChatsFragment : Fragment() {
         )
     }
 
+    private fun insertChatFrag(v: View) {
+        viewModel.insertRandomChat()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        btn_add_new_item.setOnClickListener{
+            Timber.d("button click")
+            insertChatFrag(it)
+        }
         setupRecyclerView()
     }
 
