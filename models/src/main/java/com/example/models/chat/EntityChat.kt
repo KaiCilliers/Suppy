@@ -4,6 +4,7 @@ import android.media.MediaDescription
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
+import com.example.models.mapper.DomainMapper
 
 @Entity(tableName = "table_chat")
 data class EntityChat(
@@ -34,4 +35,15 @@ data class EntityChat(
     // TODO implement list values in database storage
     @ColumnInfo(name = "groups_in_common")
     val commonGroups: String
-)
+) : DomainMapper<DomainChat> {
+    override fun asDomain(): DomainChat {
+        return DomainChat(
+            chatName = chatName,
+            lastActivity = lastActivity,
+            mute = mute,
+            description = description,
+            creator = creator,
+            createdAt = createdAt
+        )
+    }
+}
