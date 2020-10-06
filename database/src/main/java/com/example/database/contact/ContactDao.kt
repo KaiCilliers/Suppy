@@ -11,16 +11,16 @@ abstract class ContactDao : BaseDao<EntityContact>{
      * Get all data from Contact table ordered by contact name
      */
     @Query("SELECT * FROM table_contact ORDER BY name DESC")
-    abstract fun all(): List<EntityContact>
+    abstract suspend fun all(): List<EntityContact>
     /**
      * Clear table of all records
      */
     @Query("DELETE FROM table_contact")
+    abstract suspend fun clear()
     /**
      * Replace table data with new data
      */
-    abstract fun clear()
-    open fun repllaceAll(contacts: List<EntityContact>){
+    suspend fun repllaceAll(contacts: List<EntityContact>){
         clear()
         insert(*contacts.toTypedArray())
     }

@@ -14,7 +14,7 @@ class ChatRepo() {
         Timber.d("Repo fetch all chats...")
         return dao.all()
     }
-    fun repopulate(chats: ArrayList<EntityChat>) {
+    suspend fun repopulate(chats: ArrayList<EntityChat>) {
         Timber.d("Repopulate with $chats")
         Timber.d("REPO - calling DAO replace all...")
         dao.replaceAll(chats)

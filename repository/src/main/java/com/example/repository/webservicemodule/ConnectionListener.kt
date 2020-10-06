@@ -6,6 +6,9 @@ import com.example.models.RosterEntry
 import com.example.models.RosterGroup
 import com.example.models.chat.EntityChat
 import com.example.repository.ChatRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jivesoftware.smack.*
 import org.jivesoftware.smack.ConnectionListener
@@ -122,7 +125,9 @@ class ConnectionListener() : ConnectionListener,
             roomChats.add(it.asRoom())
         }
         Timber.d("Attempting to call repo method with $roomChats")
-        ChatRepo().repopulate(roomChats)
+        GlobalScope.launch(Dispatchers.IO) {
+            ChatRepo().repopulate(roomChats)
+        }
 //        ChatRepo().chats()
     }
 

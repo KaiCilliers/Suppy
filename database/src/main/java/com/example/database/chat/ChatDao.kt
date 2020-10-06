@@ -20,7 +20,7 @@ abstract class ChatDao : BaseDao<EntityChat> {
      * Clear table of all records
      */
     @Query("DELETE FROM table_chat")
-    abstract fun clear()
+    abstract suspend fun clear()
 
     /**
      * Replace table data with new data
@@ -32,7 +32,7 @@ abstract class ChatDao : BaseDao<EntityChat> {
      * add the new data
      */
     @Transaction
-    open fun replaceAll(chats: List<EntityChat>){
+    open suspend fun replaceAll(chats: List<EntityChat>){
         Timber.d("DAO - calling replace all transaction... with data $chats")
         clear()
         // The [*] is the spread operator that converts arraylist to vararg
