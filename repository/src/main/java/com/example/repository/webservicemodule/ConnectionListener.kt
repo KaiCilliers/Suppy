@@ -124,11 +124,6 @@ class ConnectionListener() : ConnectionListener,
         entries.forEach {
             roomChats.add(it.asRoom())
         }
-        Timber.d("Attempting to call repo method with $roomChats")
-        GlobalScope.launch(Dispatchers.IO) {
-            ChatRepo().repopulate(roomChats)
-        }
-//        ChatRepo().chats()
     }
 
     override fun onRosterLoadingFailed(exception: Exception?) {
