@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.models.chat.EntityChat
 import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
+import com.example.suppy.util.gone
 import com.example.suppy.util.observeEvent
 import com.example.suppy.util.onClick
 import kotlinx.android.synthetic.main.fragment_chats.*
@@ -94,6 +95,7 @@ class ChatsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Button onclicks for debugging
         btn_add_new_item.setOnClickListener{
             Timber.d("button click")
             insertChatFrag(it)
@@ -106,6 +108,11 @@ class ChatsFragment : Fragment() {
             Timber.d("Delete record button clicked...")
             deleteARecord()
         }
+        // Hide these buttons that are mainly used for debugging
+        btn_add_new_item.gone()
+        btn_delete_record.gone()
+        btn_fetch_db_records.gone()
+
         setupRecyclerView()
     }
 
