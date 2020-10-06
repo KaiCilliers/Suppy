@@ -38,6 +38,7 @@ data class EntityChat(
 ) : DomainMapper<DomainChat> {
     override fun asDomain(): DomainChat {
         return DomainChat(
+            id = id,
             chatName = chatName,
             lastActivity = lastActivity,
             mute = mute,

@@ -1,12 +1,11 @@
 package com.example.models.message
 
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
 
 data class DomainMessage(
-    val id: String,
-    val chatId: String,
-    val author: String,
+    val fromName: String,
+    val toName: String,
+    val fromBareJid: String,
+    val subject: String,
     val body: String,
-    val createdAt: String
+    val timestamp: String
 )

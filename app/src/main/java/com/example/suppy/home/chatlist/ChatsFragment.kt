@@ -4,20 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.models.chat.EntityChat
-import com.example.suppy.R
+import com.example.repository.ChatRepo
 import com.example.suppy.databinding.FragmentChatsBinding
+import com.example.suppy.util.gone
 import com.example.suppy.util.observeEvent
 import com.example.suppy.util.onClick
+import com.example.suppy.util.snackbar
 import kotlinx.android.synthetic.main.fragment_chats.*
+import kotlinx.coroutines.*
 import timber.log.Timber
+import kotlin.random.Random
 
 /**
  * [Fragment] for UI that displays a user's active
@@ -36,10 +37,12 @@ class ChatsFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
         viewModel.apply {
             navigateToChatMessages.observeEvent(viewLifecycleOwner){
-                findNavController().navigate(
-                    R.id.action_chatsFragment_to_chatMessagesFragment,
-                    bundleOf("chat" to "${viewModel.bundle}")
-                )
+                Timber.d("I should navigate...")
+                snackbar("${viewModel.bundle}", requireView())
+//                findNavController().navigate(
+//                    R.id.action_chatsFragment_to_chatMessagesFragment,
+//                    bundleOf("chat" to "${viewModel.bundle}")
+//                )
             }
             getAllChatLocalData().observe(viewLifecycleOwner, Observer {data ->
                 Timber.d("inside the observing code...with $data")
@@ -52,7 +55,11 @@ class ChatsFragment : Fragment() {
         }
         setupAdapter()
         binding.apply { viewModel }
-        viewModel.startServerConnection()
+        MainScope().launch {
+            withContext(Dispatchers.IO) {
+                Timber.d("DATA from DB: ${ChatRepo().justChats()}")
+            }
+        }
         return binding.root
     }
 
@@ -92,8 +99,20 @@ class ChatsFragment : Fragment() {
         viewModel.insertRandomChat()
     }
 
+    /**
+     * Build and send a message stanza to static recipient
+     * TODO temp
+     */
+    private fun sendMsgStanza() {
+        viewModel.sendMsgStanza(
+            "I am Mr${Random.nextBytes(99999)}",
+            "gastly"
+        )
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Button onclicks for debugging
         btn_add_new_item.setOnClickListener{
             Timber.d("button click")
             insertChatFrag(it)
@@ -106,6 +125,16 @@ class ChatsFragment : Fragment() {
             Timber.d("Delete record button clicked...")
             deleteARecord()
         }
+        btn_send_msg_stanza.onClick {
+            Timber.d("Clicked trigger button...")
+            sendMsgStanza()
+        }
+        // Hide these buttons that are mainly used for debugging
+        btn_add_new_item.gone()
+        btn_delete_record.gone()
+        btn_fetch_db_records.gone()
+        btn_send_msg_stanza.gone()
+
         setupRecyclerView()
     }
 

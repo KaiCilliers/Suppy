@@ -1,6 +1,7 @@
 package com.example.models.chat
 
 data class DomainChat(
+    val id: Int,
     val chatName: String,
     val lastActivity: String,
     val mute: Boolean,

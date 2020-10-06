@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.models.chat.DomainChat
 import com.example.models.chat.EntityChat
 import com.example.suppy.databinding.RowChatsBinding
+import com.example.suppy.util.onClick
 import timber.log.Timber
 
 /**
@@ -56,8 +57,8 @@ class ChatsAdapter(private var items: ArrayList<DomainChat> = arrayListOf(), val
 class ChatItem(val binding: RowChatsBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: DomainChat, itemClicked: ChatsViewModel) {
         binding.apply{
-            root.setOnClickListener {
-                itemClicked.bundle = item.chatName
+            root.onClick {
+                itemClicked.bundle = item
                 Timber.d("RC Chat Item clicked...with data ${itemClicked.bundle}")
                 itemClicked.navigate()
             }

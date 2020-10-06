@@ -1,15 +1,8 @@
 package com.example.repository.webservicemodule
 
-import android.content.ContentProvider
-import android.content.Context
 import com.example.models.RosterEntry
 import com.example.models.RosterGroup
 import com.example.models.chat.EntityChat
-import com.example.repository.ChatRepo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.jivesoftware.smack.*
 import org.jivesoftware.smack.ConnectionListener
 import org.jivesoftware.smack.chat2.IncomingChatMessageListener
@@ -25,11 +18,20 @@ import org.jxmpp.jid.*
 import timber.log.Timber
 import java.lang.Exception
 
-class ConnectionListener() : ConnectionListener,
+class ConnectionListener : ConnectionListener,
     RosterListener, RosterLoadedListener, SubscribeListener,
     OutgoingChatMessageListener, IncomingChatMessageListener,
     PresenceEventListener, StanzaListener, InvitationListener,
-    ReconnectionListener, ConnectionCreationListener {
+    ReconnectionListener, ConnectionCreationListener, MessageListener {
+
+    /**
+     * [MessageListener]
+     */
+
+    override fun processMessage(message: Message?) {
+        Timber.d("Process messages: $message")
+    }
+
     /**
      * [ConnectionCreationListener]
      */
@@ -124,11 +126,12 @@ class ConnectionListener() : ConnectionListener,
         entries.forEach {
             roomChats.add(it.asRoom())
         }
-        Timber.d("Attempting to call repo method with $roomChats")
-        GlobalScope.launch(Dispatchers.IO) {
-            ChatRepo().repopulate(roomChats)
-        }
-//        ChatRepo().chats()
+//        MainScope().launch {
+//            withContext(Dispatchers.IO) {
+//                Timber.d("Repopulating database")
+//                ChatRepo().repopulate(roomChats)
+//            }
+//        }
     }
 
     override fun onRosterLoadingFailed(exception: Exception?) {
@@ -155,6 +158,23 @@ class ConnectionListener() : ConnectionListener,
         chat: org.jivesoftware.smack.chat2.Chat?
     ) {
         Timber.d("New incoming message from: $from, message: '${message!!.body}' in chat:$chat")
+        Timber.d(".\n$message \nfrom $from" +
+                "\nBody: ${message.body} " +
+                "\nType: ${message.type} " +
+                "\nSubject: ${message.subject} " +
+                "\nFrom domain: ${from?.domain} " +
+                "\nTo: ${message.to} " +
+                "\nThread: ${message.thread} " +
+                "\nError: ${message.error} " +
+                "\nLanguage: ${message.language} " +
+                "\nExtensions: follow: ")
+        message.extensions.forEach {
+            Timber.d("${it.namespace} and element = ${it.elementName}")
+        }
+        Timber.d("Complete message: $message")
+        Timber.d("Complete from: $from")
+        Timber.d("Complete chat: $chat")
+        Timber.d("${chat?.xmppAddressOfChatPartner}")
     }
 
     /**

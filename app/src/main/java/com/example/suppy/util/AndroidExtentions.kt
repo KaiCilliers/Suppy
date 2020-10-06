@@ -161,8 +161,7 @@ inline fun ViewModel.launch(
 }
 
 /**
- * @desc Toggle View visibility
- * TODO see if useful
+ * @desc Toggle a view's visibility
  */
 fun View.visible() {
     visibility = View.VISIBLE
