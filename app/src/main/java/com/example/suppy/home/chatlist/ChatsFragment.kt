@@ -37,10 +37,11 @@ class ChatsFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
         viewModel.apply {
             navigateToChatMessages.observeEvent(viewLifecycleOwner){
-                findNavController().navigate(
-                    R.id.action_chatsFragment_to_chatMessagesFragment,
-                    bundleOf("chat" to "${viewModel.bundle}")
-                )
+                Timber.d("I should navigate...")
+//                findNavController().navigate(
+//                    R.id.action_chatsFragment_to_chatMessagesFragment,
+//                    bundleOf("chat" to "${viewModel.bundle}")
+//                )
             }
             getAllChatLocalData().observe(viewLifecycleOwner, Observer {data ->
                 Timber.d("inside the observing code...with $data")

@@ -15,6 +15,7 @@ import kotlin.coroutines.CoroutineContext
  * Base class of the app
  *
  * Logging library initialised here
+ * TODO modularise your application by layer until app is promising and shows promise, then migrate to a modularise by layer/feature hybrid
  */
 class App : Application() {
     private val chatRepo: ChatRepo

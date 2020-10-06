@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.models.chat.DomainChat
 import com.example.models.chat.EntityChat
 import com.example.repository.ChatRepo
 import com.example.repository.webservicemodule.Server
@@ -20,7 +21,7 @@ import kotlin.collections.ArrayList
  * NOTE use [AndroidViewModel] only if your view model requires context
  */
 class ChatsViewModel : ViewModel() {
-    lateinit var bundle: String
+    lateinit var bundle: DomainChat
     /**
      * Used to store randomly generated chat records
      * to be used to remove those records again on
