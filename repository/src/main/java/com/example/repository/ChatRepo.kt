@@ -23,6 +23,15 @@ class ChatRepo() {
         Timber.d("ChatRepo called to fetch local chats...")
         return dao.justAll()
     }
+
+    /**
+     * Delete a row by id (currently used for debugging)
+     * TODO temp
+     */
+    suspend fun deleteRow(name: String) {
+        Timber.d("REPO - going to delete chat record with name $name")
+        dao.deleteByName(name)
+    }
     suspend fun repopulate(chats: ArrayList<EntityChat>) {
         Timber.d("Repopulate with $chats")
         Timber.d("REPO - calling DAO replace all...")

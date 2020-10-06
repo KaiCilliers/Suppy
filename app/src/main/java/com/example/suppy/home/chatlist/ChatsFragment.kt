@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.models.chat.EntityChat
 import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.observeEvent
@@ -64,6 +65,16 @@ class ChatsFragment : Fragment() {
     }
 
     /**
+     * Delete a random record from chat database
+     * based on the random records inserted by
+     * user button clicks
+     * TODO temp
+     */
+    private fun deleteARecord() {
+        viewModel.deleteRecord()
+    }
+
+    /**
      * Fetch all chats from database
      * TODO temp
      */
@@ -90,6 +101,10 @@ class ChatsFragment : Fragment() {
         btn_fetch_db_records.onClick {
             Timber.d("Fetch data button clicked...")
             localRecords()
+        }
+        btn_delete_record.onClick {
+            Timber.d("Delete record button clicked...")
+            deleteARecord()
         }
         setupRecyclerView()
     }

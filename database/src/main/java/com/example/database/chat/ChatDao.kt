@@ -23,7 +23,12 @@ abstract class ChatDao : BaseDao<EntityChat> {
      */
     @Query("SELECT * FROM table_chat ORDER BY chat_name DESC")
     abstract suspend fun justAll(): List<EntityChat>
-
+    /**
+     * Delete a record by id, used for debugging currently
+     * TODO temp
+     */
+    @Query("DELETE FROM table_chat WHERE chat_name = :name")
+    abstract suspend fun deleteByName(name: String)
     /**
      * Clear table of all records
      */

@@ -34,6 +34,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,12 +43,17 @@
                 android:id="@+id/btn_add_new_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add item" />
+                android:text="Add" />
             <Button
                 android:id="@+id/btn_fetch_db_records"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DB Records" />
+                android:text="All" />
+            <Button
+                android:id="@+id/btn_delete_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Del" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rc_chats"
                 android:layout_width="match_parent"
