@@ -23,7 +23,6 @@ class ChatRepo() {
         Timber.d("ChatRepo called to fetch local chats...")
         return dao.justAll()
     }
-
     /**
      * Delete a row by id (currently used for debugging)
      * TODO temp

@@ -1,10 +1,16 @@
 package com.example.repository.webservicemodule
 
 import org.jivesoftware.smack.*
+import com.example.repository.webservicemodule.ConnectionListener as ListenToAll
+import org.jivesoftware.smack.chat2.ChatManager
+import org.jivesoftware.smack.filter.StanzaFilter
+import org.jivesoftware.smack.packet.Stanza
 import org.jivesoftware.smack.roster.Roster
 import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
+import org.jxmpp.jid.impl.JidCreate
 import timber.log.Timber
+import java.lang.Exception
 
 class Server {
     /**
@@ -14,10 +20,7 @@ class Server {
     lateinit var config: XMPPTCPConnectionConfiguration
     lateinit var roster: Roster
     lateinit var reconnectManager: ReconnectionManager
-
-    fun someTestingCode() {
-        XMPPConnectionRegistry.addConnectionCreationListener(ConnectionListener())
-    }
+    lateinit var chatManager: ChatManager
 
     fun build(): XMPPTCPConnection {
         Timber.d("Building server connection...")
@@ -36,6 +39,7 @@ class Server {
         Timber.v("Roster instance established...")
         reconnectManager = ReconnectionManager.getInstanceFor(connection)
         Timber.v("Reconnection manager instance established...")
+        chatManager = ChatManager.getInstanceFor(connection)
         setupListeners()
         connection.connect().login()
         Timber.v("Logged in...")
@@ -46,15 +50,16 @@ class Server {
      * Listeners to better monitor network activity
      */
     private fun setupListeners() {
-        connection.addConnectionListener(AbstractConnectionListener())
-        connection.addStanzaAcknowledgedListener(ConnectionListener())
-        connection.addStanzaDroppedListener(ConnectionListener())
-        roster.addRosterListener(ConnectionListener())
-        roster.addSubscribeListener(ConnectionListener())
-        roster.addRosterLoadedListener(ConnectionListener())
-        roster.addPresenceEventListener(ConnectionListener())
+        connection.addConnectionListener(ListenToAll())
+        connection.addAsyncStanzaListener(ListenToAll(), StanzaFilter { true })
+        roster.addRosterListener(ListenToAll())
+        roster.addRosterLoadedListener(ListenToAll())
+        roster.addPresenceEventListener(ListenToAll())
+        roster.addSubscribeListener(ListenToAll())
         reconnectManager.enableAutomaticReconnection()
-        reconnectManager.addReconnectionListener(ConnectionListener())
+        reconnectManager.addReconnectionListener(ListenToAll())
+        chatManager.addIncomingListener(ListenToAll())
+        chatManager.addOutgoingListener(ListenToAll())
         Timber.v("Server listeners setup complete...")
     }
 

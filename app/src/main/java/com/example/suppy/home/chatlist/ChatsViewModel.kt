@@ -13,6 +13,8 @@ import com.example.suppy.move_out.SomeDataModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jivesoftware.smack.chat2.Chat
+import org.jivesoftware.smack.chat2.ChatManager
 import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
@@ -22,6 +24,8 @@ import kotlin.collections.ArrayList
  */
 class ChatsViewModel : ViewModel() {
     lateinit var bundle: DomainChat
+    lateinit var chatMan: ChatManager
+    lateinit var chat: Chat
     /**
      * Used to store randomly generated chat records
      * to be used to remove those records again on
@@ -132,6 +136,28 @@ class ChatsViewModel : ViewModel() {
             )
         }
     }
+
+    /**
+     * Build and send a message stanza
+     * TODO temp
+     */
+    fun sendMsgStanza(content: String, to: String) {
+//        val msgStanza = Message(
+//            JidCreate.bareFrom("${to}@jabber-hosting.de"),
+//            "$content"
+//        )
+//        msgStanza.type = Message.Type.chat
+//        Server.instance().sendStanza(msgStanza)
+//        if(!::chat.isInitialized) {
+//            if(!::chatMan.isInitialized) {
+//                chatMan = ChatManager.getInstanceFor(Server.instance())
+//                chatMan.addIncomingListener(ConnectionListener())
+//            }
+//            chat = chatMan.chatWith(JidCreate.entityBareFrom("${to}@jabber-hosting.de"))
+//        }
+//        chat.send("$content")
+    }
+
     /**
      * Dummy data
      *
