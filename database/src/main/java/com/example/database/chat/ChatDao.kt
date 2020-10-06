@@ -17,6 +17,14 @@ abstract class ChatDao : BaseDao<EntityChat> {
     abstract fun all(): LiveData<List<EntityChat>>
 
     /**
+     * Returns chats from database without LiveData wrapper
+     * for debugging purposes
+     * TODO temp
+     */
+    @Query("SELECT * FROM table_chat ORDER BY chat_name DESC")
+    abstract suspend fun justAll(): List<EntityChat>
+
+    /**
      * Clear table of all records
      */
     @Query("DELETE FROM table_chat")

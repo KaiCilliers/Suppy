@@ -14,6 +14,15 @@ class ChatRepo() {
         Timber.d("Repo fetch all chats...")
         return dao.all()
     }
+    /**
+     * Fetch chats without LiveData wrapper for
+     * debugging purposes
+     * TODO temp
+     */
+    suspend fun justChats(): List<EntityChat> {
+        Timber.d("ChatRepo called to fetch local chats...")
+        return dao.justAll()
+    }
     suspend fun repopulate(chats: ArrayList<EntityChat>) {
         Timber.d("Repopulate with $chats")
         Timber.d("REPO - calling DAO replace all...")

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.observeEvent
+import com.example.suppy.util.onClick
 import kotlinx.android.synthetic.main.fragment_chats.*
 import timber.log.Timber
 
@@ -62,6 +63,20 @@ class ChatsFragment : Fragment() {
         )
     }
 
+    /**
+     * Fetch all chats from database
+     * TODO temp
+     */
+    private fun localRecords() {
+        viewModel.localRecords()
+    }
+
+    /**
+     * Temporary testing method on button click
+     * to add a new random record to recyclerview
+     * by adding a new record to the database
+     * TODO temp
+     */
     private fun insertChatFrag(v: View) {
         viewModel.insertRandomChat()
     }
@@ -71,6 +86,10 @@ class ChatsFragment : Fragment() {
         btn_add_new_item.setOnClickListener{
             Timber.d("button click")
             insertChatFrag(it)
+        }
+        btn_fetch_db_records.onClick {
+            Timber.d("Fetch data button clicked...")
+            localRecords()
         }
         setupRecyclerView()
     }

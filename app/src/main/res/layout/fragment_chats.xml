@@ -43,7 +43,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add item" />
-
+            <Button
+                android:id="@+id/btn_fetch_db_records"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DB Records" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rc_chats"
                 android:layout_width="match_parent"
