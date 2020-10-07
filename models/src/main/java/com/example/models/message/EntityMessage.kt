@@ -20,8 +20,12 @@ data class EntityMessage(
     val toResource: String,
     @ColumnInfo(name = "from_bare_jid")
     val fromBareJid: String,
+    @ColumnInfo(name = "from_jid")
+    val fromJid: String,
     @ColumnInfo(name = "from_name")
     val fromName: String,
+    @ColumnInfo(name = "from_resource")
+    val fromResource: String,
     @ColumnInfo(name = "type")
     val type: String,
     @ColumnInfo(name = "body")
@@ -34,6 +38,8 @@ data class EntityMessage(
     val error: String,
     @ColumnInfo(name = "extensions")
     val extensions: String,
+    @ColumnInfo(name = "received")
+    val recived: Boolean, // TODO fix spelling mistake
     @ColumnInfo(name = "timestamp")
     val timestamp: String
 ) : DomainMapper<DomainMessage> {
@@ -44,6 +50,7 @@ data class EntityMessage(
             fromBareJid = fromBareJid,
             subject = subject,
             body = body,
+            received = recived,
             timestamp = timestamp
         )
     }

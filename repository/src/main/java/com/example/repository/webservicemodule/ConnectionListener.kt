@@ -3,6 +3,13 @@ package com.example.repository.webservicemodule
 import com.example.models.RosterEntry
 import com.example.models.RosterGroup
 import com.example.models.chat.EntityChat
+import com.example.models.message.StanzaMessage
+import com.example.repository.ChatRepo
+import com.example.repository.MessageRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jivesoftware.smack.*
 import org.jivesoftware.smack.ConnectionListener
 import org.jivesoftware.smack.chat2.IncomingChatMessageListener
@@ -17,6 +24,7 @@ import org.jivesoftware.smackx.muc.packet.MUCUser
 import org.jxmpp.jid.*
 import timber.log.Timber
 import java.lang.Exception
+import java.util.*
 
 class ConnectionListener : ConnectionListener,
     RosterListener, RosterLoadedListener, SubscribeListener,
@@ -97,7 +105,13 @@ class ConnectionListener : ConnectionListener,
         val entries = arrayListOf<RosterEntry>()
         roster!!.entries.forEach {contact ->
             val entry = RosterEntry(
-                name = contact.name,
+                /**
+                 * consider having two separate fields
+                 * one for display and one for identifying
+                 * chat by name instead of id in order
+                 * to get the id
+                 */
+                name = contact.jid.split('@')[0],
                 subType = "${contact.type}",
                 bareJid = "${contact.jid}",
                 approved = contact.isApproved,
@@ -158,23 +172,33 @@ class ConnectionListener : ConnectionListener,
         chat: org.jivesoftware.smack.chat2.Chat?
     ) {
         Timber.d("New incoming message from: $from, message: '${message!!.body}' in chat:$chat")
-        Timber.d(".\n$message \nfrom $from" +
-                "\nBody: ${message.body} " +
-                "\nType: ${message.type} " +
-                "\nSubject: ${message.subject} " +
-                "\nFrom domain: ${from?.domain} " +
-                "\nTo: ${message.to} " +
-                "\nThread: ${message.thread} " +
-                "\nError: ${message.error} " +
-                "\nLanguage: ${message.language} " +
-                "\nExtensions: follow: ")
-        message.extensions.forEach {
-            Timber.d("${it.namespace} and element = ${it.elementName}")
+        val msg = StanzaMessage(
+            id = message.stanzaId,
+            toBareJid = message.to.split('/')[0],
+            toJid = "${message.to}",
+            toName = message.to.split('@')[0],
+            toResource = message.to.split('/')[1],
+            fromBareJid = "${message.from.split("/")[0]}",
+            fromJid = "${message.from}",
+            fromName = message.from.split('@')[0],
+            fromResource = message.from.split('/')[1],
+            type = "${message.type}",
+            body = message.body,
+            subject = "${message.subject}",
+            fromDomain = "${from?.domain}",
+            error = "${message.error}",
+            extensions = "${message.extensions}",
+            received = false,
+            timestamp = "${Date()}"
+        )
+        Timber.d("Captured Stanza Message: $msg")
+        Timber.d("Converted Room Message: ${msg.asRoom()}")
+        MainScope().launch {
+            withContext(Dispatchers.IO) {
+                Timber.d("Adding new message to database...")
+                MessageRepo().insert(msg.asRoom())
+            }
         }
-        Timber.d("Complete message: $message")
-        Timber.d("Complete from: $from")
-        Timber.d("Complete chat: $chat")
-        Timber.d("${chat?.xmppAddressOfChatPartner}")
     }
 
     /**
