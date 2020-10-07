@@ -7,5 +7,6 @@ data class DomainMessage(
     val fromBareJid: String,
     val subject: String,
     val body: String,
+    val received: Boolean,
     val timestamp: String
 )

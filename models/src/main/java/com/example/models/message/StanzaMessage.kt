@@ -18,6 +18,7 @@ data class StanzaMessage(
     private val fromDomain: String,
     private val error: String,
     private val extensions: String,
+    private val received: Boolean,
     private val timestamp: String
 ) : RoomMapper<EntityMessage> {
     override fun asRoom(): EntityMessage {
@@ -37,6 +38,7 @@ data class StanzaMessage(
             fromDomain = fromDomain,
             error = error,
             extensions = extensions,
+            recived = received,
             timestamp = timestamp
         )
     }

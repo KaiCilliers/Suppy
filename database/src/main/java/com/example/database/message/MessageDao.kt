@@ -4,11 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.example.database.BaseDao
 import com.example.models.message.EntityMessage
+import com.example.models.message.UpdateMessageReceived
 
 @Dao
 abstract class MessageDao : BaseDao<EntityMessage>{
+    /**
+     * Update message received value with partial entity object
+     */
+    @Update(entity = EntityMessage::class)
+    abstract suspend fun updateReceived(update: UpdateMessageReceived)
+
     /**
      * Get all data from Message table ordered by contact name
      */

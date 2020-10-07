@@ -2,8 +2,8 @@ package com.example.repository
 
 import androidx.lifecycle.LiveData
 import com.example.database.LocalDatabase
-import com.example.models.chat.EntityChat
 import com.example.models.message.EntityMessage
+import com.example.models.message.UpdateMessageReceived
 import timber.log.Timber
 
 class MessageRepo {
@@ -18,6 +18,15 @@ class MessageRepo {
 
     fun latestMessage(): LiveData<EntityMessage> {
       return dao.latestMessage()
+    }
+
+    /**
+     * Update description of chat item using an
+     * updated partial object entity
+     */
+    suspend fun updateReceivedValue(updated: UpdateMessageReceived) {
+        Timber.d("Partial message object: $updated")
+        dao.updateReceived(updated)
     }
 
     /**

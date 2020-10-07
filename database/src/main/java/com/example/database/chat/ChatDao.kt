@@ -4,12 +4,27 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.example.database.BaseDao
 import com.example.models.chat.EntityChat
+import com.example.models.chat.UpdateChatDescription
 import timber.log.Timber
 
 @Dao
 abstract class ChatDao : BaseDao<EntityChat> {
+    /**
+     * Update chat table's description by using a
+     * partial chat entity with updated fields
+     */
+    @Update(entity = EntityChat::class)
+    abstract suspend fun updateChatDescription(update: UpdateChatDescription)
+
+    /**
+     * Return the id of the chat matching name parameter
+     */
+    @Query("SELECT chat_id FROM table_chat WHERE chat_name = :name")
+    abstract suspend fun getIdOf(name: String): Int
+
     /**
      * Get all data from Chat table ordered by chat name
      */

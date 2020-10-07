@@ -105,7 +105,13 @@ class ConnectionListener : ConnectionListener,
         val entries = arrayListOf<RosterEntry>()
         roster!!.entries.forEach {contact ->
             val entry = RosterEntry(
-                name = contact.name,
+                /**
+                 * consider having two separate fields
+                 * one for display and one for identifying
+                 * chat by name instead of id in order
+                 * to get the id
+                 */
+                name = contact.jid.split('@')[0],
                 subType = "${contact.type}",
                 bareJid = "${contact.jid}",
                 approved = contact.isApproved,
@@ -182,6 +188,7 @@ class ConnectionListener : ConnectionListener,
             fromDomain = "${from?.domain}",
             error = "${message.error}",
             extensions = "${message.extensions}",
+            received = false,
             timestamp = "${Date()}"
         )
         Timber.d("Captured Stanza Message: $msg")

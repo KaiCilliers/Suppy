@@ -38,6 +38,8 @@ data class EntityMessage(
     val error: String,
     @ColumnInfo(name = "extensions")
     val extensions: String,
+    @ColumnInfo(name = "received")
+    val recived: Boolean, // TODO fix spelling mistake
     @ColumnInfo(name = "timestamp")
     val timestamp: String
 ) : DomainMapper<DomainMessage> {
@@ -48,6 +50,7 @@ data class EntityMessage(
             fromBareJid = fromBareJid,
             subject = subject,
             body = body,
+            received = recived,
             timestamp = timestamp
         )
     }

@@ -37,12 +37,15 @@ class ChatsFragment : Fragment() {
         viewModel.apply {
             navigateToChatMessages.observeEvent(viewLifecycleOwner){
                 Timber.d("I should navigate...")
-                snackbar("${viewModel.bundle}", requireView())
+                snackbar("${viewModel.bundle.chatName} last message was ${viewModel.bundle.description}", requireView())
 //                findNavController().navigate(
 //                    R.id.action_chatsFragment_to_chatMessagesFragment,
 //                    bundleOf("chat" to "${viewModel.bundle}")
 //                )
             }
+            /**
+             * Observe all chat data for any changes
+             */
             getAllChatLocalData().observe(viewLifecycleOwner, Observer {data ->
                 Timber.d("inside the observing code...with $data")
                 val updated = data.map {
@@ -51,9 +54,19 @@ class ChatsFragment : Fragment() {
                 Timber.d("Just before adapter call for setData with $updated")
                 chatAdapter.setData(updated)
             })
+            /**
+             * Observe any changes to message table to update chat description
+             * with latest message
+             */
             getLatestMessaageLocalData().subscribe(viewLifecycleOwner) {
-                Timber.d("HEY latest message: $it")
-                snackbar("${it.body} from ${it.fromName}", requireView())
+                it?.let {
+                    Timber.d("${it.recived}")
+                    if(!it.recived) {
+                        Timber.d("HEY latest message: $it")
+                        snackbar("${it.body} from ${it.fromName}", requireView())
+                        viewModel.updateChatWithNewMessage(it)
+                    }
+                }
             }
         }
         setupAdapter()
@@ -67,10 +80,11 @@ class ChatsFragment : Fragment() {
                 ChatRepo().justChats().forEach {
                     Timber.d("$it")
                 }
-                Timber.d("Message table data:")
-                MessageRepo().justMessages().forEach {
-                    Timber.d("$it")
-                }
+                Timber.d("Message table data count: ${MessageRepo().justMessages().size}")
+                // This printout can get a bit much
+//                MessageRepo().justMessages().forEach {
+//                    Timber.d("$it")
+//                }
             }
         }
         return binding.root

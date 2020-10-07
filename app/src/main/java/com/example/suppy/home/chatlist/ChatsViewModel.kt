@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.models.chat.DomainChat
 import com.example.models.chat.EntityChat
 import com.example.models.message.EntityMessage
+import com.example.models.message.UpdateMessageReceived
 import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
 import com.example.repository.webservicemodule.Server
@@ -76,6 +77,39 @@ class ChatsViewModel : ViewModel() {
     fun getLatestMessaageLocalData(): LiveData<EntityMessage> {
         Timber.d("Returning latest message live data from VM (calling repo)")
         return MessageRepo().latestMessage()
+    }
+
+    /**
+     * Update chat item's description when a new
+     * message arrives that belongs to it
+     */
+    fun updateChatWithNewMessage(message: EntityMessage) {
+        Timber.d("OK, i am going to update the chat item this message: ${message.body}...")
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                /**
+                 * Updating the message's received value here to allow
+                 * the UI to display it, because there is a bug that
+                 * displays the latest message on each launch as if
+                 * it is a new message, thus a received field was added
+                 * and a check put in place, hence why the received value
+                 * is set to false when the [ConnectionListener] receives it
+                 */
+                Timber.d("Updating message received field: ${message.body} and ${message.fromName}")
+                val messageUpdate = UpdateMessageReceived(message.id, true)
+                MessageRepo().updateReceivedValue(messageUpdate)
+                /**
+                 * Fetch chat id using the sender's name which is not ideal but
+                 * it'll do for now. Then the id is used to update the chat with
+                 * a partial entity object which notifies the view model of data that
+                 * changed and in turn the recyclerview's data gets refreshed with
+                 * the latest data
+                 */
+                val chatId = ChatRepo().getChatIdOf(message.fromName)
+                Timber.d("Id of chat to be updated: $chatId with message ${message.body}")
+                ChatRepo().updateDescriptionOf(chatId, message.body)
+            }
+        }
     }
 
     /**
