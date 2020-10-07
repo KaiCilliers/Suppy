@@ -1,5 +1,6 @@
 package com.example.database.message
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -12,7 +13,7 @@ abstract class MessageDao : BaseDao<EntityMessage>{
      * Get all data from Message table ordered by contact name
      */
     @Query("SELECT * FROM table_message ORDER BY body DESC")
-    abstract suspend fun all(): List<EntityMessage>
+    abstract fun all(): LiveData<List<EntityMessage>>
     /**
      * Clear table of all records
      */
@@ -26,6 +27,9 @@ abstract class MessageDao : BaseDao<EntityMessage>{
      */
     @Query("SELECT * FROM table_message ORDER BY from_name DESC")
     abstract suspend fun justAll(): List<EntityMessage>
+
+    @Query("SELECT * FROM table_message ORDER BY timestamp DESC LIMIT 1")
+    abstract fun latestMessage(): LiveData<EntityMessage>
     /**
      * Replace table data with new data
      */

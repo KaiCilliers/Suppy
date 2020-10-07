@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.models.chat.DomainChat
 import com.example.models.chat.EntityChat
+import com.example.models.message.EntityMessage
 import com.example.repository.ChatRepo
+import com.example.repository.MessageRepo
 import com.example.repository.webservicemodule.Server
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.SomeDataModel
@@ -56,9 +58,24 @@ class ChatsViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Return all chats from database wrapped
+     * in LiveData
+     * TODO temp
+     */
     fun getAllChatLocalData(): LiveData<List<EntityChat>> {
-        Timber.d("Returning live data from VM (calling repo)")
+        Timber.d("Returning chat live data from VM (calling repo)")
         return ChatRepo().chats()
+    }
+
+    /**
+     * Return all messages from database wrapped
+     * in LiveData
+     * TODO temp
+     */
+    fun getLatestMessaageLocalData(): LiveData<EntityMessage> {
+        Timber.d("Returning latest message live data from VM (calling repo)")
+        return MessageRepo().latestMessage()
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.example.repository
 
+import androidx.lifecycle.LiveData
 import com.example.database.LocalDatabase
 import com.example.models.chat.EntityChat
 import com.example.models.message.EntityMessage
@@ -7,12 +8,16 @@ import timber.log.Timber
 
 class MessageRepo {
     private val dao = LocalDatabase.justgetinstance().messageDao()
-    fun messages(): List<EntityChat>{
+    fun messages(): LiveData<List<EntityMessage>>{
         Timber.d("Repo fetch all messages...")
-        return emptyList()
+        return dao.all()
     }
     suspend fun insert(message: EntityMessage) {
         dao.insert(message)
+    }
+
+    fun latestMessage(): LiveData<EntityMessage> {
+      return dao.latestMessage()
     }
 
     /**

@@ -12,10 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
 import com.example.suppy.databinding.FragmentChatsBinding
-import com.example.suppy.util.gone
-import com.example.suppy.util.observeEvent
-import com.example.suppy.util.onClick
-import com.example.suppy.util.snackbar
+import com.example.suppy.util.*
 import kotlinx.android.synthetic.main.fragment_chats.*
 import kotlinx.coroutines.*
 import org.jivesoftware.smack.chat2.Chat
@@ -54,6 +51,10 @@ class ChatsFragment : Fragment() {
                 Timber.d("Just before adapter call for setData with $updated")
                 chatAdapter.setData(updated)
             })
+            getLatestMessaageLocalData().subscribe(viewLifecycleOwner) {
+                Timber.d("HEY latest message: $it")
+                snackbar("${it.body} from ${it.fromName}", requireView())
+            }
         }
         setupAdapter()
         binding.apply { viewModel }
