@@ -20,8 +20,12 @@ data class EntityMessage(
     val toResource: String,
     @ColumnInfo(name = "from_bare_jid")
     val fromBareJid: String,
+    @ColumnInfo(name = "from_jid")
+    val fromJid: String,
     @ColumnInfo(name = "from_name")
     val fromName: String,
+    @ColumnInfo(name = "from_resource")
+    val fromResource: String,
     @ColumnInfo(name = "type")
     val type: String,
     @ColumnInfo(name = "body")

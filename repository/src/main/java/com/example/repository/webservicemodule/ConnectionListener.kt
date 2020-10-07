@@ -3,6 +3,12 @@ package com.example.repository.webservicemodule
 import com.example.models.RosterEntry
 import com.example.models.RosterGroup
 import com.example.models.chat.EntityChat
+import com.example.models.message.StanzaMessage
+import com.example.repository.ChatRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jivesoftware.smack.*
 import org.jivesoftware.smack.ConnectionListener
 import org.jivesoftware.smack.chat2.IncomingChatMessageListener
@@ -17,6 +23,7 @@ import org.jivesoftware.smackx.muc.packet.MUCUser
 import org.jxmpp.jid.*
 import timber.log.Timber
 import java.lang.Exception
+import java.util.*
 
 class ConnectionListener : ConnectionListener,
     RosterListener, RosterLoadedListener, SubscribeListener,
@@ -158,7 +165,10 @@ class ConnectionListener : ConnectionListener,
         chat: org.jivesoftware.smack.chat2.Chat?
     ) {
         Timber.d("New incoming message from: $from, message: '${message!!.body}' in chat:$chat")
-        Timber.d(".\n$message \nfrom $from" +
+        Timber.d(".\nmessage id: ${message.stanzaId}" +
+                "\nto: ${message.to}" +
+                "\nfrom msg: ${message.from}" +
+                "\nfrom from: $from" +
                 "\nBody: ${message.body} " +
                 "\nType: ${message.type} " +
                 "\nSubject: ${message.subject} " +
@@ -175,6 +185,26 @@ class ConnectionListener : ConnectionListener,
         Timber.d("Complete from: $from")
         Timber.d("Complete chat: $chat")
         Timber.d("${chat?.xmppAddressOfChatPartner}")
+
+        val x = StanzaMessage(
+            id = message.stanzaId,
+            toBareJid = message.to.split('/')[0],
+            toJid = "${message.to}",
+            toName = message.to.split('@')[0],
+            toResource = message.to.split('/')[1],
+            fromBareJid = "${message.from.split("/")[0]}",
+            fromJid = "${message.from}",
+            fromName = message.from.split('@')[0],
+            fromResource = message.from.split('/')[1],
+            type = "${message.type}",
+            body = message.body,
+            subject = "${message.subject}",
+            fromDomain = "${from?.domain}",
+            error = "${message.error}",
+            extensions = "${message.extensions}",
+            timestamp = "${Date()}"
+        )
+        Timber.d("Captured message: $x")
     }
 
     /**

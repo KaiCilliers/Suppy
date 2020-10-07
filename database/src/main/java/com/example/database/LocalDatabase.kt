@@ -17,7 +17,7 @@ import timber.log.Timber
  */
 @Database(entities = [
     EntityChat::class, EntityMessage::class, EntityContact::class
-], version = 2, exportSchema = true)
+], version = 3, exportSchema = true)
 abstract class LocalDatabase  : RoomDatabase() {
     /**
      * Access points
@@ -46,7 +46,7 @@ abstract class LocalDatabase  : RoomDatabase() {
                         context.applicationContext,
                         LocalDatabase::class.java,
                         "suppydatabase"
-                    ).build()
+                    ).fallbackToDestructiveMigration().build()
                 }
                 Timber.d("Returning database instance...")
             }
