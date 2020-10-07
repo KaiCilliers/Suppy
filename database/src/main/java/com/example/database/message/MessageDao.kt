@@ -2,6 +2,7 @@ package com.example.database.message
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.database.BaseDao
 import com.example.models.message.EntityMessage
 
@@ -17,10 +18,19 @@ abstract class MessageDao : BaseDao<EntityMessage>{
      */
     @Query("DELETE FROM table_message")
     abstract suspend fun clear()
+
+    /**
+     * Returns messages from database without LiveData wrapper
+     * for debugging purposes
+     * TODO temp
+     */
+    @Query("SELECT * FROM table_message ORDER BY from_name DESC")
+    abstract suspend fun justAll(): List<EntityMessage>
     /**
      * Replace table data with new data
      */
-    suspend fun repllaceAll(contacts: List<EntityMessage>){
+    @Transaction
+    open suspend fun repllaceAll(contacts: List<EntityMessage>){
         clear()
         insert(*contacts.toTypedArray())
     }

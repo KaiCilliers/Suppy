@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.repository.ChatRepo
+import com.example.repository.MessageRepo
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.gone
 import com.example.suppy.util.observeEvent
@@ -17,6 +18,7 @@ import com.example.suppy.util.onClick
 import com.example.suppy.util.snackbar
 import kotlinx.android.synthetic.main.fragment_chats.*
 import kotlinx.coroutines.*
+import org.jivesoftware.smack.chat2.Chat
 import timber.log.Timber
 import kotlin.random.Random
 
@@ -55,9 +57,19 @@ class ChatsFragment : Fragment() {
         }
         setupAdapter()
         binding.apply { viewModel }
+        /**
+         * Display database contents at launch
+         */
         MainScope().launch {
             withContext(Dispatchers.IO) {
-                Timber.d("DATA from DB: ${ChatRepo().justChats()}")
+                Timber.d("Chat table data:")
+                ChatRepo().justChats().forEach {
+                    Timber.d("$it")
+                }
+                Timber.d("Message table data:")
+                MessageRepo().justMessages().forEach {
+                    Timber.d("$it")
+                }
             }
         }
         return binding.root

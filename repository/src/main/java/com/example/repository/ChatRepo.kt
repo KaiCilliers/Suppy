@@ -5,7 +5,7 @@ import com.example.database.LocalDatabase
 import com.example.models.chat.EntityChat
 import timber.log.Timber
 
-class ChatRepo() {
+class ChatRepo {
     private val dao = LocalDatabase.justgetinstance().chatDao()
     suspend fun insert(chat: EntityChat) {
         dao.insert(chat)

@@ -5,6 +5,7 @@ import com.example.models.RosterGroup
 import com.example.models.chat.EntityChat
 import com.example.models.message.StanzaMessage
 import com.example.repository.ChatRepo
+import com.example.repository.MessageRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -165,28 +166,7 @@ class ConnectionListener : ConnectionListener,
         chat: org.jivesoftware.smack.chat2.Chat?
     ) {
         Timber.d("New incoming message from: $from, message: '${message!!.body}' in chat:$chat")
-        Timber.d(".\nmessage id: ${message.stanzaId}" +
-                "\nto: ${message.to}" +
-                "\nfrom msg: ${message.from}" +
-                "\nfrom from: $from" +
-                "\nBody: ${message.body} " +
-                "\nType: ${message.type} " +
-                "\nSubject: ${message.subject} " +
-                "\nFrom domain: ${from?.domain} " +
-                "\nTo: ${message.to} " +
-                "\nThread: ${message.thread} " +
-                "\nError: ${message.error} " +
-                "\nLanguage: ${message.language} " +
-                "\nExtensions: follow: ")
-        message.extensions.forEach {
-            Timber.d("${it.namespace} and element = ${it.elementName}")
-        }
-        Timber.d("Complete message: $message")
-        Timber.d("Complete from: $from")
-        Timber.d("Complete chat: $chat")
-        Timber.d("${chat?.xmppAddressOfChatPartner}")
-
-        val x = StanzaMessage(
+        val msg = StanzaMessage(
             id = message.stanzaId,
             toBareJid = message.to.split('/')[0],
             toJid = "${message.to}",
@@ -204,7 +184,14 @@ class ConnectionListener : ConnectionListener,
             extensions = "${message.extensions}",
             timestamp = "${Date()}"
         )
-        Timber.d("Captured message: $x")
+        Timber.d("Captured Stanza Message: $msg")
+        Timber.d("Converted Room Message: ${msg.asRoom()}")
+        MainScope().launch {
+            withContext(Dispatchers.IO) {
+                Timber.d("Adding new message to database...")
+                MessageRepo().insert(msg.asRoom())
+            }
+        }
     }
 
     /**
