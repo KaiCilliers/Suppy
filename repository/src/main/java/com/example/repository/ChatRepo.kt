@@ -8,6 +8,19 @@ import timber.log.Timber
 
 class ChatRepo {
     private val dao = LocalDatabase.justgetinstance().chatDao()
+
+    /**
+     * Checks if the chat table contains
+     * any data
+     */
+    suspend fun isEmpty(): Boolean {
+        dao.getAnyRow()?.let { return false }
+        return true
+    }
+
+    /**
+     * Insert a chat records
+     */
     suspend fun insert(chat: EntityChat) {
         dao.insert(chat)
     }

@@ -140,12 +140,21 @@ class ConnectionListener : ConnectionListener,
         entries.forEach {
             roomChats.add(it.asRoom())
         }
-//        MainScope().launch {
-//            withContext(Dispatchers.IO) {
-//                Timber.d("Repopulating database")
-//                ChatRepo().repopulate(roomChats)
-//            }
-//        }
+        /**
+         * Check if chat table is empty
+         * and if so populate it with Roster
+         * data. It will be empty mostly due
+         * to database schema changes
+         * TODO determine if it works
+         */
+        MainScope().launch {
+            if (ChatRepo().isEmpty()) {
+                withContext(Dispatchers.IO) {
+                    Timber.d("Repopulating database")
+                    ChatRepo().repopulate(roomChats)
+                }
+            }
+        }
     }
 
     override fun onRosterLoadingFailed(exception: Exception?) {

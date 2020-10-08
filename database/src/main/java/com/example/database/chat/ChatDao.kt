@@ -13,6 +13,12 @@ import timber.log.Timber
 @Dao
 abstract class ChatDao : BaseDao<EntityChat> {
     /**
+     * Used to check if the database is empty
+     * and needs to be repopulated
+     */
+    @Query("SELECT * FROM table_chat LIMIT 1")
+    abstract suspend fun getAnyRow(): EntityChat
+    /**
      * Update chat table's description by using a
      * partial chat entity with updated fields
      */
