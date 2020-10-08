@@ -13,6 +13,7 @@ import com.example.repository.MessageRepo
 import com.example.repository.webservicemodule.Server
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.SomeDataModel
+import com.example.suppy.util.CoroutineContextSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -56,6 +57,21 @@ class ChatsViewModel : ViewModel() {
     fun startServerConnection() {
         viewModelScope.launch(Dispatchers.IO) {
             Server.instance()
+        }
+    }
+
+    /**
+     * Delete a chat by name which is
+     * obtained from the list item
+     * in the recyclerview
+     */
+    fun deleteByName(name: String) {
+        //TODO make a variable that you can use in each method: val repo = ChatRepo()
+        viewModelScope.launch {
+            // TODO also provide a variable here...or maybe just use Dispatchers.IO?
+            withContext(CoroutineContextSource().io) {
+                ChatRepo().deleteRow(name)
+            }
         }
     }
 

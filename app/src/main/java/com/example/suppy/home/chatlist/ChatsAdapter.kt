@@ -15,6 +15,7 @@ import timber.log.Timber
  * An adapter to bind data to a recyclerview
  * TODO add interfaces for ViewHolders
  * TODO replace vars with immutable objects
+ * TODO consider making items an ArrayList of EntityChats and convert to Domain as late as possible to provide access to the entity object for as long as possible
  */
 class ChatsAdapter(private var items: ArrayList<DomainChat> = arrayListOf(), val context: Context, val itemClicked: ChatsViewModel) : RecyclerView.Adapter<ChatItem>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatItem = ChatItem(
@@ -26,6 +27,13 @@ class ChatsAdapter(private var items: ArrayList<DomainChat> = arrayListOf(), val
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ChatItem, position: Int) = holder.bind(items[position], itemClicked)
+
+    /**
+     * Return domain object at specific position
+     */
+    fun itemAtPosition(position: Int): DomainChat {
+        return items[position]
+    }
 
     fun setData(data: List<DomainChat>) {
         Timber.d("setDAta called with data $data")
