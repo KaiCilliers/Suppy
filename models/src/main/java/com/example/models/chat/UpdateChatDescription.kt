@@ -2,7 +2,6 @@ package com.example.models.chat
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import com.example.models.message.EntityMessage
 
 /**
  * Partial Entity to perform an update

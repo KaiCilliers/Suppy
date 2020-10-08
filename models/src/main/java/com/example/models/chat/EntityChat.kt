@@ -1,6 +1,5 @@
 package com.example.models.chat
 
-import android.media.MediaDescription
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
