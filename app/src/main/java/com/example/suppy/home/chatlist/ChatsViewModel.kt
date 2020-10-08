@@ -14,6 +14,7 @@ import com.example.repository.webservicemodule.Server
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.SomeDataModel
 import com.example.suppy.util.CoroutineContextSource
+import com.example.suppy.util.viewModelIO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -167,10 +168,9 @@ class ChatsViewModel : ViewModel() {
         val toBeRemoved = addedRecords.get(random)
         addedRecords.remove(toBeRemoved)
         randomRecordsCount()
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                ChatRepo().deleteRow(toBeRemoved.chatName)
-            }
+        // TODO replace rest of viewmodelscope.launch with this extension function
+        viewModelIO {
+            ChatRepo().deleteRow(toBeRemoved.chatName)
         }
     }
 

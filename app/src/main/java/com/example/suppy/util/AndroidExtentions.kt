@@ -13,10 +13,10 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import timber.log.Timber
 import java.io.Serializable
+import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -175,3 +175,20 @@ fun View.gone() {
  * TODO see if useful
  */
 fun Context.toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+/**
+ * Easier launch IO coroutines with ViewModel
+ * scope while wrapping it in a try catch
+ */
+fun ViewModel.viewModelIO(block: suspend () -> Unit): Job {
+    return viewModelScope.launch {
+        try {
+            withContext(Dispatchers.IO) {
+                block()
+            }
+        } catch (e: Exception) {
+            Timber.e("ViewModelScope Error: $e")
+            throw e
+        }
+    }
+}
