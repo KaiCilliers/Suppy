@@ -26,6 +26,11 @@ import kotlin.collections.ArrayList
 
 /**
  * NOTE use [AndroidViewModel] only if your view model requires context
+ * TODO pass repo reference to chatsViewmodel
+ * TODO pass coroutine dispatcher here for testing later down the line
+ * EXAMPLE
+ * priv val repo: Repo,
+ * priv val ioDispatcher: CoroutineDispatcher
  */
 class ChatsViewModel : ViewModel() {
     lateinit var bundle: DomainChat
