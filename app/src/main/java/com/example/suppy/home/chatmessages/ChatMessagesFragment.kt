@@ -34,6 +34,7 @@ class ChatMessagesFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentChatMessagesBinding.inflate(inflater)
+        Timber.d("Called ViewModelProvider.get for ChatMessagesViewModel")
         viewModel = ViewModelProvider(this).get(ChatMessagesViewModel::class.java)
         viewModel.apply {
             navigateToChats.observeEvent(viewLifecycleOwner){

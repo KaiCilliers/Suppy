@@ -32,10 +32,24 @@ import kotlin.collections.ArrayList
  * priv val repo: Repo,
  * priv val ioDispatcher: CoroutineDispatcher
  */
-class ChatsViewModel : ViewModel() {
+class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
     lateinit var bundle: DomainChat
     lateinit var chatMan: ChatManager
     lateinit var chat: Chat
+
+    /**
+     * Simply to take note of the viewmodel's
+     * lifecycle awareness aspects
+     * TODO temp
+     */
+    init {
+        Timber.d("ChatsViewModel created!")
+    }
+    override fun onCleared() {
+        super.onCleared()
+        Timber.d("ChatsViewModel destroyed!")
+    }
+
     /**
      * Used to store randomly generated chat records
      * to be used to remove those records again on
@@ -72,11 +86,10 @@ class ChatsViewModel : ViewModel() {
      * in the recyclerview
      */
     fun deleteByName(name: String) {
-        //TODO make a variable that you can use in each method: val repo = ChatRepo()
         viewModelScope.launch {
             // TODO also provide a variable here...or maybe just use Dispatchers.IO?
             withContext(CoroutineContextSource().io) {
-                ChatRepo().deleteRow(name)
+                repo.deleteRow(name)
             }
         }
     }
@@ -88,7 +101,7 @@ class ChatsViewModel : ViewModel() {
      */
     fun getAllChatLocalData(): LiveData<List<EntityChat>> {
         Timber.d("Returning chat live data from VM (calling repo)")
-        return ChatRepo().chats()
+        return repo.chats()
     }
 
     /**
@@ -127,9 +140,9 @@ class ChatsViewModel : ViewModel() {
                  * changed and in turn the recyclerview's data gets refreshed with
                  * the latest data
                  */
-                val chatId = ChatRepo().getChatIdOf(message.fromName)
+                val chatId = repo.getChatIdOf(message.fromName)
                 Timber.d("Id of chat to be updated: $chatId with message ${message.body}")
-                ChatRepo().updateDescriptionOf(chatId, message.body)
+                repo.updateDescriptionOf(chatId, message.body)
             }
         }
     }
@@ -153,7 +166,7 @@ class ChatsViewModel : ViewModel() {
         randomRecordsCount()
         Timber.d("Viewmodel wants to fetch all the chats from local storage...")
         viewModelScope.launch(Dispatchers.IO) {
-            val data = ChatRepo().justChats()
+            val data = repo.justChats()
             Timber.d("Local chats from database:")
             data.forEach {
                 Timber.d("[id=${it.id}, name=${it.chatName}]")
@@ -175,7 +188,7 @@ class ChatsViewModel : ViewModel() {
         randomRecordsCount()
         // TODO replace rest of viewmodelscope.launch with this extension function
         viewModelIO {
-            ChatRepo().deleteRow(toBeRemoved.chatName)
+            repo.deleteRow(toBeRemoved.chatName)
         }
     }
 
@@ -203,7 +216,7 @@ class ChatsViewModel : ViewModel() {
         randomRecordsCount()
         Timber.d("insert this: $s")
         viewModelScope.launch (Dispatchers.IO){
-            ChatRepo().insert(
+            repo.insert(
                 s
             )
         }

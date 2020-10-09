@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -31,6 +30,7 @@ import kotlin.random.Random
 class ChatsFragment : Fragment() {
 
     private lateinit var viewModel: ChatsViewModel
+    private lateinit var factory: ChatsViewModelFactory
     private lateinit var chatAdapter: ChatsAdapter
 
     override fun onCreateView(
@@ -38,7 +38,9 @@ class ChatsFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentChatsBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
+        factory = ChatsViewModelFactory(ChatRepo())
+        Timber.d("Called ViewModelProvider.get for ChatsViewModel1")
+        viewModel = ViewModelProvider(this, factory).get(ChatsViewModel::class.java)
         viewModel.apply {
             navigateToChatMessages.observeEvent(viewLifecycleOwner){
                 Timber.d("I should navigate...")
@@ -65,7 +67,8 @@ class ChatsFragment : Fragment() {
              */
             getLatestMessaageLocalData().subscribe(viewLifecycleOwner) {
                 it?.let {
-                    Timber.d("${it.recived}")
+                    Timber.d("Message has been received: ${it.recived}")
+                    Timber.d("$it")
                     if(!it.recived) {
                         Timber.d("HEY latest message: $it")
                         snackbar("${it.body} from ${it.fromName}", requireView())
@@ -87,9 +90,9 @@ class ChatsFragment : Fragment() {
                 }
                 Timber.d("Message table data count: ${MessageRepo().justMessages().size}")
                 // This printout can get a bit much
-//                MessageRepo().justMessages().forEach {
-//                    Timber.d("$it")
-//                }
+                MessageRepo().justMessages().forEach {
+                    Timber.d("${it.timestamp} - ${it.id} - ${it.body}")
+                }
             }
         }
         return binding.root
