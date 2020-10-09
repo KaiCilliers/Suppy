@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.database.LocalDatabase
 import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
 import com.example.suppy.databinding.FragmentChatsBinding
@@ -38,7 +39,7 @@ class ChatsFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentChatsBinding.inflate(inflater)
-        factory = ChatsViewModelFactory(ChatRepo())
+        factory = ChatsViewModelFactory(ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()))
         Timber.d("Called ViewModelProvider.get for ChatsViewModel1")
         viewModel = ViewModelProvider(this, factory).get(ChatsViewModel::class.java)
         viewModel.apply {
@@ -81,11 +82,12 @@ class ChatsFragment : Fragment() {
         binding.apply { viewModel }
         /**
          * Display database contents at launch
+         * TODO obviously this is just for debugging
          */
         MainScope().launch {
             withContext(Dispatchers.IO) {
                 Timber.d("Chat table data:")
-                ChatRepo().justChats().forEach {
+                ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).justChats().forEach {
                     Timber.d("$it")
                 }
                 Timber.d("Message table data count: ${MessageRepo().justMessages().size}")

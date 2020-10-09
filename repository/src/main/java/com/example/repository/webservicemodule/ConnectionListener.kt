@@ -1,5 +1,6 @@
 package com.example.repository.webservicemodule
 
+import com.example.database.LocalDatabase
 import com.example.models.RosterEntry
 import com.example.models.RosterGroup
 import com.example.models.chat.EntityChat
@@ -148,10 +149,10 @@ class ConnectionListener : ConnectionListener,
          * TODO determine if it works
          */
         MainScope().launch {
-            if (ChatRepo().isEmpty()) {
+            if (ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).isEmpty()) {
                 withContext(Dispatchers.IO) {
                     Timber.d("Repopulating database")
-                    ChatRepo().repopulate(roomChats)
+                    ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).repopulate(roomChats)
                 }
             }
         }

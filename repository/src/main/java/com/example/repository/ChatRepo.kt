@@ -2,12 +2,14 @@ package com.example.repository
 
 import androidx.lifecycle.LiveData
 import com.example.database.LocalDatabase
+import com.example.database.chat.ChatDao
 import com.example.models.chat.EntityChat
 import com.example.models.chat.UpdateChatDescription
+import com.example.repository.webservicemodule.Server
+import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import timber.log.Timber
 
-class ChatRepo {
-    private val dao = LocalDatabase.justgetinstance().chatDao()
+class ChatRepo(val dao: ChatDao) {
 
     /**
      * Checks if the chat table contains
@@ -72,5 +74,16 @@ class ChatRepo {
         val updateChat = UpdateChatDescription(chatId, message)
         Timber.d("Partial chat object: $updateChat")
         dao.updateChatDescription(updateChat)
+    }
+
+    /**
+     * Single instance of repository
+     */
+    companion object {
+        @Volatile private var INSTANCE: ChatRepo? = null
+        fun instance(dao: ChatDao) =
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: ChatRepo(dao).also { INSTANCE = it }
+            }
     }
 }

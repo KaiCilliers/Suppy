@@ -19,7 +19,7 @@ import kotlin.coroutines.CoroutineContext
  */
 class App : Application() {
     private val chatRepo: ChatRepo
-        get() = ChatRepo()
+        get() = ChatRepo.instance(LocalDatabase.justgetinstance().chatDao())
     private val messageRepo: MessageRepo
         get() = MessageRepo()
     private val contactRepo: ContactRepo
