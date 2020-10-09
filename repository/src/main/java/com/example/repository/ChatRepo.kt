@@ -10,7 +10,6 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import timber.log.Timber
 
 class ChatRepo(val dao: ChatDao) {
-
     /**
      * Checks if the chat table contains
      * any data
@@ -43,6 +42,12 @@ class ChatRepo(val dao: ChatDao) {
         Timber.d("Repo fetch all chats...")
         return dao.all()
     }
+    /**
+     * List of all chats from database
+     * wrapped in LiveData
+     * TODO determine if using a variable is better than the function call
+     */
+    val chats by lazy { dao.all() }
     /**
      * Fetch chats without LiveData wrapper for
      * debugging purposes
