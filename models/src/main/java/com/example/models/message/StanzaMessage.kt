@@ -39,7 +39,8 @@ data class StanzaMessage(
             error = error,
             extensions = extensions,
             recived = received,
-            timestamp = timestamp
+            timestamp = timestamp,
+            counter = 0
         )
     }
 }

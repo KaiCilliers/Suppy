@@ -7,7 +7,6 @@ import com.example.models.mapper.DomainMapper
 
 @Entity(tableName = "table_message")
 data class EntityMessage(
-    @PrimaryKey
     @ColumnInfo(name = "message_id")
     val id: String,
     @ColumnInfo(name = "to_bare_jid")
@@ -41,7 +40,11 @@ data class EntityMessage(
     @ColumnInfo(name = "received")
     val recived: Boolean, // TODO fix spelling mistake
     @ColumnInfo(name = "timestamp")
-    val timestamp: String
+    val timestamp: String,
+    // TODO temp - just used for determining which message arrived last
+    @PrimaryKey(autoGenerate = true) // Room allows for single PK which is fine for now
+    @ColumnInfo(name = "counter_temp")
+    val counter: Int
 ) : DomainMapper<DomainMessage> {
     override fun asDomain(): DomainMessage {
         return DomainMessage(

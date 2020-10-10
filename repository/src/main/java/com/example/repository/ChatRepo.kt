@@ -5,6 +5,8 @@ import com.example.database.LocalDatabase
 import com.example.database.chat.ChatDao
 import com.example.models.chat.EntityChat
 import com.example.models.chat.UpdateChatDescription
+import com.example.models.chat.UpdateChatUnRead
+import com.example.models.message.EntityMessage
 import com.example.repository.webservicemodule.Server
 import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import timber.log.Timber
@@ -47,7 +49,16 @@ class ChatRepo(val dao: ChatDao) {
      * wrapped in LiveData
      * TODO determine if using a variable is better than the function call
      */
-    val chats by lazy { dao.all() }
+    val chatsLiveData by lazy { dao.all() }
+    /**
+     * List of all chats from database
+     * TODO determine if using a variable is better than the function call
+     */
+    val chats by lazy {
+        suspend {
+            dao.justAll()
+        }
+    }
     /**
      * Fetch chats without LiveData wrapper for
      * debugging purposes
@@ -79,6 +90,12 @@ class ChatRepo(val dao: ChatDao) {
         val updateChat = UpdateChatDescription(chatId, message)
         Timber.d("Partial chat object: $updateChat")
         dao.updateChatDescription(updateChat)
+    }
+
+    suspend fun updateUnReadOfChat(chatId: Int, counter: Int) {
+        val updateChat = UpdateChatUnRead(chatId, "$counter")
+        Timber.d("Partail chat object for unread: $updateChat")
+        dao.updateChatUnReceived(updateChat)
     }
 
     /**

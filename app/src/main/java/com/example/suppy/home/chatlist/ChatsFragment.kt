@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,9 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.database.LocalDatabase
 import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
+import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.*
 import kotlinx.android.synthetic.main.fragment_chats.*
+import kotlinx.android.synthetic.main.row_chats.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -44,12 +48,12 @@ class ChatsFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory).get(ChatsViewModel::class.java)
         viewModel.apply {
             navigateToChatMessages.observeEvent(viewLifecycleOwner){
-                Timber.d("I should navigate...")
-                snackbar("${viewModel.bundle.chatName} last message was ${viewModel.bundle.description}", requireView())
-//                findNavController().navigate(
-//                    R.id.action_chatsFragment_to_chatMessagesFragment,
-//                    bundleOf("chat" to "${viewModel.bundle}")
-//                )
+//                Timber.d("I should navigate...")
+//                snackbar("${viewModel.bundle.chatName} last message was ${viewModel.bundle.description}", requireView())
+                findNavController().navigate(
+                    R.id.action_chatsFragment_to_chatMessagesFragment,
+                    bundleOf("chat" to viewModel.bundle.chatName)
+                )
             }
             /**
              * Observe all chat data for any changes
@@ -77,6 +81,11 @@ class ChatsFragment : Fragment() {
                     }
                 }
             }
+            // TODO all these observations on the table data changes can perhaps be refractored into a single observer for data change and then that triggers a few operations based on some conditions
+            unReceivedMessagesCounter().subscribe(viewLifecycleOwner) {
+                // TODO seperate read and received status of a messages, because there is a difference :)
+                updateChatsUnreceivedCounter(it)
+            }
         }
         setupAdapter()
         binding.apply { viewModel }
@@ -90,11 +99,26 @@ class ChatsFragment : Fragment() {
                 ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).justChats().forEach {
                     Timber.d("$it")
                 }
-                Timber.d("Message table data count: ${MessageRepo().justMessages().size}")
+                val messages = MessageRepo().justMessages()
+                Timber.d("Message table data count: ${messages.size}")
+                Timber.d("Message count from \"gastly\": ${messages.count { it.fromName == "gastly" }} " +
+                        "of which ${messages.count { it.fromName == "gastly" && it.recived }} are recieved and " +
+                        "${messages.count { it.fromName == "gastly" && !it.recived }} have not been received")
+                Timber.d("Message count from \"weedle\": ${messages.count { it.fromName == "weedle" }} " +
+                        "of which ${messages.count { it.fromName == "weedle" && it.recived }} are recieved and " +
+                        "${messages.count { it.fromName == "weedle" && !it.recived }} have not been received")
+                Timber.d("Message count from \"magikarp\": ${messages.count { it.fromName == "magikarp" }} " +
+                        "of which ${messages.count { it.fromName == "magikarp" && it.recived }} are recieved and " +
+                        "${messages.count { it.fromName == "magikarp" && !it.recived }} have not been received")
                 // This printout can get a bit much
-                MessageRepo().justMessages().forEach {
-                    Timber.d("${it.timestamp} - ${it.id} - ${it.body}")
-                }
+//                MessageRepo().justMessages().forEach {
+//                    Timber.d("${it.timestamp} - ${it.counter} - received: ${it.recived} - ${it.body}")
+//                }
+                val totalUnrecevied = viewModel.allUnReceived()
+                Timber.d("All unreceived messages: ${totalUnrecevied.size}")
+                Timber.d("weedle unreceived messages: ${totalUnrecevied.count { it.fromName == "weedle" }}")
+                Timber.d("gastly unreceived messages: ${totalUnrecevied.count { it.fromName == "gastly" }}")
+                Timber.d("magikarp unreceived messages: ${totalUnrecevied.count { it.fromName == "magikarp" }}")
             }
         }
         return binding.root

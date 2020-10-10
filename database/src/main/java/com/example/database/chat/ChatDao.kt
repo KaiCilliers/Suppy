@@ -8,6 +8,7 @@ import androidx.room.Update
 import com.example.database.BaseDao
 import com.example.models.chat.EntityChat
 import com.example.models.chat.UpdateChatDescription
+import com.example.models.chat.UpdateChatUnRead
 import timber.log.Timber
 
 @Dao
@@ -24,6 +25,14 @@ abstract class ChatDao : BaseDao<EntityChat> {
      */
     @Update(entity = EntityChat::class)
     abstract suspend fun updateChatDescription(update: UpdateChatDescription)
+
+    /**
+     * Update chat's last activity value to the currently
+     * unreceived chats that belong to this chat.
+     * TODO temp usage of the last_activity field for unreceived counter
+     */
+    @Update(entity = EntityChat::class)
+    abstract suspend fun updateChatUnReceived(update: UpdateChatUnRead)
 
     /**
      * Return the id of the chat matching name parameter

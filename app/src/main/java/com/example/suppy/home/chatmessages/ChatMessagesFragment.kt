@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.models.chat.DomainChat
 import com.example.suppy.databinding.FragmentChatMessagesBinding
 import com.example.suppy.move_out.SomeMessages
 import com.example.suppy.util.argument
 import com.example.suppy.util.observeEvent
+import com.example.suppy.util.subscribe
 import kotlinx.android.synthetic.main.fragment_chat_messages.*
 import timber.log.Timber
 
@@ -23,6 +25,7 @@ class ChatMessagesFragment : Fragment() {
 
     private lateinit var viewModel: ChatMessagesViewModel
     private var chat: String by argument()
+    private lateinit var messageAdapter: ChatMessagesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +45,22 @@ class ChatMessagesFragment : Fragment() {
                     ChatMessagesFragmentDirections.actionChatMessagesFragmentToChatsFragment()
                 )
             }
+            /**
+             * Observe any changes to the local database message table and updated
+             * the recyclerview if the new message belongs to the opened chat
+             * TODO mayhap not here - but if another message arrives from a different chat - it has to be handled in some way otherwise it just gets lost
+             */
+            getAllMessagesFromChatLocalData(chat).subscribe(viewLifecycleOwner) {data ->
+                Timber.d("inside the observing message code with ${data.size} messages")
+                data.forEach { msg ->
+                    Timber.d("Message: ${msg.fromName}")
+                }
+                Timber.d("Message count: ${data.size}")
+                val domainMessages = data.map { it.asDomain() }
+                messageAdapter.setData(domainMessages)
+            }
         }
+        setupAdapter()
         //TODO Navigation does not work with binding.apply{viewModel}
         binding.viewModel = viewModel
         return binding.root
@@ -50,7 +68,12 @@ class ChatMessagesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView(getIndex("$chat"))
+        setupRecyclerView(chat)
+    }
+
+    private fun setupAdapter() {
+        Timber.d("Setup message adapter called...where the adapter is initialised with context")
+        messageAdapter = ChatMessagesAdapter(context = requireContext())
     }
 
     /**
@@ -63,19 +86,13 @@ class ChatMessagesFragment : Fragment() {
      * (one being a default to determine if there is a bug)
      * that can be displayed
      */
-    private fun setupRecyclerView(data: Int) {
+    private fun setupRecyclerView(data: String) {
+        Timber.d("I should fetch messages from \"${data}\"...")
         var print: SomeMessages = viewModel.def
         when(data){
-            0 -> print = viewModel.zero
-            1 -> print = viewModel.one
-            2 -> print = viewModel.two
-            3 -> print = viewModel.three
-            4 -> print = viewModel.four
-            5 -> print = viewModel.five
-            6 -> print = viewModel.six
-            7 -> print = viewModel.seven
-            8 -> print = viewModel.eight
-            9 -> print = viewModel.nine
+            "weedle" -> print = viewModel.zero
+            "gastly" -> print = viewModel.one
+            "magikarp" -> print = viewModel.two
         }
         Timber.d("DATA: ${print!!}")
 
@@ -84,10 +101,7 @@ class ChatMessagesFragment : Fragment() {
         rc_messages.setItemViewCacheSize(20)
 
         rc_messages.layoutManager = LinearLayoutManager(context)
-        rc_messages.adapter = ChatMessagesAdapter(
-            print.messages,
-            requireContext()
-        )
+        rc_messages.adapter = messageAdapter
     }
 
     /**
