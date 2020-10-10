@@ -12,6 +12,14 @@ import com.example.models.message.UpdateMessageReceived
 @Dao
 abstract class MessageDao : BaseDao<EntityMessage>{
     /**
+     * Update all messages from specific chat and set
+     * their received boolean to true
+     * TODO I do not know how to use a partial object here - consider alternatives, but if it works then no sweat
+     */
+    @Query("UPDATE table_message SET received = :received WHERE from_name = :chatName")
+    abstract suspend fun updateAllReceivedFromChat(chatName: String, received: Boolean)
+
+    /**
      * Returns all messages from a specific chat wrapped in LiveData
      */
     @Query("SELECT * FROM table_message WHERE from_name = :chatName ORDER BY counter_temp ASC")

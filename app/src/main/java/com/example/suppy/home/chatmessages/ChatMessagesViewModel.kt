@@ -9,6 +9,7 @@ import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.Message
 import com.example.suppy.move_out.SomeDataModel
 import com.example.suppy.move_out.SomeMessages
+import com.example.suppy.util.viewModelIO
 import timber.log.Timber
 import kotlin.random.Random
 
@@ -27,10 +28,28 @@ class ChatMessagesViewModel : ViewModel() {
     }
 
     /**
+     * Update all messages from a specific chat to true
+     */
+    fun updateAllFromChatAsReceived(chatName: String) {
+        Timber.d("Going to update all messages from \"$chatName\" as received" +
+                " because the user is on the screen with all the messages and thus it" +
+                " can be set as received")
+        viewModelIO {
+            MessageRepo().updateAllMessagesFromChatReceived(chatName)
+        }
+    }
+
+    /**
      * Returns all messages from a specific chat wrapped in LiveData
      */
     fun getAllMessagesFromChatLocalData(chatName: String): LiveData<List<EntityMessage>> {
         Timber.d("Returning message live data from \"$chatName\" from viewmodel")
+        /**
+         * Updating the entire chat's messages to have a true value for received attribute
+         * TODO records that are fetched are not the latest data as the fetch does not wait for the update to finish
+         */
+        Timber.d("Update all messages from $chatName to with received set to true")
+        updateAllFromChatAsReceived(chatName)
         return MessageRepo().allMessagesFrom(chatName)
     }
 

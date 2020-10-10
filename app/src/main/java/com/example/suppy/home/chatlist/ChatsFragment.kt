@@ -93,11 +93,21 @@ class ChatsFragment : Fragment() {
                 ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).justChats().forEach {
                     Timber.d("$it")
                 }
-                Timber.d("Message table data count: ${MessageRepo().justMessages().size}")
+                val messages = MessageRepo().justMessages()
+                Timber.d("Message table data count: ${messages.size}")
+                Timber.d("Message count from \"gastly\": ${messages.count { it.fromName == "gastly" }} " +
+                        "of which ${messages.count { it.fromName == "gastly" && it.recived }} are recieved and " +
+                        "${messages.count { it.fromName == "gastly" && !it.recived }} have not been received")
+                Timber.d("Message count from \"weedle\": ${messages.count { it.fromName == "weedle" }} " +
+                        "of which ${messages.count { it.fromName == "weedle" && it.recived }} are recieved and " +
+                        "${messages.count { it.fromName == "weedle" && !it.recived }} have not been received")
+                Timber.d("Message count from \"magikarp\": ${messages.count { it.fromName == "magikarp" }} " +
+                        "of which ${messages.count { it.fromName == "magikarp" && it.recived }} are recieved and " +
+                        "${messages.count { it.fromName == "magikarp" && !it.recived }} have not been received")
                 // This printout can get a bit much
-                MessageRepo().justMessages().forEach {
-                    Timber.d("${it.timestamp} - ${it.counter} - received: ${it.recived} - ${it.body}")
-                }
+//                MessageRepo().justMessages().forEach {
+//                    Timber.d("${it.timestamp} - ${it.counter} - received: ${it.recived} - ${it.body}")
+//                }
             }
         }
         return binding.root

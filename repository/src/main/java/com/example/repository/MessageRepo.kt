@@ -46,4 +46,12 @@ class MessageRepo {
         Timber.d("Message REpo called to fetch local messages...")
         return dao.justAll()
     }
+
+    /**
+     * Set all messages in specific chat as received
+     */
+    suspend fun updateAllMessagesFromChatReceived(chatName: String) {
+        Timber.d("Updating all messages from \"$chatName\" to received")
+        dao.updateAllReceivedFromChat(chatName, true)
+    }
 }
