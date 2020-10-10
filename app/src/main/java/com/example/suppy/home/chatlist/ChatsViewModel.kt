@@ -119,7 +119,7 @@ class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
      * message arrives that belongs to it
      */
     fun updateChatWithNewMessage(message: EntityMessage) {
-        Timber.d("OK, i am going to update the chat item this message: ${message.body}...")
+        Timber.d("OK, i am going to update the chat item this message: \"${message.body}\"...")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 /**
@@ -131,7 +131,7 @@ class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
                  * is set to false when the [ConnectionListener] receives it
                  */
                 Timber.d("Updating message received field: ${message.body} and ${message.fromName}")
-                val messageUpdate = UpdateMessageReceived(message.id, true)
+                val messageUpdate = UpdateMessageReceived(message.id, true, message.counter)
                 MessageRepo().updateReceivedValue(messageUpdate)
                 /**
                  * Fetch chat id using the sender's name which is not ideal but

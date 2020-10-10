@@ -93,7 +93,7 @@ class ChatsFragment : Fragment() {
                 Timber.d("Message table data count: ${MessageRepo().justMessages().size}")
                 // This printout can get a bit much
                 MessageRepo().justMessages().forEach {
-                    Timber.d("${it.timestamp} - ${it.counter} - ${it.body}")
+                    Timber.d("${it.timestamp} - ${it.counter} - received: ${it.recived} - ${it.body}")
                 }
             }
         }
