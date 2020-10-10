@@ -30,7 +30,7 @@ class ChatMessagesViewModel : ViewModel() {
     /**
      * Update all messages from a specific chat to true
      */
-    fun updateAllFromChatAsReceived(chatName: String) {
+    private fun updateAllFromChatAsReceived(chatName: String) {
         Timber.d("Going to update all messages from \"$chatName\" as received" +
                 " because the user is on the screen with all the messages and thus it" +
                 " can be set as received")
@@ -160,6 +160,9 @@ class ChatMessagesViewModel : ViewModel() {
             Message("message ${Random.nextInt(999)}")
         )
     )
+    /**
+     * Basic navigation to Chats screen
+     */
     private val _navigateToChats = MutableLiveData<VoidEvent>()
     val navigateToChats: LiveData<VoidEvent>
         get() = _navigateToChats

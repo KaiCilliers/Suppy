@@ -21,6 +21,21 @@ class MessageRepo {
     }
 
     /**
+     * Get all unreceived messages wrapped in LiveData
+     */
+    fun getAllUnreceivedLiveData(): LiveData<List<EntityMessage>> {
+        return dao.getAllUnReceivedLiveData()
+    }
+
+    /**
+     * Return all unreceived messages as just a list
+     * TODO temp
+     */
+    fun getAllUnreceived(): List<EntityMessage> {
+        return dao.getAllUnReceived()
+    }
+
+    /**
      * Return all the messages from a specific chat
      */
     fun allMessagesFrom(chatName: String): LiveData<List<EntityMessage>>{

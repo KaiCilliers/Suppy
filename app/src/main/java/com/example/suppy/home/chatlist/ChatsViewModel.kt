@@ -21,6 +21,7 @@ import kotlinx.coroutines.withContext
 import org.jivesoftware.smack.chat2.Chat
 import org.jivesoftware.smack.chat2.ChatManager
 import timber.log.Timber
+import java.time.zone.ZoneOffsetTransitionRule
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -36,7 +37,6 @@ class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
     lateinit var bundle: DomainChat
     lateinit var chatMan: ChatManager
     lateinit var chat: Chat
-
     /**
      * Simply to take note of the viewmodel's
      * lifecycle awareness aspects
@@ -48,6 +48,15 @@ class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         Timber.d("ChatsViewModel destroyed!")
+    }
+
+    /**
+     * Return all messages that have not been received yet wrapped
+     * in LiveData
+     */
+    fun unReceivedMessagesCounter(): LiveData<List<EntityMessage>> {
+        Timber.d("Fetching all unreceived messages...")
+        return MessageRepo().getAllUnreceivedLiveData()
     }
 
     /**
@@ -69,6 +78,15 @@ class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
     fun navigate() {
         _navigateToChatMessages.value = VoidEvent()
         Timber.d("Chat clicked from VM: $bundle")
+    }
+
+    /**
+     * Fetch all messages that have not been received
+     * Primarily used for debugging
+     * TODO temp
+     */
+    fun allUnReceived(): List<EntityMessage> {
+        return MessageRepo().getAllUnreceived()
     }
 
     /**
@@ -143,6 +161,21 @@ class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
                 val chatId = repo.getChatIdOf(message.fromName)
                 Timber.d("Id of chat to be updated: $chatId with message ${message.body}")
                 repo.updateDescriptionOf(chatId, message.body)
+            }
+        }
+    }
+
+    /**
+     * Update all chats with their new message unreceived counter
+     */
+    fun updateChatsUnreceivedCounter(data: List<EntityMessage>) {
+        Timber.d("Going to update the chats with their unreceived message counter...")
+        viewModelIO {
+            val chats = repo.chats.invoke()
+            chats.forEach {chat ->
+                val counter = data.count { it.fromName == chat.chatName }
+                Timber.d("unreceived for chat: $chat = ${data.count { it.fromName == chat.chatName }}")
+                repo.updateUnReadOfChat(chat.id, counter)
             }
         }
     }

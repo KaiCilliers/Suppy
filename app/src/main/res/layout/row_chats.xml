@@ -62,11 +62,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/scyther" />
 
+        <!--
+            This is textview is suppose to indicate the chat's
+            last activity, but is now used to indicate the amount
+            of unreceived messages that chat has.
+        -->
         <TextView
             android:id="@+id/tv_last_message_timestamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Yesterday"
+            android:text="@{item.lastActivity}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/tv_chat_name"

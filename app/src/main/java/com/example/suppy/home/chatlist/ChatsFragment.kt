@@ -20,6 +20,7 @@ import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.*
 import kotlinx.android.synthetic.main.fragment_chats.*
+import kotlinx.android.synthetic.main.row_chats.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -80,6 +81,11 @@ class ChatsFragment : Fragment() {
                     }
                 }
             }
+            // TODO all these observations on the table data changes can perhaps be refractored into a single observer for data change and then that triggers a few operations based on some conditions
+            unReceivedMessagesCounter().subscribe(viewLifecycleOwner) {
+                // TODO seperate read and received status of a messages, because there is a difference :)
+                updateChatsUnreceivedCounter(it)
+            }
         }
         setupAdapter()
         binding.apply { viewModel }
@@ -108,6 +114,11 @@ class ChatsFragment : Fragment() {
 //                MessageRepo().justMessages().forEach {
 //                    Timber.d("${it.timestamp} - ${it.counter} - received: ${it.recived} - ${it.body}")
 //                }
+                val totalUnrecevied = viewModel.allUnReceived()
+                Timber.d("All unreceived messages: ${totalUnrecevied.size}")
+                Timber.d("weedle unreceived messages: ${totalUnrecevied.count { it.fromName == "weedle" }}")
+                Timber.d("gastly unreceived messages: ${totalUnrecevied.count { it.fromName == "gastly" }}")
+                Timber.d("magikarp unreceived messages: ${totalUnrecevied.count { it.fromName == "magikarp" }}")
             }
         }
         return binding.root

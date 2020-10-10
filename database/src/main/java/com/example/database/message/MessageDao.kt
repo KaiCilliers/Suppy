@@ -12,6 +12,19 @@ import com.example.models.message.UpdateMessageReceived
 @Dao
 abstract class MessageDao : BaseDao<EntityMessage>{
     /**
+     * Return all unreceived messages wrapped in LiveData
+     */
+    @Query("SELECT * FROM table_message WHERE received == 0")
+    abstract fun getAllUnReceivedLiveData(): LiveData<List<EntityMessage>>
+
+    /**
+     * Debugging return all unreceived messages without
+     * LiveData wrapper
+     * TODO temp
+     */
+    @Query("SELECT * FROM table_message WHERE received == 0")
+    abstract fun getAllUnReceived(): List<EntityMessage>
+    /**
      * Update all messages from specific chat and set
      * their received boolean to true
      * TODO I do not know how to use a partial object here - consider alternatives, but if it works then no sweat
