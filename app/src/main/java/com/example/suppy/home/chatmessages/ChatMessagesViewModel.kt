@@ -3,6 +3,8 @@ package com.example.suppy.home.chatmessages
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.models.message.EntityMessage
+import com.example.repository.MessageRepo
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.Message
 import com.example.suppy.move_out.SomeDataModel
@@ -24,6 +26,14 @@ class ChatMessagesViewModel : ViewModel() {
         Timber.d("ChatMessagesViewModel destroyed!")
     }
 
+    /**
+     * Returns all messages from a specific chat wrapped in LiveData
+     */
+    fun getAllMessagesFromChatLocalData(chatName: String): LiveData<List<EntityMessage>> {
+        Timber.d("Returning message live data from \"$chatName\" from viewmodel")
+        return MessageRepo().allMessagesFrom(chatName)
+    }
+
     val def = SomeMessages(
         SomeDataModel("def", " "),
         arrayListOf(
@@ -34,7 +44,7 @@ class ChatMessagesViewModel : ViewModel() {
     val one = SomeMessages(
         SomeDataModel("1", ""),
         arrayListOf(
-            Message("message ${Random.nextInt(999)}"),
+            Message("gastly message ${Random.nextInt(999)}"),
             Message("message ${Random.nextInt(999)}"),
             Message("message ${Random.nextInt(999)}"),
             Message("message ${Random.nextInt(999)}"),
@@ -44,7 +54,7 @@ class ChatMessagesViewModel : ViewModel() {
     val two = SomeMessages(
         SomeDataModel("2", ""),
         arrayListOf(
-            Message("message ${Random.nextInt(999)}"),
+            Message("magikarp message ${Random.nextInt(999)}"),
             Message("message ${Random.nextInt(999)}"),
             Message("message ${Random.nextInt(999)}"),
             Message("message ${Random.nextInt(999)}"),
@@ -124,7 +134,7 @@ class ChatMessagesViewModel : ViewModel() {
     val zero = SomeMessages(
         SomeDataModel("0", ""),
         arrayListOf(
-            Message("message ${Random.nextInt(999)}"),
+            Message("weedle message ${Random.nextInt(999)}"),
             Message("message ${Random.nextInt(999)}"),
             Message("message ${Random.nextInt(999)}"),
             Message("message ${Random.nextInt(999)}"),

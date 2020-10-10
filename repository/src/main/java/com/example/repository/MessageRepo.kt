@@ -21,6 +21,14 @@ class MessageRepo {
     }
 
     /**
+     * Return all the messages from a specific chat
+     */
+    fun allMessagesFrom(chatName: String): LiveData<List<EntityMessage>>{
+        Timber.d("Repo fetching all messages form $chatName")
+        return dao.allMessagesFrom(chatName)
+    }
+
+    /**
      * Update description of chat item using an
      * updated partial object entity
      */

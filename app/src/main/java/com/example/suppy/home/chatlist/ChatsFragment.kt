@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.database.LocalDatabase
 import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
+import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.*
 import kotlinx.android.synthetic.main.fragment_chats.*
@@ -44,12 +47,12 @@ class ChatsFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory).get(ChatsViewModel::class.java)
         viewModel.apply {
             navigateToChatMessages.observeEvent(viewLifecycleOwner){
-                Timber.d("I should navigate...")
-                snackbar("${viewModel.bundle.chatName} last message was ${viewModel.bundle.description}", requireView())
-//                findNavController().navigate(
-//                    R.id.action_chatsFragment_to_chatMessagesFragment,
-//                    bundleOf("chat" to "${viewModel.bundle}")
-//                )
+//                Timber.d("I should navigate...")
+//                snackbar("${viewModel.bundle.chatName} last message was ${viewModel.bundle.description}", requireView())
+                findNavController().navigate(
+                    R.id.action_chatsFragment_to_chatMessagesFragment,
+                    bundleOf("chat" to viewModel.bundle.chatName)
+                )
             }
             /**
              * Observe all chat data for any changes

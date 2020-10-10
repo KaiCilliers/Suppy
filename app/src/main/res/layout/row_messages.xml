@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.example.suppy.move_out.Message" />
+            type="com.example.models.message.DomainMessage" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:id="@+id/tv_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{data.content}"
+            android:text="@{data.body}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

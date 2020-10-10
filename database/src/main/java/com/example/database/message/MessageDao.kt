@@ -12,6 +12,12 @@ import com.example.models.message.UpdateMessageReceived
 @Dao
 abstract class MessageDao : BaseDao<EntityMessage>{
     /**
+     * Returns all messages from a specific chat wrapped in LiveData
+     */
+    @Query("SELECT * FROM table_message WHERE from_name = :chatName ORDER BY counter_temp ASC")
+    abstract fun allMessagesFrom(chatName: String): LiveData<List<EntityMessage>>
+
+    /**
      * Update message received value with partial entity object
      */
     @Update(entity = EntityMessage::class)
