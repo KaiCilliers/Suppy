@@ -33,7 +33,7 @@ class SplashActivity : AppCompatActivity() {
             Timber.d("db = ${db.await()} thread running on ${Thread.currentThread().name}")
             val local = async {
                 Timber.d("Splash fetch to check db chats thread = ${Thread.currentThread().name}")
-                ChatRepo().chats()
+                ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).chats()
             }
             Timber.d("chats = ${local.await()} thread running on ${Thread.currentThread().name}")
             Timber.d("OK cool - all done go launch the home activity!")

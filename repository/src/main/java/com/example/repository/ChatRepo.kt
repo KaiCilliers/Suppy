@@ -2,12 +2,26 @@ package com.example.repository
 
 import androidx.lifecycle.LiveData
 import com.example.database.LocalDatabase
+import com.example.database.chat.ChatDao
 import com.example.models.chat.EntityChat
 import com.example.models.chat.UpdateChatDescription
+import com.example.repository.webservicemodule.Server
+import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import timber.log.Timber
 
-class ChatRepo {
-    private val dao = LocalDatabase.justgetinstance().chatDao()
+class ChatRepo(val dao: ChatDao) {
+    /**
+     * Checks if the chat table contains
+     * any data
+     */
+    suspend fun isEmpty(): Boolean {
+        dao.getAnyRow()?.let { return false }
+        return true
+    }
+
+    /**
+     * Insert a chat records
+     */
     suspend fun insert(chat: EntityChat) {
         dao.insert(chat)
     }
@@ -28,6 +42,12 @@ class ChatRepo {
         Timber.d("Repo fetch all chats...")
         return dao.all()
     }
+    /**
+     * List of all chats from database
+     * wrapped in LiveData
+     * TODO determine if using a variable is better than the function call
+     */
+    val chats by lazy { dao.all() }
     /**
      * Fetch chats without LiveData wrapper for
      * debugging purposes
@@ -59,5 +79,17 @@ class ChatRepo {
         val updateChat = UpdateChatDescription(chatId, message)
         Timber.d("Partial chat object: $updateChat")
         dao.updateChatDescription(updateChat)
+    }
+
+    /**
+     * Single instance of repository
+     * TODO consult Elegant Objects Vol 1 & 2 for alternative to singleton
+     */
+    companion object {
+        @Volatile private var INSTANCE: ChatRepo? = null
+        fun instance(dao: ChatDao) =
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: ChatRepo(dao).also { INSTANCE = it }
+            }
     }
 }

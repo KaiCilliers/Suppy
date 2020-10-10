@@ -1,5 +1,6 @@
 package com.example.repository.webservicemodule
 
+import com.example.database.LocalDatabase
 import com.example.models.RosterEntry
 import com.example.models.RosterGroup
 import com.example.models.chat.EntityChat
@@ -140,12 +141,21 @@ class ConnectionListener : ConnectionListener,
         entries.forEach {
             roomChats.add(it.asRoom())
         }
-//        MainScope().launch {
-//            withContext(Dispatchers.IO) {
-//                Timber.d("Repopulating database")
-//                ChatRepo().repopulate(roomChats)
-//            }
-//        }
+        /**
+         * Check if chat table is empty
+         * and if so populate it with Roster
+         * data. It will be empty mostly due
+         * to database schema changes
+         * TODO determine if it works
+         */
+        MainScope().launch {
+            if (ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).isEmpty()) {
+                withContext(Dispatchers.IO) {
+                    Timber.d("Repopulating database")
+                    ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).repopulate(roomChats)
+                }
+            }
+        }
     }
 
     override fun onRosterLoadingFailed(exception: Exception?) {

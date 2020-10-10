@@ -13,6 +13,8 @@ import com.example.repository.MessageRepo
 import com.example.repository.webservicemodule.Server
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.SomeDataModel
+import com.example.suppy.util.CoroutineContextSource
+import com.example.suppy.util.viewModelIO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,11 +26,30 @@ import kotlin.collections.ArrayList
 
 /**
  * NOTE use [AndroidViewModel] only if your view model requires context
+ * TODO pass repo reference to chatsViewmodel
+ * TODO pass coroutine dispatcher here for testing later down the line
+ * EXAMPLE
+ * priv val repo: Repo,
+ * priv val ioDispatcher: CoroutineDispatcher
  */
-class ChatsViewModel : ViewModel() {
+class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
     lateinit var bundle: DomainChat
     lateinit var chatMan: ChatManager
     lateinit var chat: Chat
+
+    /**
+     * Simply to take note of the viewmodel's
+     * lifecycle awareness aspects
+     * TODO temp
+     */
+    init {
+        Timber.d("ChatsViewModel created!")
+    }
+    override fun onCleared() {
+        super.onCleared()
+        Timber.d("ChatsViewModel destroyed!")
+    }
+
     /**
      * Used to store randomly generated chat records
      * to be used to remove those records again on
@@ -60,13 +81,27 @@ class ChatsViewModel : ViewModel() {
     }
 
     /**
+     * Delete a chat by name which is
+     * obtained from the list item
+     * in the recyclerview
+     */
+    fun deleteByName(name: String) {
+        viewModelScope.launch {
+            // TODO also provide a variable here...or maybe just use Dispatchers.IO?
+            withContext(CoroutineContextSource().io) {
+                repo.deleteRow(name)
+            }
+        }
+    }
+
+    /**
      * Return all chats from database wrapped
      * in LiveData
      * TODO temp
      */
     fun getAllChatLocalData(): LiveData<List<EntityChat>> {
         Timber.d("Returning chat live data from VM (calling repo)")
-        return ChatRepo().chats()
+        return repo.chats()
     }
 
     /**
@@ -105,9 +140,9 @@ class ChatsViewModel : ViewModel() {
                  * changed and in turn the recyclerview's data gets refreshed with
                  * the latest data
                  */
-                val chatId = ChatRepo().getChatIdOf(message.fromName)
+                val chatId = repo.getChatIdOf(message.fromName)
                 Timber.d("Id of chat to be updated: $chatId with message ${message.body}")
-                ChatRepo().updateDescriptionOf(chatId, message.body)
+                repo.updateDescriptionOf(chatId, message.body)
             }
         }
     }
@@ -131,7 +166,7 @@ class ChatsViewModel : ViewModel() {
         randomRecordsCount()
         Timber.d("Viewmodel wants to fetch all the chats from local storage...")
         viewModelScope.launch(Dispatchers.IO) {
-            val data = ChatRepo().justChats()
+            val data = repo.justChats()
             Timber.d("Local chats from database:")
             data.forEach {
                 Timber.d("[id=${it.id}, name=${it.chatName}]")
@@ -151,10 +186,9 @@ class ChatsViewModel : ViewModel() {
         val toBeRemoved = addedRecords.get(random)
         addedRecords.remove(toBeRemoved)
         randomRecordsCount()
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                ChatRepo().deleteRow(toBeRemoved.chatName)
-            }
+        // TODO replace rest of viewmodelscope.launch with this extension function
+        viewModelIO {
+            repo.deleteRow(toBeRemoved.chatName)
         }
     }
 
@@ -182,7 +216,7 @@ class ChatsViewModel : ViewModel() {
         randomRecordsCount()
         Timber.d("insert this: $s")
         viewModelScope.launch (Dispatchers.IO){
-            ChatRepo().insert(
+            repo.insert(
                 s
             )
         }

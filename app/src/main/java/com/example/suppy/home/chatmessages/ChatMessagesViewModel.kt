@@ -7,9 +7,23 @@ import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.Message
 import com.example.suppy.move_out.SomeDataModel
 import com.example.suppy.move_out.SomeMessages
+import timber.log.Timber
 import kotlin.random.Random
 
 class ChatMessagesViewModel : ViewModel() {
+    /**
+     * Simply to take note of the viewmodel's
+     * lifecycle awareness aspects
+     * TODO temp
+     */
+    init {
+        Timber.d("ChatMessagesViewModel created!")
+    }
+    override fun onCleared() {
+        super.onCleared()
+        Timber.d("ChatMessagesViewModel destroyed!")
+    }
+
     val def = SomeMessages(
         SomeDataModel("def", " "),
         arrayListOf(

@@ -8,14 +8,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.database.LocalDatabase
 import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.util.*
 import kotlinx.android.synthetic.main.fragment_chats.*
-import kotlinx.coroutines.*
-import org.jivesoftware.smack.chat2.Chat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import kotlin.random.Random
 
@@ -26,6 +31,7 @@ import kotlin.random.Random
 class ChatsFragment : Fragment() {
 
     private lateinit var viewModel: ChatsViewModel
+    private lateinit var factory: ChatsViewModelFactory
     private lateinit var chatAdapter: ChatsAdapter
 
     override fun onCreateView(
@@ -33,7 +39,9 @@ class ChatsFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentChatsBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
+        factory = ChatsViewModelFactory(ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()))
+        Timber.d("Called ViewModelProvider.get for ChatsViewModel1")
+        viewModel = ViewModelProvider(this, factory).get(ChatsViewModel::class.java)
         viewModel.apply {
             navigateToChatMessages.observeEvent(viewLifecycleOwner){
                 Timber.d("I should navigate...")
@@ -60,7 +68,8 @@ class ChatsFragment : Fragment() {
              */
             getLatestMessaageLocalData().subscribe(viewLifecycleOwner) {
                 it?.let {
-                    Timber.d("${it.recived}")
+                    Timber.d("Message has been received: ${it.recived}")
+                    Timber.d("$it")
                     if(!it.recived) {
                         Timber.d("HEY latest message: $it")
                         snackbar("${it.body} from ${it.fromName}", requireView())
@@ -73,18 +82,19 @@ class ChatsFragment : Fragment() {
         binding.apply { viewModel }
         /**
          * Display database contents at launch
+         * TODO obviously this is just for debugging
          */
         MainScope().launch {
             withContext(Dispatchers.IO) {
                 Timber.d("Chat table data:")
-                ChatRepo().justChats().forEach {
+                ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).justChats().forEach {
                     Timber.d("$it")
                 }
                 Timber.d("Message table data count: ${MessageRepo().justMessages().size}")
                 // This printout can get a bit much
-//                MessageRepo().justMessages().forEach {
-//                    Timber.d("$it")
-//                }
+                MessageRepo().justMessages().forEach {
+                    Timber.d("${it.timestamp} - ${it.id} - ${it.body}")
+                }
             }
         }
         return binding.root
@@ -162,14 +172,40 @@ class ChatsFragment : Fragment() {
         btn_fetch_db_records.gone()
         btn_send_msg_stanza.gone()
 
-        setupRecyclerView()
+        /**
+         * Add functionality to swipe in the recyclerview
+         * to delete that item
+         * TODO extract this logic to separate class
+         */
+        val itemInteraction = ItemTouchHelper(
+            object : ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            ) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val position = viewHolder.adapterPosition
+                    val item = chatAdapter.itemAtPosition(position)
+                    snackbar("To delete: $item", requireView())
+                    viewModel.deleteByName(item.chatName)
+                }
+            }
+        )
+        setupRecyclerView(itemInteraction)
     }
 
     /**
      * Configures the recyclerview called in
      * override fun [onViewCreated]
      */
-    private fun setupRecyclerView() {
+    private fun setupRecyclerView(touch: ItemTouchHelper) {
         Timber.d("setting up RC...")
         // For efficiency
         rc_chats.setHasFixedSize(true)
@@ -183,6 +219,7 @@ class ChatsFragment : Fragment() {
         rc_chats.addItemDecoration(dividerItemDecoration)
 
         Timber.d("Going to add layout and adapter to RC...")
+        touch.attachToRecyclerView(rc_chats)
         rc_chats.layoutManager = layoutManager
         rc_chats.adapter = chatAdapter
     }
