@@ -18,7 +18,7 @@ import timber.log.Timber
  */
 @Database(entities = [
     EntityChat::class, EntityMessage::class, EntityContact::class
-], version = 4, exportSchema = true)
+], version = 5, exportSchema = true)
 abstract class LocalDatabase  : RoomDatabase() {
     /**
      * Access points

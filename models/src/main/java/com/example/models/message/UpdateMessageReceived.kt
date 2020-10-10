@@ -15,5 +15,7 @@ data class UpdateMessageReceived(
     @ColumnInfo(name = "message_id")
     val id: String,
     @ColumnInfo(name = "received")
-    val rerecived: Boolean
+    val rerecived: Boolean,
+    @ColumnInfo(name = "counter_temp")
+    val counter_temp: Int = 0
 )
