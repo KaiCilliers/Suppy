@@ -175,6 +175,7 @@ class ChatsFragment : Fragment() {
         /**
          * Add functionality to swipe in the recyclerview
          * to delete that item
+         * TODO extract this logic to separate class
          */
         val itemInteraction = ItemTouchHelper(
             object : ItemTouchHelper.SimpleCallback(

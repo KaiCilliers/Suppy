@@ -1,5 +1,5 @@
 package com.example.suppy.util
-
+// TODO organise this file - perhaps extract the logic into separate files - perhaps consult Elegant Objects Vol 1 & 2 for a better approach
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle

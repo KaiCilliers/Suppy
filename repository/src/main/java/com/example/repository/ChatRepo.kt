@@ -83,6 +83,7 @@ class ChatRepo(val dao: ChatDao) {
 
     /**
      * Single instance of repository
+     * TODO consult Elegant Objects Vol 1 & 2 for alternative to singleton
      */
     companion object {
         @Volatile private var INSTANCE: ChatRepo? = null
