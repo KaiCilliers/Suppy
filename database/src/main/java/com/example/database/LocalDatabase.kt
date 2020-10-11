@@ -36,6 +36,15 @@ abstract class LocalDatabase  : RoomDatabase() {
         fun isInit(): Boolean{
             return ::INSTANCE.isInitialized
         }
+        /**
+         * Debugging method to immediately
+         * get database instance by the
+         * assumption that it is already
+         * initialized due to the splash
+         * screen waiting for the database
+         * initialization before calling
+         * the home activity
+         */
         fun justgetinstance(): LocalDatabase{
             return INSTANCE
         }

@@ -31,7 +31,7 @@ import kotlin.collections.ArrayList
  * priv val repo: Repo,
  * priv val ioDispatcher: CoroutineDispatcher
  */
-class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
+class ChatsViewModel(val repo: ChatRepo, val msgRepo: MessageRepo) : ViewModel() {
     lateinit var bundle: DomainChat
     lateinit var chatMan: ChatManager
     lateinit var chat: Chat
@@ -54,7 +54,7 @@ class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
      */
     fun unReceivedMessagesCounter(): LiveData<List<EntityMessage>> {
         Timber.d("Fetching all unreceived messages...")
-        return MessageRepo().getAllUnreceivedLiveData()
+        return msgRepo.getAllUnreceivedLiveData()
     }
 
     /**
@@ -84,7 +84,7 @@ class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
      * TODO temp
      */
     fun allUnReceived(): List<EntityMessage> {
-        return MessageRepo().getAllUnreceived()
+        return msgRepo.getAllUnreceived()
     }
 
     /**
@@ -127,7 +127,7 @@ class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
      */
     fun getLatestMessaageLocalData(): LiveData<EntityMessage> {
         Timber.d("Returning latest message live data from VM (calling repo)")
-        return MessageRepo().latestMessage()
+        return msgRepo.latestMessage()
     }
 
     /**
@@ -148,7 +148,7 @@ class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
                  */
                 Timber.d("Updating message received field: ${message.body} and ${message.fromName}")
                 val messageUpdate = UpdatedReceived(message.id, true, message.counter)
-                MessageRepo().updateReceivedValue(messageUpdate)
+                msgRepo.updateReceivedValue(messageUpdate)
                 /**
                  * Fetch chat id using the sender's name which is not ideal but
                  * it'll do for now. Then the id is used to update the chat with

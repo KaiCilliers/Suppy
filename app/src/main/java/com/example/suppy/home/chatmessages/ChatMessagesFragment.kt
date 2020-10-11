@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.database.LocalDatabase
+import com.example.repository.MessageRepo
 import com.example.suppy.databinding.FragmentChatMessagesBinding
 import com.example.suppy.util.argument
 import com.example.suppy.util.observeEvent
@@ -24,6 +26,7 @@ class ChatMessagesFragment : Fragment() {
     private lateinit var viewModel: ChatMessagesViewModel
     private var chat: String by argument()
     private lateinit var messageAdapter: ChatMessagesAdapter
+    private lateinit var factory: ChatMessagesViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +38,9 @@ class ChatMessagesFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentChatMessagesBinding.inflate(inflater)
+        factory = ChatMessagesViewModelFactory(MessageRepo.instance(LocalDatabase.justgetinstance().messageDao()))
         Timber.d("Called ViewModelProvider.get for ChatMessagesViewModel")
-        viewModel = ViewModelProvider(this).get(ChatMessagesViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(ChatMessagesViewModel::class.java)
         viewModel.apply {
             navigateToChats.observeEvent(viewLifecycleOwner){
                 findNavController().navigate(

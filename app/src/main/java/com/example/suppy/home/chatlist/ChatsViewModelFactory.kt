@@ -3,6 +3,7 @@ package com.example.suppy.home.chatlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.repository.ChatRepo
+import com.example.repository.MessageRepo
 import java.lang.IllegalArgumentException
 
 /**
@@ -12,10 +13,13 @@ import java.lang.IllegalArgumentException
  * most ViewModels you need at least a Repository argument passed
  * to it at its instantiation.
  */
-class ChatsViewModelFactory(private val chatRepository: ChatRepo) : ViewModelProvider.Factory {
+class ChatsViewModelFactory(
+    private val chatRepository: ChatRepo,
+    private val messageRepository: MessageRepo
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ChatsViewModel::class.java)) {
-            return ChatsViewModel(chatRepository) as T
+            return ChatsViewModel(chatRepository, messageRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class - Expected ChatsViewModel and got $modelClass")
     }

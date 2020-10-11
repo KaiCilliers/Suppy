@@ -236,7 +236,7 @@ class ConnectionListener : ConnectionListener,
         MainScope().launch {
             withContext(Dispatchers.IO) {
                 Timber.d("Adding new message to database...")
-                MessageRepo().insert(msg.asRoom())
+                MessageRepo.instance(LocalDatabase.justgetinstance().messageDao()).insert(msg.asRoom())
             }
         }
     }

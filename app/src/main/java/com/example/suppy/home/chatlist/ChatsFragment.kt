@@ -43,7 +43,10 @@ class ChatsFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentChatsBinding.inflate(inflater)
-        factory = ChatsViewModelFactory(ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()))
+        factory = ChatsViewModelFactory(
+            ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()),
+            MessageRepo.instance(LocalDatabase.justgetinstance().messageDao())
+        )
         Timber.d("Called ViewModelProvider.get for ChatsViewModel1")
         viewModel = ViewModelProvider(this, factory).get(ChatsViewModel::class.java)
         viewModel.apply {
@@ -99,7 +102,7 @@ class ChatsFragment : Fragment() {
                 ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).justChats().forEach {
                     Timber.d("$it")
                 }
-                val messages = MessageRepo().justMessages()
+                val messages = MessageRepo.instance(LocalDatabase.justgetinstance().messageDao()).justMessages()
                 Timber.d("Message table data count: ${messages.size}")
                 Timber.d("Message count from \"gastly\": ${messages.count { it.fromName == "gastly" }} " +
                         "of which ${messages.count { it.fromName == "gastly" && it.recived }} are recieved and " +
@@ -111,7 +114,7 @@ class ChatsFragment : Fragment() {
                         "of which ${messages.count { it.fromName == "magikarp" && it.recived }} are recieved and " +
                         "${messages.count { it.fromName == "magikarp" && !it.recived }} have not been received")
                 // This printout can get a bit much
-//                MessageRepo().justMessages().forEach {
+//                MessageRepo.instance(LocalDatabase.justgetinstance().messageDao()).justMessages().forEach {
 //                    Timber.d("${it.timestamp} - ${it.counter} - received: ${it.recived} - ${it.body}")
 //                }
                 val totalUnrecevied = viewModel.allUnReceived()

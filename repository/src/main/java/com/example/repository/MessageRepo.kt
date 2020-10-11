@@ -2,12 +2,13 @@ package com.example.repository
 
 import androidx.lifecycle.LiveData
 import com.example.database.LocalDatabase
+import com.example.database.chat.ChatDao
+import com.example.database.message.MessageDao
 import com.example.models.message.EntityMessage
 import com.example.models.message.UpdatedReceived
 import timber.log.Timber
 
-class MessageRepo {
-    private val dao = LocalDatabase.justgetinstance().messageDao()
+class MessageRepo(val dao: MessageDao) {
     fun messages(): LiveData<List<EntityMessage>>{
         Timber.d("Repo fetch all messages...")
         return dao.all()
@@ -68,5 +69,16 @@ class MessageRepo {
     suspend fun updateAllMessagesFromChatReceived(chatName: String) {
         Timber.d("Updating all messages from \"$chatName\" to received")
         dao.updateAllReceivedFromChat(chatName, true)
+    }
+    /**
+     * Single instance of repository
+     * TODO consult Elegant Objects Vol 1 & 2 for alternative to singleton
+     */
+    companion object {
+        @Volatile private var INSTANCE: MessageRepo? = null
+        fun instance(dao: MessageDao) =
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: MessageRepo(dao).also { INSTANCE = it }
+            }
     }
 }

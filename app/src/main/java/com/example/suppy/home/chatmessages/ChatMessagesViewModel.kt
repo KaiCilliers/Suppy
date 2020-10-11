@@ -10,7 +10,7 @@ import com.example.suppy.util.viewModelIO
 import timber.log.Timber
 import kotlin.random.Random
 
-class ChatMessagesViewModel : ViewModel() {
+class ChatMessagesViewModel(val repo: MessageRepo) : ViewModel() {
     /**
      * Simply to take note of the viewmodel's
      * lifecycle awareness aspects
@@ -32,7 +32,7 @@ class ChatMessagesViewModel : ViewModel() {
                 " because the user is on the screen with all the messages and thus it" +
                 " can be set as received")
         viewModelIO {
-            MessageRepo().updateAllMessagesFromChatReceived(chatName)
+            repo.updateAllMessagesFromChatReceived(chatName)
         }
     }
 
@@ -47,7 +47,7 @@ class ChatMessagesViewModel : ViewModel() {
          */
         Timber.d("Update all messages from $chatName to with received set to true")
         updateAllFromChatAsReceived(chatName)
-        return MessageRepo().allMessagesFrom(chatName)
+        return repo.allMessagesFrom(chatName)
     }
     /**
      * Basic navigation to Chats screen
