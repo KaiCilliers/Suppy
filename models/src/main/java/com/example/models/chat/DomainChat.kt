@@ -1,11 +1,11 @@
 package com.example.models.chat
 
+import com.example.models.chat.domain.Identification
+import com.example.models.chat.domain.MetaData
+import com.example.models.chat.domain.Status
+
 data class DomainChat(
-    val id: Int,
-    val chatName: String,
-    val lastActivity: String,
-    val mute: Boolean,
-    val description: String,
-    val creator: String,
-    val createdAt: String
+    val indentification: Identification,
+    val status: Status,
+    val metadata: MetaData
 )

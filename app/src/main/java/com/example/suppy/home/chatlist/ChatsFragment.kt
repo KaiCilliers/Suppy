@@ -52,7 +52,7 @@ class ChatsFragment : Fragment() {
 //                snackbar("${viewModel.bundle.chatName} last message was ${viewModel.bundle.description}", requireView())
                 findNavController().navigate(
                     R.id.action_chatsFragment_to_chatMessagesFragment,
-                    bundleOf("chat" to viewModel.bundle.chatName)
+                    bundleOf("chat" to viewModel.bundle.indentification.chatName)
                 )
             }
             /**
@@ -218,7 +218,7 @@ class ChatsFragment : Fragment() {
                     val position = viewHolder.adapterPosition
                     val item = chatAdapter.itemAtPosition(position)
                     snackbar("To delete: $item", requireView())
-                    viewModel.deleteByName(item.chatName)
+                    viewModel.deleteByName(item.indentification.chatName)
                 }
             }
         )

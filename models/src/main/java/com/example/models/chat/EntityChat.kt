@@ -3,6 +3,9 @@ package com.example.models.chat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
+import com.example.models.chat.domain.Identification
+import com.example.models.chat.domain.MetaData
+import com.example.models.chat.domain.Status
 import com.example.models.mapper.DomainMapper
 
 @Entity(tableName = "table_chat")
@@ -37,13 +40,19 @@ data class EntityChat(
 ) : DomainMapper<DomainChat> {
     override fun asDomain(): DomainChat {
         return DomainChat(
-            id = id,
-            chatName = chatName,
-            lastActivity = lastActivity,
-            mute = mute,
-            description = description,
-            creator = creator,
-            createdAt = createdAt
+            indentification = Identification(
+                id = id,
+                chatName = chatName,
+                description = description
+            ),
+            status = Status(
+                mute = mute,
+                lastActivity = lastActivity
+            ),
+            metadata = MetaData(
+                creator = creator,
+                createdAt = createdAt
+            )
         )
     }
 }

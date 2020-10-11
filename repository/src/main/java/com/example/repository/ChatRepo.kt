@@ -1,14 +1,10 @@
 package com.example.repository
 
 import androidx.lifecycle.LiveData
-import com.example.database.LocalDatabase
 import com.example.database.chat.ChatDao
 import com.example.models.chat.EntityChat
-import com.example.models.chat.UpdateChatDescription
-import com.example.models.chat.UpdateChatUnRead
-import com.example.models.message.EntityMessage
-import com.example.repository.webservicemodule.Server
-import org.jivesoftware.smack.tcp.XMPPTCPConnection
+import com.example.models.chat.UpdatedDescription
+import com.example.models.chat.UpdatedReceived
 import timber.log.Timber
 
 class ChatRepo(val dao: ChatDao) {
@@ -87,13 +83,13 @@ class ChatRepo(val dao: ChatDao) {
      * updated partial object
      */
     suspend fun updateDescriptionOf(chatId: Int, message: String) {
-        val updateChat = UpdateChatDescription(chatId, message)
+        val updateChat = UpdatedDescription(chatId, message)
         Timber.d("Partial chat object: $updateChat")
         dao.updateChatDescription(updateChat)
     }
 
     suspend fun updateUnReadOfChat(chatId: Int, counter: Int) {
-        val updateChat = UpdateChatUnRead(chatId, "$counter")
+        val updateChat = UpdatedReceived(chatId, "$counter")
         Timber.d("Partail chat object for unread: $updateChat")
         dao.updateChatUnReceived(updateChat)
     }
