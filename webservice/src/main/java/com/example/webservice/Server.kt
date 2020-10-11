@@ -61,6 +61,7 @@ class Server {
 
     /**
      * Single instance of server connection
+     * TODO a few attempts have been made to refactor the server connection class by adding an interface and removing the singleton
      */
     companion object {
         private lateinit var INSTANCE: XMPPTCPConnection
