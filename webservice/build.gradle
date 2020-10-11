@@ -1,65 +1,44 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'androidx.navigation.safeargs.kotlin' // Fragment Navigation
-apply plugin: "kotlin-kapt" // TODO remove
+apply plugin: "kotlin-kapt" // kotlin annotation processing tool
 
 android {
     compileSdkVersion Integer.parseInt(ANDROID_COMPILE_SDK_VERSION)
     buildToolsVersion BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId APPLICATION_ID
         minSdkVersion Integer.parseInt(ANDROID_MIN_SDK_VERSION)
         targetSdkVersion Integer.parseInt(ANDROID_TARGET_SDK_VERSION)
         versionCode Integer.parseInt(VERSION_CODE)
         versionName VERSION_NAME
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    buildFeatures {
-        dataBinding = true
-    }
-    kotlinOptions {
-        jvmTarget = JAVA_VIRTUAL_MACHINE_TARGET_VERSION
-    }
 }
 
 dependencies {
     // Local Dependencies
-    implementation project(":repository")
     implementation project(":models")
-    // TODO used for debugging i.e. remove
+    // TODO remove (this is just for debugging purposes atm)
+    implementation project(":repository")
     implementation project(":database")
-    implementation project(":webservice")
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.core:core-ktx:$androidx_core_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "com.google.android.material:material:$material_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
-
-    // Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-
-    // Extensions to simplify the fragment API
-    implementation "androidx.fragment:fragment-ktx:$fragmentx_version"
-
-    // SharedPreferences
-    implementation "androidx.preference:preference-ktx:$shared_pref_version"
 
     // XMPP
     implementation "org.igniterealtime.smack:smack-android:$smack_version"
@@ -71,13 +50,13 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timber_version"
     implementation "androidx.legacy:legacy-support-v4:$legacy_version"
 
-    //TODO remove
+    // Room database TODO this import is used just for the coroutines it provides...replace with proper import for coroutines
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.core:core-ktx:$androidx_core_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"

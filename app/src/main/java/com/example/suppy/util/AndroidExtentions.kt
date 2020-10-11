@@ -192,3 +192,8 @@ fun ViewModel.viewModelIO(block: suspend () -> Unit): Job {
         }
     }
 }
+
+/**
+ * Convert a List to an ArrayList
+ */
+fun <T> List<T>.toArrayList(): ArrayList<T> = ArrayList(this)

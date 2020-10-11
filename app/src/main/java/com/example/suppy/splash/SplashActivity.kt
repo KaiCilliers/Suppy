@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.database.LocalDatabase
 import com.example.repository.ChatRepo
-import com.example.repository.webservicemodule.Server
 import com.example.suppy.home.HomeActivity
+import com.example.webservice.Server
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
@@ -20,14 +20,12 @@ import timber.log.Timber
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val server = GlobalScope.async {
-            Timber.d("Splash server init thread = ${Thread.currentThread().name}")
-            Server.instance()
-        }
-        val db = GlobalScope.async {
-            Timber.d("Splash db init thread = ${Thread.currentThread().name}")
-            LocalDatabase.instance(applicationContext)
-        }
+        /**
+         * Server and database setup is performed here while splash screen
+         * is displayed to the user.
+         */
+        val server = GlobalScope.async { Server.instance() }
+        val db = GlobalScope.async { LocalDatabase.instance(applicationContext) }
         val x = MainScope().launch {
             Timber.d("server = ${server.await()} thread running on ${Thread.currentThread().name}")
             Timber.d("db = ${db.await()} thread running on ${Thread.currentThread().name}")

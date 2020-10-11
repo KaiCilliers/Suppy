@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".home.chatmessages.ChatMessagesFragment">
+    tools:context=".home.messages.MessagesFragment">
     <data>
         <variable
             name="viewModel"
-            type="com.example.suppy.home.chatmessages.ChatMessagesViewModel" />
+            type="com.example.suppy.home.messages.MessagesViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

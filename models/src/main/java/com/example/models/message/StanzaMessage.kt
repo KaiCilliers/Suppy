@@ -1,45 +1,36 @@
 package com.example.models.message
 
 import com.example.models.mapper.RoomMapper
+import com.example.models.message.stanza.From
+import com.example.models.message.stanza.Message
+import com.example.models.message.stanza.MetaData
+import com.example.models.message.stanza.To
 
 data class StanzaMessage(
-    private val id: String,
-    private val toBareJid: String,
-    private val toJid: String,
-    private val toName: String,
-    private val toResource: String,
-    private val fromBareJid: String,
-    private val fromJid: String,
-    private val fromName: String,
-    private val fromResource: String,
-    private val type: String,
-    private val body: String,
-    private val subject: String,
-    private val fromDomain: String,
-    private val error: String,
-    private val extensions: String,
-    private val received: Boolean,
-    private val timestamp: String
+    private val to: To,
+    private val from: From,
+    private val message: Message,
+    private val metaData: MetaData
 ) : RoomMapper<EntityMessage> {
     override fun asRoom(): EntityMessage {
         return EntityMessage(
-            id = id,
-            toBareJid = toBareJid,
-            toJid = toJid,
-            toName = toName,
-            toResource = toResource,
-            fromBareJid = fromBareJid,
-            fromJid = fromJid,
-            fromName = fromName,
-            fromResource = fromResource,
-            type = type,
-            body = body,
-            subject = subject,
-            fromDomain = fromDomain,
-            error = error,
-            extensions = extensions,
-            recived = received,
-            timestamp = timestamp,
+            id = message.id,
+            toBareJid = to.jid.bare,
+            toJid = to.jid.full,
+            toName = to.name,
+            toResource = to.resource,
+            fromBareJid = from.jid.bare,
+            fromJid = from.jid.full,
+            fromName = from.name,
+            fromResource = from.resource,
+            type = message.type,
+            body = message.body,
+            subject = message.subject,
+            fromDomain = from.domain,
+            error = metaData.error,
+            extensions = metaData.extensions,
+            recived = metaData.received,
+            timestamp = metaData.timestamp,
             counter = 0
         )
     }

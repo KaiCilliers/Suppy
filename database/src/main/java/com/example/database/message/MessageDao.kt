@@ -7,7 +7,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.example.database.BaseDao
 import com.example.models.message.EntityMessage
-import com.example.models.message.UpdateMessageReceived
+import com.example.models.message.UpdatedReceived
 
 @Dao
 abstract class MessageDao : BaseDao<EntityMessage>{
@@ -42,7 +42,7 @@ abstract class MessageDao : BaseDao<EntityMessage>{
      * Update message received value with partial entity object
      */
     @Update(entity = EntityMessage::class)
-    abstract suspend fun updateReceived(update: UpdateMessageReceived)
+    abstract suspend fun updateReceived(update: UpdatedReceived)
 
     /**
      * Get all data from Message table ordered by contact name
