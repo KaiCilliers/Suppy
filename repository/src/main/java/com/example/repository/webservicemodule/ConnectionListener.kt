@@ -1,9 +1,11 @@
 package com.example.repository.webservicemodule
 
 import com.example.database.LocalDatabase
-import com.example.models.RosterEntry
-import com.example.models.RosterGroup
+import com.example.models.chat.roster.impl.BasicRosterEntry
+import com.example.models.chat.roster.impl.BasicRosterGroup
 import com.example.models.chat.EntityChat
+import com.example.models.chat.roster.impl.Identification
+import com.example.models.chat.roster.impl.Status
 import com.example.models.message.StanzaMessage
 import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
@@ -103,32 +105,55 @@ class ConnectionListener : ConnectionListener,
      */
     override fun onRosterLoaded(roster: Roster?) {
         Timber.d("Roster - roster loaded: $roster. Individual entries follow:")
-        val entries = arrayListOf<RosterEntry>()
+        val entries = arrayListOf<BasicRosterEntry>()
         roster!!.entries.forEach {contact ->
-            val entry = RosterEntry(
+            val entry = BasicRosterEntry(
                 /**
                  * consider having two separate fields
                  * one for display and one for identifying
                  * chat by name instead of id in order
                  * to get the id
                  */
-                name = contact.jid.split('@')[0],
-                subType = "${contact.type}",
-                bareJid = "${contact.jid}",
-                approved = contact.isApproved,
-                subPending = contact.isSubscriptionPending,
+                /**
+                 * consider having two separate fields
+                 * one for display and one for identifying
+                 * chat by name instead of id in order
+                 * to get the id
+                 */
+                /**
+                 * consider having two separate fields
+                 * one for display and one for identifying
+                 * chat by name instead of id in order
+                 * to get the id
+                 */
+                /**
+                 * consider having two separate fields
+                 * one for display and one for identifying
+                 * chat by name instead of id in order
+                 * to get the id
+                 */
+                identification = Identification(
+                    name = contact.jid.split('@')[0],
+                    bareJid = "${contact.jid}"
+                ),
+                subscriptionType = "${contact.type}",
+                status = Status(
+                    approved = contact.isApproved,
+                    subscriptionPending = contact.isSubscriptionPending
+                ),
                 commonGroups = arrayListOf()
             )
             contact.groups.forEach{group ->
-                val groupEntry = RosterGroup(
-                    name = group.name,
-                    entries = arrayListOf(),
-                    memberCount = group.entryCount
-                )
+                val groupEntry =
+                    BasicRosterGroup(
+                        name = group.name,
+                        entries = arrayListOf(),
+                        memberCount = group.entryCount
+                    )
                 group.entries.forEach {
                     groupEntry.add(it.name)
                 }
-                entry.add(groupEntry)
+                entry.addGroup(groupEntry)
             }
             entries.add(entry)
         }

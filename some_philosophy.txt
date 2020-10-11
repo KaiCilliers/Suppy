@@ -1,0 +1,16 @@
+p21) A class is a factory of of objects, period. Stating that a class is a template of an object is conceptually wrong, as it depicts the class as a passive, brainless listing of code that is simply being copied somewhere when the time comes.
+Consider an object as a living organism, his class is his mother - that would be the most accurate metaphor.
+
+p22) The name of a class should not originate from the functionality that its objects expose. Instead, a class should be named by what he is, not what he does. In other words, objects must be characterized by their capabilities. What I am is manifested by what I can do, not by my attributes, like my height, weight, or color.
+How do we name a class properly? Look at what its objects will encapsulate and come up with a name for this group.
+
+p28) Single primary constructor with multiple secondary constructors that simple prepare the arguments, reformat them, parse them, transfrom them, etc. This allows for extra flexibility for constructing the object.
+
+p36) Code-free constructors: The constructor should not ask its arguments to do anything, because the constructor itself was not asked to do anything yet. It should only contain assignment statements. Instantiation is when we compose smaller objects into larget ones.
+
+p44) Encapsulate as little as possible with four objects being the maximum. If you need more attributes then group them into other objets, which together will organize a tree of objects. For example a car object encapsulates two objects - a type and VIN. Type encapsualtes the make, model, and year - thus we have a small tree of objects.
+
+p50) Always use an interface. This decouples objects from one another and allows you to freely modify an object without modifying the others it interacts with it. See an interface as a contract the our objects must obey in order to communicate with other objects. Try to make all public methods in your class implement some interfaces. With interfaces, you can freely swop out objects that provide a 'service' - the environment is now loosely coupled.
+
+p53) Method names: builders are nouns and manipulators are verbs. With a builder you are asking for a result, not telling the object what to do - not add(2,4): Int but sum(2,3): Int. Only exception to builder naming convention is when it returns a boolean value, these method names needs to be an adjective.
+
