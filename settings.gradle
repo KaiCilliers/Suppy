@@ -1,3 +1,4 @@
+include ':webservice'
 include ':repository'
 include ':models'
 include ':database'
