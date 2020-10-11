@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.database.chat.ChatDao
 import com.example.models.chat.EntityChat
 import com.example.models.chat.UpdatedDescription
-import com.example.models.chat.UpdatedReceived
+import com.example.models.chat.UpdatedUnread
 import timber.log.Timber
 
 class ChatRepo(val dao: ChatDao) {
@@ -89,7 +89,7 @@ class ChatRepo(val dao: ChatDao) {
     }
 
     suspend fun updateUnReadOfChat(chatId: Int, counter: Int) {
-        val updateChat = UpdatedReceived(chatId, "$counter")
+        val updateChat = UpdatedUnread(chatId, "$counter")
         Timber.d("Partail chat object for unread: $updateChat")
         dao.updateChatUnReceived(updateChat)
     }

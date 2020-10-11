@@ -7,6 +7,11 @@ import com.example.models.chat.EntityChat
 import com.example.models.chat.roster.impl.Identification
 import com.example.models.chat.roster.impl.Status
 import com.example.models.message.StanzaMessage
+import com.example.models.message.stanza.From
+import com.example.models.message.stanza.MetaData
+import com.example.models.message.stanza.To
+import com.example.models.message.stanza.Jid as dataJid
+import com.example.models.message.stanza.Message as dataMessage
 import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
 import kotlinx.coroutines.Dispatchers
@@ -190,23 +195,35 @@ class ConnectionListener : ConnectionListener,
     ) {
         Timber.d("New incoming message from: $from, message: '${message!!.body}' in chat:$chat")
         val msg = StanzaMessage(
-            id = message.stanzaId,
-            toBareJid = message.to.split('/')[0],
-            toJid = "${message.to}",
-            toName = message.to.split('@')[0],
-            toResource = message.to.split('/')[1],
-            fromBareJid = "${message.from.split("/")[0]}",
-            fromJid = "${message.from}",
-            fromName = message.from.split('@')[0],
-            fromResource = message.from.split('/')[1],
-            type = "${message.type}",
-            body = message.body,
-            subject = "${message.subject}",
-            fromDomain = "${from?.domain}",
-            error = "${message.error}",
-            extensions = "${message.extensions}",
-            received = false,
-            timestamp = "${Date()}"
+            to = To(
+                jid = dataJid(
+                    bare = message.to.split('/')[0],
+                    full = "${message.to}"
+                ),
+                name = message.to.split('@')[0],
+                resource = message.to.split('/')[1]
+            ),
+            from = From(
+                jid = dataJid(
+                    bare = "${message.from.split("/")[0]}",
+                    full = "${message.from}"
+                ),
+                name = message.from.split('@')[0],
+                resource = message.from.split('/')[1],
+                domain = "${from?.domain}"
+            ),
+            message = dataMessage(
+                id = message.stanzaId,
+                type = "${message.type}",
+                body = message.body,
+                subject = "${message.subject}"
+            ),
+            metaData = MetaData(
+                error = "${message.error}",
+                extensions = "${message.extensions}",
+                received = false,
+                timestamp = "${Date()}"
+            )
         )
         Timber.d("Captured Stanza Message: $msg")
         Timber.d("Converted Room Message: ${msg.asRoom()}")

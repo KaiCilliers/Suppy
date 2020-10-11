@@ -26,7 +26,7 @@ data class UpdatedDescription(
  * as the unread counter.
  * TODO it seems you can ommit the @Entity annotation for partial objects
  */
-data class UpdatedReceived(
+data class UpdatedUnread(
     @ColumnInfo(name = "chat_id")
     val id: Int,
     @ColumnInfo(name = "last_activity")

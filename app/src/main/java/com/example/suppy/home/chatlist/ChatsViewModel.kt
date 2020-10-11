@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.models.chat.DomainChat
 import com.example.models.chat.EntityChat
 import com.example.models.message.EntityMessage
-import com.example.models.message.UpdateMessageReceived
+import com.example.models.message.UpdatedReceived
 import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
 import com.example.repository.webservicemodule.Server
@@ -21,7 +21,6 @@ import kotlinx.coroutines.withContext
 import org.jivesoftware.smack.chat2.Chat
 import org.jivesoftware.smack.chat2.ChatManager
 import timber.log.Timber
-import java.time.zone.ZoneOffsetTransitionRule
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -149,7 +148,7 @@ class ChatsViewModel(val repo: ChatRepo) : ViewModel() {
                  * is set to false when the [ConnectionListener] receives it
                  */
                 Timber.d("Updating message received field: ${message.body} and ${message.fromName}")
-                val messageUpdate = UpdateMessageReceived(message.id, true, message.counter)
+                val messageUpdate = UpdatedReceived(message.id, true, message.counter)
                 MessageRepo().updateReceivedValue(messageUpdate)
                 /**
                  * Fetch chat id using the sender's name which is not ideal but

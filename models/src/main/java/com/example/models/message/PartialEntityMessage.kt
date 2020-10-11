@@ -11,7 +11,7 @@ import androidx.room.Entity
  * boolean
  */
 @Entity
-data class UpdateMessageReceived(
+data class UpdatedReceived(
     @ColumnInfo(name = "message_id")
     val id: String,
     @ColumnInfo(name = "received")

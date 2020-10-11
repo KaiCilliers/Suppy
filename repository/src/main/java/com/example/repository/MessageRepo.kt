@@ -3,7 +3,7 @@ package com.example.repository
 import androidx.lifecycle.LiveData
 import com.example.database.LocalDatabase
 import com.example.models.message.EntityMessage
-import com.example.models.message.UpdateMessageReceived
+import com.example.models.message.UpdatedReceived
 import timber.log.Timber
 
 class MessageRepo {
@@ -47,7 +47,7 @@ class MessageRepo {
      * Update description of chat item using an
      * updated partial object entity
      */
-    suspend fun updateReceivedValue(updated: UpdateMessageReceived) {
+    suspend fun updateReceivedValue(updated: UpdatedReceived) {
         Timber.d("Partial message object: $updated")
         dao.updateReceived(updated)
     }
