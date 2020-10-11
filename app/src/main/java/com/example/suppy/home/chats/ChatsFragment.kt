@@ -1,4 +1,4 @@
-package com.example.suppy.home.chatlist
+package com.example.suppy.home.chats
 
 import android.os.Bundle
 import android.view.LayoutInflater

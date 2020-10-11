@@ -1,4 +1,4 @@
-package com.example.suppy.home.chatmessages
+package com.example.suppy.home.messages
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,9 +8,8 @@ import com.example.repository.MessageRepo
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.util.viewModelIO
 import timber.log.Timber
-import kotlin.random.Random
 
-class ChatMessagesViewModel(val repo: MessageRepo) : ViewModel() {
+class MessagesViewModel(val repo: MessageRepo) : ViewModel() {
     /**
      * Simply to take note of the viewmodel's
      * lifecycle awareness aspects

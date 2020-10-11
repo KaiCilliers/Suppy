@@ -1,4 +1,4 @@
-package com.example.suppy.home.chatmessages
+package com.example.suppy.home.messages
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -21,12 +21,12 @@ import timber.log.Timber
  * [Fragment] for UI that displays a messages in a
  * specific conversation
  */
-class ChatMessagesFragment : Fragment() {
+class MessagesFragment : Fragment() {
 
-    private lateinit var viewModel: ChatMessagesViewModel
+    private lateinit var viewModel: MessagesViewModel
     private var chat: String by argument()
     private lateinit var messageAdapter: ChatMessagesAdapter
-    private lateinit var factory: ChatMessagesViewModelFactory
+    private lateinit var factory: MessagesViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +38,13 @@ class ChatMessagesFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentChatMessagesBinding.inflate(inflater)
-        factory = ChatMessagesViewModelFactory(MessageRepo.instance(LocalDatabase.justgetinstance().messageDao()))
+        factory = MessagesViewModelFactory(MessageRepo.instance(LocalDatabase.justgetinstance().messageDao()))
         Timber.d("Called ViewModelProvider.get for ChatMessagesViewModel")
-        viewModel = ViewModelProvider(this, factory).get(ChatMessagesViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(MessagesViewModel::class.java)
         viewModel.apply {
             navigateToChats.observeEvent(viewLifecycleOwner){
                 findNavController().navigate(
-                    ChatMessagesFragmentDirections.actionChatMessagesFragmentToChatsFragment()
+                    MessagesFragmentDirections.actionChatMessagesFragmentToChatsFragment()
                 )
             }
             /**
