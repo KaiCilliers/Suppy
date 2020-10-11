@@ -1,4 +1,4 @@
-package com.example.repository.webservicemodule
+package com.example.webservice
 
 import com.example.database.LocalDatabase
 import com.example.models.chat.roster.impl.BasicRosterEntry
@@ -34,6 +34,12 @@ import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
+/**
+ * This mammoth of a class is used as a collection of listeners to
+ * add to the server instance to monitor how the Smack library
+ * works
+ * TODO Break this class into smaller classes and keep useful listeners
+ */
 class ConnectionListener : ConnectionListener,
     RosterListener, RosterLoadedListener, SubscribeListener,
     OutgoingChatMessageListener, IncomingChatMessageListener,

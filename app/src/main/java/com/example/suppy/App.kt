@@ -5,11 +5,9 @@ import com.example.database.LocalDatabase
 import com.example.repository.ChatRepo
 import com.example.repository.ContactRepo
 import com.example.repository.MessageRepo
-import com.example.repository.webservicemodule.Server
-import kotlinx.coroutines.*
+import com.example.webservice.Server
 import org.jivesoftware.smack.SmackConfiguration
 import timber.log.Timber
-import kotlin.coroutines.CoroutineContext
 
 /**
  * Base class of the app

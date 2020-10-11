@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: "kotlin-kapt" // kotlin annotation processing tool
 
 android {
     compileSdkVersion Integer.parseInt(ANDROID_COMPILE_SDK_VERSION)
@@ -31,7 +32,14 @@ android {
 }
 
 dependencies {
+    // Local Dependencies
+    implementation project(":models")
+    // TODO remove (this is just for debugging purposes atm)
+    implementation project(":repository")
+    implementation project(":database")
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
+
     // XMPP
     implementation "org.igniterealtime.smack:smack-android:$smack_version"
     implementation "org.igniterealtime.smack:smack-tcp:$smack_version"
@@ -41,6 +49,10 @@ dependencies {
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
     implementation "androidx.legacy:legacy-support-v4:$legacy_version"
+
+    // Room database TODO this import is used just for the coroutines it provides...replace with proper import for coroutines
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$androidx_core_version"

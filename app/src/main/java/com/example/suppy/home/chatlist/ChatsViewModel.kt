@@ -10,7 +10,7 @@ import com.example.models.message.EntityMessage
 import com.example.models.message.UpdatedReceived
 import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
-import com.example.repository.webservicemodule.Server
+import com.example.webservice.Server
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.move_out.SomeDataModel
 import com.example.suppy.util.CoroutineContextSource

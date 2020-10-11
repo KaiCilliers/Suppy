@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.database.LocalDatabase
 import com.example.repository.ChatRepo
-import com.example.repository.webservicemodule.Server
+import com.example.webservice.Server
 import com.example.suppy.home.HomeActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
@@ -22,7 +22,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val server = GlobalScope.async {
             Timber.d("Splash server init thread = ${Thread.currentThread().name}")
-            Server.instance()
+            com.example.webservice.Server.instance()
         }
         val db = GlobalScope.async {
             Timber.d("Splash db init thread = ${Thread.currentThread().name}")

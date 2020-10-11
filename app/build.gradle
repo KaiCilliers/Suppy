@@ -40,8 +40,9 @@ dependencies {
     // Local Dependencies
     implementation project(":repository")
     implementation project(":models")
-    // TODO remove
+    // TODO used for debugging i.e. remove
     implementation project(":database")
+    implementation project(":webservice")
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

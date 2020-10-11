@@ -1,16 +1,12 @@
-package com.example.repository.webservicemodule
+package com.example.webservice
 
 import org.jivesoftware.smack.*
-import com.example.repository.webservicemodule.ConnectionListener as ListenToAll
 import org.jivesoftware.smack.chat2.ChatManager
 import org.jivesoftware.smack.filter.StanzaFilter
-import org.jivesoftware.smack.packet.Stanza
 import org.jivesoftware.smack.roster.Roster
 import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
-import org.jxmpp.jid.impl.JidCreate
 import timber.log.Timber
-import java.lang.Exception
 
 class Server {
     /**
@@ -50,16 +46,16 @@ class Server {
      * Listeners to better monitor network activity
      */
     private fun setupListeners() {
-        connection.addConnectionListener(ListenToAll())
-        connection.addAsyncStanzaListener(ListenToAll(), StanzaFilter { true })
-        roster.addRosterListener(ListenToAll())
-        roster.addRosterLoadedListener(ListenToAll())
-        roster.addPresenceEventListener(ListenToAll())
-        roster.addSubscribeListener(ListenToAll())
+        connection.addConnectionListener(ConnectionListener())
+        connection.addAsyncStanzaListener(ConnectionListener(), StanzaFilter { true })
+        roster.addRosterListener(ConnectionListener())
+        roster.addRosterLoadedListener(ConnectionListener())
+        roster.addPresenceEventListener(ConnectionListener())
+        roster.addSubscribeListener(ConnectionListener())
         reconnectManager.enableAutomaticReconnection()
-        reconnectManager.addReconnectionListener(ListenToAll())
-        chatManager.addIncomingListener(ListenToAll())
-        chatManager.addOutgoingListener(ListenToAll())
+        reconnectManager.addReconnectionListener(ConnectionListener())
+        chatManager.addIncomingListener(ConnectionListener())
+        chatManager.addOutgoingListener(ConnectionListener())
         Timber.v("Server listeners setup complete...")
     }
 
@@ -71,7 +67,8 @@ class Server {
         fun instance(): XMPPTCPConnection {
             synchronized(Server::class.java) {
                 if(!::INSTANCE.isInitialized) {
-                    INSTANCE = Server().build()
+                    INSTANCE = Server()
+                        .build()
                 }
             }
             Timber.d("Returning instance of server...")
