@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.models.chat.DomainChat
 import com.example.suppy.databinding.FragmentChatMessagesBinding
-import com.example.suppy.move_out.SomeMessages
 import com.example.suppy.util.argument
 import com.example.suppy.util.observeEvent
 import com.example.suppy.util.subscribe
@@ -88,14 +86,6 @@ class ChatMessagesFragment : Fragment() {
      */
     private fun setupRecyclerView(data: String) {
         Timber.d("I should fetch messages from \"${data}\"...")
-        var print: SomeMessages = viewModel.def
-        when(data){
-            "weedle" -> print = viewModel.zero
-            "gastly" -> print = viewModel.one
-            "magikarp" -> print = viewModel.two
-        }
-        Timber.d("DATA: ${print!!}")
-
         // For efficiency
         rc_messages.setHasFixedSize(true)
         rc_messages.setItemViewCacheSize(20)

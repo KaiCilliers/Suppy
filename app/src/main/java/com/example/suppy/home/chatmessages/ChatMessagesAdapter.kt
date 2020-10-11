@@ -4,11 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.models.chat.DomainChat
 import com.example.models.message.DomainMessage
 import com.example.suppy.databinding.RowMessagesBinding
-import com.example.suppy.move_out.Message
-import com.example.suppy.util.snackbar
 import timber.log.Timber
 
 /**
