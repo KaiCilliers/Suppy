@@ -30,7 +30,6 @@ import timber.log.Timber
  * conversations
  */
 class ChatsFragment : Fragment() {
-
     /**
      * Initialize at first call then afterwards return value
      */
@@ -88,14 +87,14 @@ class ChatsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        uiSetup()
+        setupUI()
     }
 
     /**
      * Configures the recyclerview called in
      * override fun [onViewCreated]
      */
-    private fun uiSetup() {
+    private fun setupUI() {
         btn_send_msg_stanza.gone()
         btn_fetch_db_records.gone()
         btn_delete_record.gone()

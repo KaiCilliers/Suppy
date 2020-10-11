@@ -11,40 +11,27 @@ import timber.log.Timber
 
 class MessagesViewModel(val repo: MessageRepo) : ViewModel() {
     /**
-     * Simply to take note of the viewmodel's
-     * lifecycle awareness aspects
-     * TODO temp
-     */
-    init {
-        Timber.d("ChatMessagesViewModel created!")
-    }
-    override fun onCleared() {
-        super.onCleared()
-        Timber.d("ChatMessagesViewModel destroyed!")
-    }
-
-    /**
      * Update all messages from a specific chat to true
      */
     private fun updateAllFromChatAsReceived(chatName: String) {
-        Timber.d("Going to update all messages from \"$chatName\" as received" +
-                " because the user is on the screen with all the messages and thus it" +
-                " can be set as received")
+        Timber.v("""
+            Going to update all messages from \"$chatName\" as received
+            because the user is on the screen with all the messages and thus it
+            can be set as received
+        """.trimIndent())
         viewModelIO {
             repo.updateAllMessagesFromChatReceived(chatName)
         }
     }
-
     /**
      * Returns all messages from a specific chat wrapped in LiveData
      */
     fun getAllMessagesFromChatLocalData(chatName: String): LiveData<List<EntityMessage>> {
-        Timber.d("Returning message live data from \"$chatName\" from viewmodel")
+        Timber.v("Fetching all messages from \"$chatName\", updating them to be received - then returning...")
         /**
          * Updating the entire chat's messages to have a true value for received attribute
          * TODO records that are fetched are not the latest data as the fetch does not wait for the update to finish
          */
-        Timber.d("Update all messages from $chatName to with received set to true")
         updateAllFromChatAsReceived(chatName)
         return repo.allMessagesFrom(chatName)
     }

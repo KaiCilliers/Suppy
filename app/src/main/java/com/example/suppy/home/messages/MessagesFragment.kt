@@ -22,25 +22,24 @@ import timber.log.Timber
  * specific conversation
  */
 class MessagesFragment : Fragment() {
-
-    private lateinit var viewModel: MessagesViewModel
+    /**
+     * Initialize at first call then afterwards return value
+     */
     private var chat: String by argument()
-    private lateinit var messageAdapter: ChatMessagesAdapter
-    private lateinit var factory: MessagesViewModelFactory
+    private val viewModel by lazy { ViewModelProvider(this, factory).get(MessagesViewModel::class.java) }
+    private val messageAdapter by lazy { MessagesAdapter(context = requireContext()) }
+    private val factory by lazy { MessagesViewModelFactory(msgRepo) }
+    private val msgRepo by lazy { MessageRepo(LocalDatabase.justgetinstance().messageDao()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.d("Chat clicked was: $chat")
+        Timber.v("Chat clicked was: $chat")
     }
-
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentChatMessagesBinding.inflate(inflater)
-        factory = MessagesViewModelFactory(MessageRepo.instance(LocalDatabase.justgetinstance().messageDao()))
-        Timber.d("Called ViewModelProvider.get for ChatMessagesViewModel")
-        viewModel = ViewModelProvider(this, factory).get(MessagesViewModel::class.java)
         viewModel.apply {
             navigateToChats.observeEvent(viewLifecycleOwner){
                 findNavController().navigate(
@@ -53,16 +52,11 @@ class MessagesFragment : Fragment() {
              * TODO mayhap not here - but if another message arrives from a different chat - it has to be handled in some way otherwise it just gets lost
              */
             getAllMessagesFromChatLocalData(chat).subscribe(viewLifecycleOwner) {data ->
-                Timber.d("inside the observing message code with ${data.size} messages")
-                data.forEach { msg ->
-                    Timber.d("Message: ${msg.fromName}")
-                }
-                Timber.d("Message count: ${data.size}")
+                Timber.v("Updating message adapter's data with $data")
                 val domainMessages = data.map { it.asDomain() }
-                messageAdapter.setData(domainMessages)
+                messageAdapter.populate(domainMessages)
             }
         }
-        setupAdapter()
         //TODO Navigation does not work with binding.apply{viewModel}
         binding.viewModel = viewModel
         return binding.root
@@ -70,38 +64,15 @@ class MessagesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView(chat)
+        setupUI(chat)
     }
-
-    private fun setupAdapter() {
-        Timber.d("Setup message adapter called...where the adapter is initialised with context")
-        messageAdapter = ChatMessagesAdapter(context = requireContext())
-    }
-
     /**
-     * Setup recyclerview with dummy data depending on
-     * what list item was clicked on previous screen.
-     *
-     * The chat names are randomly generated, so the
-     * first number of the chat name determines what data
-     * is shown. There are 11 possible sets of messages
-     * (one being a default to determine if there is a bug)
-     * that can be displayed
+     * Configures the recyclerview
      */
-    private fun setupRecyclerView(data: String) {
-        Timber.d("I should fetch messages from \"${data}\"...")
-        // For efficiency
+    private fun setupUI(data: String) {
         rc_messages.setHasFixedSize(true)
         rc_messages.setItemViewCacheSize(20)
-
         rc_messages.layoutManager = LinearLayoutManager(context)
         rc_messages.adapter = messageAdapter
     }
-
-    /**
-     * Temporary method to determine what dummy data to use as messages
-     * This allows verification that specific data was displayed based
-     * on the list item clicked in previous screen
-     */
-    private fun getIndex(input: String): Int = "${input.split(" ")[2][0]}".toInt()
 }
