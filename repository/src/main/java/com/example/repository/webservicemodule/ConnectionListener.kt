@@ -114,24 +114,6 @@ class ConnectionListener : ConnectionListener,
                  * chat by name instead of id in order
                  * to get the id
                  */
-                /**
-                 * consider having two separate fields
-                 * one for display and one for identifying
-                 * chat by name instead of id in order
-                 * to get the id
-                 */
-                /**
-                 * consider having two separate fields
-                 * one for display and one for identifying
-                 * chat by name instead of id in order
-                 * to get the id
-                 */
-                /**
-                 * consider having two separate fields
-                 * one for display and one for identifying
-                 * chat by name instead of id in order
-                 * to get the id
-                 */
                 identification = Identification(
                     name = contact.jid.split('@')[0],
                     bareJid = "${contact.jid}"
