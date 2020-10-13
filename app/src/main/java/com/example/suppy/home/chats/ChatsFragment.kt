@@ -1,5 +1,6 @@
 package com.example.suppy.home.chats
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
 import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
+import com.example.suppy.home.HomeActivity
 import com.example.suppy.util.*
 import kotlinx.android.synthetic.main.fragment_chats.*
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +40,15 @@ class ChatsFragment : Fragment() {
     private val factory by lazy { ChatsViewModelFactory(chatRepo, msgRepo) }
     private val chatRepo by lazy { ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()) }
     private val msgRepo by lazy { MessageRepo.instance( LocalDatabase.justgetinstance().messageDao()) }
+
+    /**
+     * TODO this method might not be called all the time - no guarantees which can cause context to be null? But param is not nullable...anyway, if that is the case then move code to other lifecycle method :)
+     */
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Timber.d("Parcel data: ${(context as HomeActivity).parcel.color}")
+        Timber.d("Cereal data: ${(context as HomeActivity).cereal.color}")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

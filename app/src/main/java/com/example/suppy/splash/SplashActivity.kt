@@ -3,15 +3,19 @@ package com.example.suppy.splash
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import com.example.database.LocalDatabase
 import com.example.repository.ChatRepo
 import com.example.suppy.home.HomeActivity
 import com.example.webservice.Server
+import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.Serializable
 
 /**
  * Simple splash screen that immediately loads [HomeActivity]
@@ -24,6 +28,8 @@ class SplashActivity : AppCompatActivity() {
          * Server and database setup is performed here while splash screen
          * is displayed to the user.
          */
+        val parcel = ClassA("brown")
+        val cereal = ClassB("yeloow")
         val server = GlobalScope.async { Server.instance() }
         val db = GlobalScope.async { LocalDatabase.instance(applicationContext) }
         val x = MainScope().launch {
@@ -35,13 +41,14 @@ class SplashActivity : AppCompatActivity() {
             }
             Timber.d("chats = ${local.await()} thread running on ${Thread.currentThread().name}")
             Timber.d("OK cool - all done go launch the home activity!")
-            startActivity(
-                Intent(
-                    applicationContext,
-                    HomeActivity::class.java
-                )
-            )
+            val intent = Intent(applicationContext, HomeActivity::class.java)
+            intent.putExtra("myparcel", parcel)
+            intent.putExtra("mycereal", cereal)
+            startActivity(intent)
             finish()
         }
     }
 }
+@Parcelize
+class ClassA(val color: String) : Parcelable
+class ClassB(val color: String) : Serializable
