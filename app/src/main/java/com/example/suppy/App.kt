@@ -1,6 +1,9 @@
 package com.example.suppy
 
 import android.app.Application
+import com.example.webservice.impl.DefaultConfiguration
+import com.example.webservice.impl.BaseServer
+import com.example.webservice.Server
 import org.jivesoftware.smack.SmackConfiguration
 import timber.log.Timber
 
@@ -11,6 +14,20 @@ import timber.log.Timber
  * TODO modularise your application by layer until app is promising and shows promise, then migrate to a modularise by layer/feature hybrid
  */
 class App : Application() {
+    /**
+     * The server object is created here to allow
+     * activities and fragments to access the same
+     * instance without having to create a singleton.
+     * Passing the server object via [Parcelable]
+     * or [Serializable] is not possible due to
+     * [XMPPTCPConnection] does not implement
+     * either interfaces
+     */
+    val server: Server by lazy {
+        BaseServer(
+            DefaultConfiguration()
+        )
+    }
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())

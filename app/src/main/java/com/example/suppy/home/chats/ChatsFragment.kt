@@ -46,8 +46,8 @@ class ChatsFragment : Fragment() {
      */
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Timber.d("Parcel data: ${(context as HomeActivity).parcel.color}")
-        Timber.d("Cereal data: ${(context as HomeActivity).cereal.color}")
+        val server = (activity as HomeActivity).server
+        Timber.d("I have received the server instance: $server")
     }
 
     override fun onCreateView(
