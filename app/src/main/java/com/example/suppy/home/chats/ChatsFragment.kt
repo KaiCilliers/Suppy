@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.database.LocalDatabase
+import com.example.database.database.LocalDatabase
 import com.example.repository.ChatRepo
 import com.example.repository.MessageRepo
 import com.example.suppy.R
@@ -47,7 +47,9 @@ class ChatsFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val server = (activity as HomeActivity).server
+        val database = (activity as HomeActivity).database
         Timber.d("I have received the server instance: $server")
+        Timber.d("I have received the database instance: $database")
     }
 
     override fun onCreateView(

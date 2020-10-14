@@ -1,6 +1,6 @@
 package com.example.webservice
 
-import com.example.database.LocalDatabase
+import com.example.database.database.LocalDatabase
 import com.example.models.chat.roster.impl.BasicRosterEntry
 import com.example.models.chat.roster.impl.BasicRosterGroup
 import com.example.models.chat.EntityChat

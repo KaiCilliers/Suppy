@@ -1,8 +1,6 @@
 package com.example.repository
 
 import androidx.lifecycle.LiveData
-import com.example.database.LocalDatabase
-import com.example.database.chat.ChatDao
 import com.example.database.message.MessageDao
 import com.example.models.message.EntityMessage
 import com.example.models.message.UpdatedReceived

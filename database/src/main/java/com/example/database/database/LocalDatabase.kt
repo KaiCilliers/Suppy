@@ -1,4 +1,4 @@
-package com.example.database
+package com.example.database.database
 
 import android.content.Context
 import androidx.room.Database
@@ -34,7 +34,7 @@ abstract class LocalDatabase  : RoomDatabase() {
         @Volatile
         private lateinit var INSTANCE: LocalDatabase
         fun isInit(): Boolean{
-            return ::INSTANCE.isInitialized
+            return Companion::INSTANCE.isInitialized
         }
         /**
          * Debugging method to immediately
@@ -44,8 +44,11 @@ abstract class LocalDatabase  : RoomDatabase() {
          * screen waiting for the database
          * initialization before calling
          * the home activity
+         *
+         * Basically get instance without
+         * having to provide context
          */
-        fun justgetinstance(): LocalDatabase{
+        fun justgetinstance(): LocalDatabase {
             return INSTANCE
         }
         fun instance(context: Context): LocalDatabase {

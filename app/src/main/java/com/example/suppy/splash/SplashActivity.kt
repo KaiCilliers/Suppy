@@ -3,7 +3,7 @@ package com.example.suppy.splash
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.database.LocalDatabase
+import com.example.database.database.LocalDatabase
 import com.example.repository.ChatRepo
 import com.example.suppy.App
 import com.example.suppy.home.HomeActivity
@@ -11,9 +11,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import timber.log.Timber
-import java.io.Serializable
 
 /**
  * Simple splash screen that immediately loads [HomeActivity]
@@ -28,9 +26,11 @@ class SplashActivity : AppCompatActivity() {
          * is displayed to the user.
          */
         val currentServerInstance = (application as App).server
+        val currentDatabaseInstance = (application as App).db
         Timber.d("Current server instance: $currentServerInstance")
+        Timber.d("Current datbase instance: $currentDatabaseInstance")
         val server = GlobalScope.async { currentServerInstance.login() }
-        val db = GlobalScope.async { LocalDatabase.instance(applicationContext) }
+        val db = GlobalScope.async { currentDatabaseInstance }
         MainScope().launch {
             currentServerInstance.monitor()
             Timber.d("server = ${server.await()} thread running on ${Thread.currentThread().name}")

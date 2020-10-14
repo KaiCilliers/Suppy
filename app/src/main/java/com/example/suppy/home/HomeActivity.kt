@@ -18,6 +18,7 @@ class HomeActivity : AppCompatActivity() {
      * to access the same server instance
      */
     val server by lazy { (application as App).server }
+    val database by lazy { (application as App).db }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

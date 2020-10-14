@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.database.LocalDatabase
+import com.example.database.database.LocalDatabase
 import com.example.repository.MessageRepo
 import com.example.suppy.databinding.FragmentChatMessagesBinding
 import com.example.suppy.util.argument

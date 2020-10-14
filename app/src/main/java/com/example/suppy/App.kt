@@ -1,6 +1,9 @@
 package com.example.suppy
 
 import android.app.Application
+import com.example.database.database.AccessPoints
+import com.example.database.database.impl.BaseAccessPoints
+import com.example.database.database.LocalDatabase
 import com.example.webservice.impl.DefaultConfiguration
 import com.example.webservice.impl.BaseServer
 import com.example.webservice.Server
@@ -26,6 +29,19 @@ class App : Application() {
     val server: Server by lazy {
         BaseServer(
             DefaultConfiguration()
+        )
+    }
+    /**
+     * The database object is also created here to
+     * isolate the singleton and only expose DAO
+     * objects to be passed down to each object
+     * that needs access to them. Singleton exists
+     * due to [Room] requirements for the database
+     * class to be either abstract or an interface
+     */
+    val db: AccessPoints by lazy {
+        BaseAccessPoints(
+            LocalDatabase.instance(this)
         )
     }
     override fun onCreate() {
