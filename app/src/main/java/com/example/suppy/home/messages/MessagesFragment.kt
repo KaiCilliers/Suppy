@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.database.LocalDatabase
-import com.example.repository.MessageRepo
+import com.example.repository.impl.MessageRepo
 import com.example.suppy.databinding.FragmentChatMessagesBinding
+import com.example.suppy.home.HomeActivity
 import com.example.suppy.util.argument
 import com.example.suppy.util.observeEvent
 import com.example.suppy.util.subscribe
@@ -25,11 +25,12 @@ class MessagesFragment : Fragment() {
     /**
      * Initialize at first call then afterwards return value
      */
-    private var chat: String by argument()
+    private val chat: String by argument()
+    private val database by lazy { (activity as HomeActivity).database }
     private val viewModel by lazy { ViewModelProvider(this, factory).get(MessagesViewModel::class.java) }
     private val messageAdapter by lazy { MessagesAdapter(context = requireContext()) }
     private val factory by lazy { MessagesViewModelFactory(msgRepo) }
-    private val msgRepo by lazy { MessageRepo(LocalDatabase.justgetinstance().messageDao()) }
+    private val msgRepo by lazy { MessageRepo(database.msgDao()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

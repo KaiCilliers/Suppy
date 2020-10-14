@@ -7,8 +7,8 @@ import com.example.models.chat.DomainChat
 import com.example.models.chat.EntityChat
 import com.example.models.message.EntityMessage
 import com.example.models.message.UpdatedReceived
-import com.example.repository.ChatRepo
-import com.example.repository.MessageRepo
+import com.example.repository.impl.ChatRepo
+import com.example.repository.impl.MessageRepo
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.util.viewModelIO
 import timber.log.Timber

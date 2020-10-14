@@ -1,13 +1,14 @@
-package com.example.repository
+package com.example.repository.impl
 
 import androidx.lifecycle.LiveData
 import com.example.database.chat.ChatDao
 import com.example.models.chat.EntityChat
 import com.example.models.chat.UpdatedDescription
 import com.example.models.chat.UpdatedUnread
+import com.example.repository.ChatRepository
 import timber.log.Timber
 
-class ChatRepo(val dao: ChatDao) {
+class ChatRepo(val dao: ChatDao) : ChatRepository {
     /**
      * Checks if the chat table contains
      * any data
@@ -92,17 +93,5 @@ class ChatRepo(val dao: ChatDao) {
         val updateChat = UpdatedUnread(chatId, "$counter")
         Timber.d("Partail chat object for unread: $updateChat")
         dao.updateChatUnReceived(updateChat)
-    }
-
-    /**
-     * Single instance of repository
-     * TODO consult Elegant Objects Vol 1 & 2 for alternative to singleton
-     */
-    companion object {
-        @Volatile private var INSTANCE: ChatRepo? = null
-        fun instance(dao: ChatDao) =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: ChatRepo(dao).also { INSTANCE = it }
-            }
     }
 }

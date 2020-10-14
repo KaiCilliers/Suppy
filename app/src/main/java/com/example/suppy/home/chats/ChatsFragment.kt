@@ -1,5 +1,6 @@
 package com.example.suppy.home.chats
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.database.LocalDatabase
-import com.example.repository.ChatRepo
-import com.example.repository.MessageRepo
+import com.example.repository.impl.ChatRepo
+import com.example.repository.impl.MessageRepo
 import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
+import com.example.suppy.home.HomeActivity
 import com.example.suppy.util.*
 import kotlinx.android.synthetic.main.fragment_chats.*
 import kotlinx.coroutines.Dispatchers
@@ -33,11 +34,27 @@ class ChatsFragment : Fragment() {
     /**
      * Initialize at first call then afterwards return value
      */
+    private val database by lazy { (activity as HomeActivity).database }
     private val chatAdapter by lazy { ChatsAdapter(context = requireContext(), itemClicked = viewModel) }
     private val viewModel by lazy { ViewModelProvider(this, factory).get(ChatsViewModel::class.java) }
     private val factory by lazy { ChatsViewModelFactory(chatRepo, msgRepo) }
-    private val chatRepo by lazy { ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()) }
-    private val msgRepo by lazy { MessageRepo.instance( LocalDatabase.justgetinstance().messageDao()) }
+    private val chatRepo by lazy { ChatRepo(database.chatDao()) }
+    private val msgRepo by lazy {
+        MessageRepo(
+            database.msgDao()
+        )
+    }
+
+    /**
+     * TODO this method might not be called all the time - no guarantees which can cause context to be null? But param is not nullable...anyway, if that is the case then move code to other lifecycle method :)
+     */
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val server = (activity as HomeActivity).server
+        val database = (activity as HomeActivity).database
+        Timber.d("I have received the server instance: $server")
+        Timber.d("I have received the database instance: $database")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -141,16 +158,16 @@ class ChatsFragment : Fragment() {
     )
     /**
      * Display database contents at launch
-     * TODO obviously this is just for debugging
+     * TODO obviously this is just for debugging, repo should only be accessed from VM
      */
     private fun debuggingPrintouts() {
         MainScope().launch {
             withContext(Dispatchers.IO) {
                 Timber.v("Chat table data:")
-                ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).justChats().forEach {
+                chatRepo.justChats().forEach {
                     Timber.v("$it")
                 }
-                val messages = MessageRepo.instance(LocalDatabase.justgetinstance().messageDao()).justMessages()
+                val messages = msgRepo.justMessages()
                 Timber.v("Message table data count: ${messages.size}")
                 Timber.v("""
                     Message count from \"gastly\": ${messages.count { it.fromName == "gastly" }} 

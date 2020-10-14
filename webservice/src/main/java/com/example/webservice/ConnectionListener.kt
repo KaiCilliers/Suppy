@@ -1,6 +1,5 @@
 package com.example.webservice
 
-import com.example.database.LocalDatabase
 import com.example.models.chat.roster.impl.BasicRosterEntry
 import com.example.models.chat.roster.impl.BasicRosterGroup
 import com.example.models.chat.EntityChat
@@ -12,8 +11,8 @@ import com.example.models.message.stanza.MetaData
 import com.example.models.message.stanza.To
 import com.example.models.message.stanza.Jid as dataJid
 import com.example.models.message.stanza.Message as dataMessage
-import com.example.repository.ChatRepo
-import com.example.repository.MessageRepo
+import com.example.repository.impl.ChatRepo
+import com.example.repository.impl.MessageRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -40,7 +39,10 @@ import java.util.*
  * works
  * TODO Break this class into smaller classes and keep useful listeners
  */
-class ConnectionListener : ConnectionListener,
+class ConnectionListener(
+    private val msgRepo: MessageRepo, // todo of type MessageRepository
+    private val chatRepo: ChatRepo // todo of type ChatRepository
+) : ConnectionListener,
     RosterListener, RosterLoadedListener, SubscribeListener,
     OutgoingChatMessageListener, IncomingChatMessageListener,
     PresenceEventListener, StanzaListener, InvitationListener,
@@ -167,10 +169,10 @@ class ConnectionListener : ConnectionListener,
          * TODO determine if it works
          */
         MainScope().launch {
-            if (ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).isEmpty()) {
+            if (chatRepo.isEmpty()) {
                 withContext(Dispatchers.IO) {
                     Timber.d("Repopulating database")
-                    ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).repopulate(roomChats)
+                    chatRepo.repopulate(roomChats)
                 }
             }
         }
@@ -236,7 +238,7 @@ class ConnectionListener : ConnectionListener,
         MainScope().launch {
             withContext(Dispatchers.IO) {
                 Timber.d("Adding new message to database...")
-                MessageRepo.instance(LocalDatabase.justgetinstance().messageDao()).insert(msg.asRoom())
+                msgRepo.insert(msg.asRoom())
             }
         }
     }

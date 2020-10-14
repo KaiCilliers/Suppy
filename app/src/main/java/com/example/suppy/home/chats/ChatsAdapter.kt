@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.models.chat.DomainChat
 import com.example.suppy.databinding.RowChatsBinding
 import com.example.suppy.util.onClick
-import com.example.suppy.util.toArrayList
 import timber.log.Timber
 
 /**
@@ -42,7 +41,7 @@ class ChatsAdapter(
             items.addAll(data)
             notifyDataSetChanged()
         } else {
-            items = data.toArrayList()
+            items = ArrayList(data)
         }
     }
     /**

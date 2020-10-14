@@ -2,9 +2,9 @@ package com.example.suppy.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
+import com.example.suppy.App
 import com.example.suppy.R
+import timber.log.Timber
 
 /**
  * Activity used with navigation graph to
@@ -13,8 +13,16 @@ import com.example.suppy.R
  * [ChatMessagesFragment]
  */
 class HomeActivity : AppCompatActivity() {
+    /**
+     * Represents the current server instance
+     * initialized in [App]. Allows fragments
+     * to access the same server instance
+     */
+    val server by lazy { (application as App).server }
+    val database by lazy { (application as App).db }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Timber.d("Server: $server && Database: $database")
     }
 }

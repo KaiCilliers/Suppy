@@ -2,8 +2,8 @@ package com.example.suppy.home.chats
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.repository.ChatRepo
-import com.example.repository.MessageRepo
+import com.example.repository.impl.ChatRepo
+import com.example.repository.impl.MessageRepo
 import java.lang.IllegalArgumentException
 
 /**
