@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.models.message.DomainMessage
 import com.example.suppy.databinding.RowMessagesBinding
 import com.example.suppy.util.onClick
-import com.example.suppy.util.toArrayList
 import timber.log.Timber
 
 /**
@@ -38,7 +37,7 @@ class MessagesAdapter (
             items.addAll(data)
             notifyDataSetChanged()
         } else {
-            items = data.toArrayList()
+            items = ArrayList(data)
         }
     }
     /**
