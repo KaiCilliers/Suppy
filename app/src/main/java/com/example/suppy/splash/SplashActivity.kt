@@ -7,7 +7,7 @@ import com.example.repository.impl.ChatRepo
 import com.example.repository.impl.MessageRepo
 import com.example.suppy.App
 import com.example.suppy.home.HomeActivity
-import com.example.webservice.ConnectionListener
+import com.example.repository.webservice.ConnectionListener
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
@@ -37,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
             connection.await()
             currentServerInstance.monitor(
                 ConnectionListener(
-                    MessageRepo(currentDatabaseInstance.msgDao()),
+                    MessageRepo(currentDatabaseInstance.msgDao(), currentServerInstance),
                     ChatRepo(currentDatabaseInstance.chatDao())
                 )
             )

@@ -26,11 +26,12 @@ class MessagesFragment : Fragment() {
      * Initialize at first call then afterwards return value
      */
     private val chat: String by argument()
+    private val server by lazy { (activity as HomeActivity).server }
     private val database by lazy { (activity as HomeActivity).database }
     private val viewModel by lazy { ViewModelProvider(this, factory).get(MessagesViewModel::class.java) }
     private val messageAdapter by lazy { MessagesAdapter(context = requireContext()) }
     private val factory by lazy { MessagesViewModelFactory(msgRepo) }
-    private val msgRepo by lazy { MessageRepo(database.msgDao()) }
+    private val msgRepo by lazy { MessageRepo(database.msgDao(), server) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +63,6 @@ class MessagesFragment : Fragment() {
         binding.viewModel = viewModel
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI(chat)

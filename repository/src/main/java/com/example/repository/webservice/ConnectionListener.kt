@@ -1,4 +1,4 @@
-package com.example.webservice
+package com.example.repository.webservice
 
 import com.example.models.chat.roster.impl.BasicRosterEntry
 import com.example.models.chat.roster.impl.BasicRosterGroup

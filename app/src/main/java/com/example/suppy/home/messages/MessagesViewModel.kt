@@ -7,9 +7,13 @@ import com.example.models.message.EntityMessage
 import com.example.repository.impl.MessageRepo
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.util.viewModelIO
+import com.example.repository.webservice.Server
 import timber.log.Timber
 
 class MessagesViewModel(val repo: MessageRepo) : ViewModel() {
+    fun send() {
+        repo.send()
+    }
     /**
      * Update all messages from a specific chat to true
      */

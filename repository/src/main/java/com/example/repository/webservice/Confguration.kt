@@ -1,4 +1,4 @@
-package com.example.webservice
+package com.example.repository.webservice
 
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
 

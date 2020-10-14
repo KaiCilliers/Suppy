@@ -4,9 +4,9 @@ import android.app.Application
 import com.example.database.database.AccessPoints
 import com.example.database.database.impl.BaseAccessPoints
 import com.example.database.database.LocalDatabase
-import com.example.webservice.impl.DefaultConfiguration
-import com.example.webservice.impl.BaseServer
-import com.example.webservice.Server
+import com.example.repository.webservice.impl.DefaultConfiguration
+import com.example.repository.webservice.impl.BaseServer
+import com.example.repository.webservice.Server
 import org.jivesoftware.smack.SmackConfiguration
 import timber.log.Timber
 

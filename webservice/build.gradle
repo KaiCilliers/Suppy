@@ -35,7 +35,6 @@ dependencies {
     // Local Dependencies
     implementation project(":models")
     // TODO remove (this is just for debugging purposes atm)
-    implementation project(":repository")
     implementation project(":database")
 
     implementation fileTree(dir: "libs", include: ["*.jar"])

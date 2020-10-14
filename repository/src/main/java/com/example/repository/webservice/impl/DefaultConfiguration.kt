@@ -1,7 +1,7 @@
-package com.example.webservice.impl
+package com.example.repository.webservice.impl
 
-import com.example.webservice.configuration.AuthDetails
-import com.example.webservice.Confguration
+import com.example.repository.webservice.configuration.AuthDetails
+import com.example.repository.webservice.Confguration
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
 
 /**
@@ -10,11 +10,11 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
  * Optional login details can be set
  */
 class DefaultConfiguration(
-    val authDetails: AuthDetails = AuthDetails(
+    val authDetails: com.example.repository.webservice.configuration.AuthDetails = com.example.repository.webservice.configuration.AuthDetails(
         "scyther",
         "1234"
     )
-) : Confguration {
+) : com.example.repository.webservice.Confguration {
     override fun build(): XMPPTCPConnectionConfiguration =
         XMPPTCPConnectionConfiguration.builder()
             .setUsernameAndPassword(authDetails.username, authDetails.password)

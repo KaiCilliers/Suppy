@@ -5,9 +5,25 @@ import com.example.database.message.MessageDao
 import com.example.models.message.EntityMessage
 import com.example.models.message.UpdatedReceived
 import com.example.repository.MessageRepository
+import com.example.repository.webservice.Server
+import org.jivesoftware.smack.packet.Message
+import org.jxmpp.jid.impl.JidCreate
 import timber.log.Timber
+import kotlin.random.Random
 
-class MessageRepo(val dao: MessageDao) : MessageRepository {
+class MessageRepo(val dao: MessageDao, val xmpp: Server) : MessageRepository {
+    fun send() {
+        val msg = Message()
+        msg.type = Message.Type.chat
+        msg.body = "My favourite number is: ${Random.nextInt(9999)}"
+        val msgTwo = Message(
+            JidCreate.bareFrom("weedle@jabber-hosting.de"),
+            Message.Type.chat
+        )
+        msgTwo.body = "I dislike the ${Random.nextInt(444)} rats in my garden"
+        Timber.d("My message as XML: ${msgTwo.toXML("hotdog")}")
+        xmpp.connection().sendStanza(msgTwo)
+    }
     fun messages(): LiveData<List<EntityMessage>>{
         Timber.d("Repo fetch all messages...")
         return dao.all()

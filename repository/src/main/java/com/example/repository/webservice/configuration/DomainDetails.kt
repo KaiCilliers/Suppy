@@ -1,4 +1,4 @@
-package com.example.webservice.configuration
+package com.example.repository.webservice.configuration
 
 /**
  * Represents a domain configuration
