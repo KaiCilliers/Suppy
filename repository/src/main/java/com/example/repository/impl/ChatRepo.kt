@@ -1,10 +1,11 @@
-package com.example.repository
+package com.example.repository.impl
 
 import androidx.lifecycle.LiveData
 import com.example.database.chat.ChatDao
 import com.example.models.chat.EntityChat
 import com.example.models.chat.UpdatedDescription
 import com.example.models.chat.UpdatedUnread
+import com.example.repository.ChatRepository
 import timber.log.Timber
 
 class ChatRepo(val dao: ChatDao) : ChatRepository {

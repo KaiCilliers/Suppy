@@ -2,7 +2,7 @@ package com.example.suppy.home.messages
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.repository.MessageRepo
+import com.example.repository.impl.MessageRepo
 import java.lang.IllegalArgumentException
 
 /**

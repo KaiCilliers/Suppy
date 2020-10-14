@@ -13,9 +13,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.database.database.LocalDatabase
-import com.example.repository.ChatRepo
-import com.example.repository.MessageRepo
+import com.example.repository.impl.ChatRepo
+import com.example.repository.impl.MessageRepo
 import com.example.suppy.R
 import com.example.suppy.databinding.FragmentChatsBinding
 import com.example.suppy.home.HomeActivity
@@ -40,7 +39,11 @@ class ChatsFragment : Fragment() {
     private val viewModel by lazy { ViewModelProvider(this, factory).get(ChatsViewModel::class.java) }
     private val factory by lazy { ChatsViewModelFactory(chatRepo, msgRepo) }
     private val chatRepo by lazy { ChatRepo(database.chatDao()) }
-    private val msgRepo by lazy { MessageRepo(database.msgDao()) }
+    private val msgRepo by lazy {
+        MessageRepo(
+            database.msgDao()
+        )
+    }
 
     /**
      * TODO this method might not be called all the time - no guarantees which can cause context to be null? But param is not nullable...anyway, if that is the case then move code to other lifecycle method :)

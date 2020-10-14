@@ -11,8 +11,8 @@ import com.example.models.message.stanza.MetaData
 import com.example.models.message.stanza.To
 import com.example.models.message.stanza.Jid as dataJid
 import com.example.models.message.stanza.Message as dataMessage
-import com.example.repository.ChatRepo
-import com.example.repository.MessageRepo
+import com.example.repository.impl.ChatRepo
+import com.example.repository.impl.MessageRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

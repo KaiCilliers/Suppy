@@ -1,9 +1,10 @@
-package com.example.repository
+package com.example.repository.impl
 
 import androidx.lifecycle.LiveData
 import com.example.database.message.MessageDao
 import com.example.models.message.EntityMessage
 import com.example.models.message.UpdatedReceived
+import com.example.repository.MessageRepository
 import timber.log.Timber
 
 class MessageRepo(val dao: MessageDao) : MessageRepository {

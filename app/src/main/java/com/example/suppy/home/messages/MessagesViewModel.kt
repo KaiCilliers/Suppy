@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.models.message.EntityMessage
-import com.example.repository.MessageRepo
+import com.example.repository.impl.MessageRepo
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.util.viewModelIO
 import timber.log.Timber

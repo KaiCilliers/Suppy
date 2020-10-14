@@ -3,9 +3,8 @@ package com.example.suppy.splash
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.database.database.LocalDatabase
-import com.example.repository.ChatRepo
-import com.example.repository.MessageRepo
+import com.example.repository.impl.ChatRepo
+import com.example.repository.impl.MessageRepo
 import com.example.suppy.App
 import com.example.suppy.home.HomeActivity
 import com.example.webservice.ConnectionListener

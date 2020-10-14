@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.repository.MessageRepo
+import com.example.repository.impl.MessageRepo
 import com.example.suppy.databinding.FragmentChatMessagesBinding
 import com.example.suppy.home.HomeActivity
 import com.example.suppy.util.argument
