@@ -35,18 +35,22 @@ class BaseServer(
     }
     /**
      * Listeners to better monitor network activity
+     * Decided to pass along the listener and not create it here
+     * due to Repositories being required in the listeners,
+     * because the listeners are the ones that let us know
+     * of new messages and any network activity really
      */
-    override fun monitor() {
-        connection.addConnectionListener(ConnectionListener())
-        connection.addAsyncStanzaListener(ConnectionListener(), StanzaFilter { true })
-        roster.addRosterListener(ConnectionListener())
-        roster.addRosterLoadedListener(ConnectionListener())
-        roster.addPresenceEventListener(ConnectionListener())
-        roster.addSubscribeListener(ConnectionListener())
+    override fun monitor(listener: ConnectionListener) {
+        connection.addConnectionListener(listener)
+        connection.addAsyncStanzaListener(listener, StanzaFilter { true })
+        roster.addRosterListener(listener)
+        roster.addRosterLoadedListener(listener)
+        roster.addPresenceEventListener(listener)
+        roster.addSubscribeListener(listener)
         reconnectManager.enableAutomaticReconnection()
-        reconnectManager.addReconnectionListener(ConnectionListener())
-        chatManager.addIncomingListener(ConnectionListener())
-        chatManager.addOutgoingListener(ConnectionListener())
+        reconnectManager.addReconnectionListener(listener)
+        chatManager.addIncomingListener(listener)
+        chatManager.addOutgoingListener(listener)
         Timber.v("Server listeners setup complete...")
     }
 

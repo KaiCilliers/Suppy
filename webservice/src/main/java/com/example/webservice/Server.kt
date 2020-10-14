@@ -8,5 +8,5 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnection
 interface Server {
     fun login(): XMPPTCPConnection
     fun connect()
-    fun monitor()
+    fun monitor(listener: ConnectionListener)
 }

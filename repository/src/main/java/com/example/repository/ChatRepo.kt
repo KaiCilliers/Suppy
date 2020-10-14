@@ -7,7 +7,7 @@ import com.example.models.chat.UpdatedDescription
 import com.example.models.chat.UpdatedUnread
 import timber.log.Timber
 
-class ChatRepo(val dao: ChatDao) {
+class ChatRepo(val dao: ChatDao) : ChatRepository {
     /**
      * Checks if the chat table contains
      * any data
@@ -92,17 +92,5 @@ class ChatRepo(val dao: ChatDao) {
         val updateChat = UpdatedUnread(chatId, "$counter")
         Timber.d("Partail chat object for unread: $updateChat")
         dao.updateChatUnReceived(updateChat)
-    }
-
-    /**
-     * Single instance of repository
-     * TODO consult Elegant Objects Vol 1 & 2 for alternative to singleton
-     */
-    companion object {
-        @Volatile private var INSTANCE: ChatRepo? = null
-        fun instance(dao: ChatDao) =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: ChatRepo(dao).also { INSTANCE = it }
-            }
     }
 }

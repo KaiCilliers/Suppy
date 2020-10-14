@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.suppy.App
 import com.example.suppy.R
+import timber.log.Timber
 
 /**
  * Activity used with navigation graph to
@@ -22,5 +23,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Timber.d("Server: $server && Database: $database")
     }
 }

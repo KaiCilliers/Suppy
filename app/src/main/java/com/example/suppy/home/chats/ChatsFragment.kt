@@ -35,11 +35,12 @@ class ChatsFragment : Fragment() {
     /**
      * Initialize at first call then afterwards return value
      */
+    private val database by lazy { (activity as HomeActivity).database }
     private val chatAdapter by lazy { ChatsAdapter(context = requireContext(), itemClicked = viewModel) }
     private val viewModel by lazy { ViewModelProvider(this, factory).get(ChatsViewModel::class.java) }
     private val factory by lazy { ChatsViewModelFactory(chatRepo, msgRepo) }
-    private val chatRepo by lazy { ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()) }
-    private val msgRepo by lazy { MessageRepo.instance( LocalDatabase.justgetinstance().messageDao()) }
+    private val chatRepo by lazy { ChatRepo(database.chatDao()) }
+    private val msgRepo by lazy { MessageRepo(database.msgDao()) }
 
     /**
      * TODO this method might not be called all the time - no guarantees which can cause context to be null? But param is not nullable...anyway, if that is the case then move code to other lifecycle method :)
@@ -154,16 +155,16 @@ class ChatsFragment : Fragment() {
     )
     /**
      * Display database contents at launch
-     * TODO obviously this is just for debugging
+     * TODO obviously this is just for debugging, repo should only be accessed from VM
      */
     private fun debuggingPrintouts() {
         MainScope().launch {
             withContext(Dispatchers.IO) {
                 Timber.v("Chat table data:")
-                ChatRepo.instance(LocalDatabase.justgetinstance().chatDao()).justChats().forEach {
+                chatRepo.justChats().forEach {
                     Timber.v("$it")
                 }
-                val messages = MessageRepo.instance(LocalDatabase.justgetinstance().messageDao()).justMessages()
+                val messages = msgRepo.justMessages()
                 Timber.v("Message table data count: ${messages.size}")
                 Timber.v("""
                     Message count from \"gastly\": ${messages.count { it.fromName == "gastly" }} 
