@@ -3,16 +3,19 @@ package com.example.repository.impl
 import androidx.lifecycle.LiveData
 import com.example.database.message.MessageDao
 import com.example.models.message.EntityMessage
+import com.example.models.message.Temp
 import com.example.models.message.UpdatedReceived
 import com.example.repository.MessageRepository
 import com.example.repository.webservice.Server
 import org.jivesoftware.smack.packet.Message
 import org.jxmpp.jid.impl.JidCreate
 import timber.log.Timber
+import java.util.*
 import kotlin.random.Random
 
 class MessageRepo(val dao: MessageDao, val xmpp: Server) : MessageRepository {
-    fun send() {
+    // TODO this is a tester method, it needs a lot of work
+    suspend fun send() {
         val msg = Message()
         msg.type = Message.Type.chat
         msg.body = "My favourite number is: ${Random.nextInt(9999)}"
@@ -23,7 +26,19 @@ class MessageRepo(val dao: MessageDao, val xmpp: Server) : MessageRepository {
         msgTwo.body = "I dislike the ${Random.nextInt(444)} rats in my garden"
         Timber.d("My message as XML: ${msgTwo.toXML("hotdog")}")
         xmpp.connection().sendStanza(msgTwo)
+        val temp = Temp(
+            "${msgTwo.stanzaId}",
+            "${msgTwo.to}",
+            "${msgTwo.type}",
+            "${msgTwo.body}",
+            "${Date()}"
+        )
+        Timber.d("TEMP VALUE MESSAGE: $temp")
+        val et = EntityMessage(temp)
+        Timber.d("ENTITY FROM TEMP MSG: $et")
+        dao.insert(et)
     }
+
     fun messages(): LiveData<List<EntityMessage>>{
         Timber.d("Repo fetch all messages...")
         return dao.all()

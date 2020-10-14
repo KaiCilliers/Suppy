@@ -12,7 +12,9 @@ import timber.log.Timber
 
 class MessagesViewModel(val repo: MessageRepo) : ViewModel() {
     fun send() {
-        repo.send()
+        viewModelIO {
+            repo.send()
+        }
     }
     /**
      * Update all messages from a specific chat to true
@@ -38,6 +40,17 @@ class MessagesViewModel(val repo: MessageRepo) : ViewModel() {
          */
         updateAllFromChatAsReceived(chatName)
         return repo.allMessagesFrom(chatName)
+
+        // TODO
+        /**
+         * OK so you need to call a new method from repo
+         * this method will return all messages from
+         * XXX and messages to XXX
+         * You can encapsulate the two sets of messages
+         * in a new object that take two arrays :)
+         * The adapter will have to contain the logic
+         * to seperate the messages
+         */
     }
     /**
      * Basic navigation to Chats screen
