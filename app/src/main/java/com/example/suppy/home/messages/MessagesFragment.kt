@@ -29,7 +29,7 @@ class MessagesFragment : Fragment() {
     private val server by lazy { (activity as HomeActivity).server }
     private val database by lazy { (activity as HomeActivity).database }
     private val viewModel by lazy { ViewModelProvider(this, factory).get(MessagesViewModel::class.java) }
-    private val messageAdapter by lazy { MessagesAdapter(context = requireContext()) }
+    private val messageAdapter by lazy { MessagesAdapter() }
     private val factory by lazy { MessagesViewModelFactory(msgRepo) }
     private val msgRepo by lazy { MessageRepo(database.msgDao(), server) }
 
@@ -73,12 +73,12 @@ class MessagesFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUI(chat)
+        setupUI()
     }
     /**
      * Configures the recyclerview
      */
-    private fun setupUI(data: String) {
+    private fun setupUI() {
         rc_messages.setHasFixedSize(true)
         rc_messages.setItemViewCacheSize(20)
         rc_messages.layoutManager = LinearLayoutManager(context)

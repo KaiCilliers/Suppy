@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.models.message.DomainMessage
-import com.example.suppy.databinding.RowMessagesBinding
+import com.example.suppy.R
+import com.example.suppy.databinding.ItemMessageReceivedBinding
+import com.example.suppy.databinding.ItemMessageSentBinding
 import com.example.suppy.util.onClick
 import timber.log.Timber
 
@@ -13,16 +15,37 @@ import timber.log.Timber
  * Adapter to bind chat messages to recyclerview
  */
 class MessagesAdapter (
-    private var items: ArrayList<DomainMessage> = arrayListOf(),
-    private val context: Context
-) : RecyclerView.Adapter<MessagesAdapter.MessageItem>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageItem = MessageItem(
-        RowMessagesBinding.inflate(
-            LayoutInflater.from(parent.context)
-        )
-    )
+    private var items: ArrayList<DomainMessage> = arrayListOf()
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if(viewType == 0) {
+            ReceivedMessageHolder(
+                ItemMessageReceivedBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
+        } else {
+            SentMessageHolder(
+                ItemMessageSentBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
+        }
+    }
     override fun getItemCount(): Int = items.size
-    override fun onBindViewHolder(holder: MessageItem, position: Int) = holder.bind(items[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when(holder.itemViewType) {
+            0 -> (holder as ReceivedMessageHolder).bind(items[position])
+            1 -> (holder as SentMessageHolder).bind(items[position])
+        }
+    }
+    override fun getItemViewType(position: Int): Int {
+        val item = items.get(position)
+        if(item.fromName == "scyther") {
+            return 1 // true
+        }
+        return 0 // false
+    }
     /**
      * Return domain object at specific position
      */
@@ -41,24 +64,32 @@ class MessagesAdapter (
         }
     }
     /**
-     * Represents a single item in recyclerview
+     * ViewHolder for messages sent
      */
-    class MessageItem(private val binding: RowMessagesBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class SentMessageHolder(private val binding: ItemMessageSentBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: DomainMessage) {
             binding.apply {
                 root.onClick {
-                    Timber.v("Message clicked with content \"${data.body}\"")
+                    Timber.d("Sent item clicked: \"${data.body}\"")
                 }
                 this.data = data
                 executePendingBindings()
             }
         }
     }
-}
-
-class SentMessageHolder() {
-
-}
-class ReceivedMessageHolder() {
-
+    /**
+     * ViewHolder for messages received
+     */
+    inner class ReceivedMessageHolder(private val binding: ItemMessageReceivedBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: DomainMessage) {
+            binding.apply {
+                imageMessageProfile.setImageResource(R.drawable.scyther)
+                root.onClick {
+                    Timber.d("Received item clicked: \"${data.body}\"")
+                }
+                this.data = data
+                executePendingBindings()
+            }
+        }
+    }
 }

@@ -11,9 +11,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rectangle_orange"
         android:paddingTop="8sp">
         <TextView
             android:id="@+id/tv_message_body"
+            android:text="@{data.body}"
             android:background="@drawable/rounded_rectangle_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,6 +29,7 @@
             tools:text="hello, hello :D"/>
         <TextView
             android:id="@+id/tv_message_time"
+            android:text="@{data.timestamp}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10sp"
