@@ -1,12 +1,11 @@
 package com.example.suppy.home.messages
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.models.message.DomainMessage
-import com.example.suppy.R
 import com.example.suppy.databinding.ItemMessageReceivedBinding
+import com.example.suppy.databinding.ItemMessageReceivedRepeatBinding
 import com.example.suppy.databinding.ItemMessageSentBinding
 import com.example.suppy.util.onClick
 import timber.log.Timber
@@ -24,9 +23,15 @@ class MessagesAdapter (
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
-        } else {
+        } else if(viewType == 1){
             SentMessageHolder(
                 ItemMessageSentBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
+        } else {
+            RepeatReceivedMessageHolder(
+                ItemMessageReceivedRepeatBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
@@ -37,14 +42,35 @@ class MessagesAdapter (
         when(holder.itemViewType) {
             0 -> (holder as ReceivedMessageHolder).bind(items[position])
             1 -> (holder as SentMessageHolder).bind(items[position])
+            2 -> (holder as RepeatReceivedMessageHolder).bind(items[position])
         }
     }
+
+    /**
+     * Logic to determine what type of viewholder to display
+     * in the recyclerview
+     * TODO replace ugly if-else tree with something more elegant
+     */
     override fun getItemViewType(position: Int): Int {
-        val item = items.get(position)
-        if(item.fromName == "scyther") {
-            return 1 // true
+        val current = items[position]
+        var returnInt = 0
+        if (position != 0) {
+            val previous = items[position-1]
+            if ((previous.fromName == current.fromName) && current.fromName != "scyther") {
+                returnInt = 2
+            } else if(current.fromName == "scyther") {
+                returnInt = 1
+            } else {
+                returnInt = 0
+            }
+        } else {
+            if(current.fromName == "scyther") {
+                returnInt = 1
+            } else {
+                returnInt = 0
+            }
         }
-        return 0 // false
+        return returnInt
     }
     /**
      * Return domain object at specific position
@@ -83,9 +109,22 @@ class MessagesAdapter (
     inner class ReceivedMessageHolder(private val binding: ItemMessageReceivedBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: DomainMessage) {
             binding.apply {
-                imageMessageProfile.setImageResource(R.drawable.scyther)
                 root.onClick {
                     Timber.d("Received item clicked: \"${data.body}\"")
+                }
+                this.data = data
+                executePendingBindings()
+            }
+        }
+    }
+    /**
+     * ViewHolder for messages received
+     */
+    inner class RepeatReceivedMessageHolder(private val binding: ItemMessageReceivedRepeatBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: DomainMessage) {
+            binding.apply {
+                root.onClick {
+                    Timber.d("Repeat received item clicked: \"${data.body}\"")
                 }
                 this.data = data
                 executePendingBindings()
