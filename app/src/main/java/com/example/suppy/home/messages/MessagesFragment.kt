@@ -9,12 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.repository.impl.MessageRepo
-import com.example.suppy.databinding.FragmentChatMessagesBinding
+import com.example.suppy.databinding.FragmentMessageListBinding
 import com.example.suppy.home.HomeActivity
 import com.example.suppy.util.argument
 import com.example.suppy.util.observeEvent
 import com.example.suppy.util.subscribe
-import kotlinx.android.synthetic.main.fragment_chat_messages.*
+import kotlinx.android.synthetic.main.fragment_message_list.*
 import timber.log.Timber
 
 /**
@@ -41,7 +41,7 @@ class MessagesFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentChatMessagesBinding.inflate(inflater)
+        val binding = FragmentMessageListBinding.inflate(inflater)
         viewModel.apply {
             navigateToChats.observeEvent(viewLifecycleOwner){
                 findNavController().navigate(
