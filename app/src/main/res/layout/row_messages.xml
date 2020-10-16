@@ -16,11 +16,13 @@
             android:id="@+id/tv_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rectangle_orange"
+            android:padding="8sp"
             android:text="@{data.body}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Here is a message for you!"/>
+            tools:text="Here is a message for you!" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -14,7 +14,7 @@ import timber.log.Timber
  */
 class MessagesAdapter (
     private var items: ArrayList<DomainMessage> = arrayListOf(),
-    val context: Context
+    private val context: Context
 ) : RecyclerView.Adapter<MessagesAdapter.MessageItem>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageItem = MessageItem(
         RowMessagesBinding.inflate(
@@ -54,4 +54,11 @@ class MessagesAdapter (
             }
         }
     }
+}
+
+class SentMessageHolder() {
+
+}
+class ReceivedMessageHolder() {
+
 }
