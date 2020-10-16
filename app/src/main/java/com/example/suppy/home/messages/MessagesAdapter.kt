@@ -43,7 +43,7 @@ class MessagesAdapter (
     /**
      * Represents a single item in recyclerview
      */
-    class MessageItem(val binding: RowMessagesBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MessageItem(private val binding: RowMessagesBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: DomainMessage) {
             binding.apply {
                 root.onClick {

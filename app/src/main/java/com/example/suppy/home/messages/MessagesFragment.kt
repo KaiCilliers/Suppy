@@ -54,7 +54,15 @@ class MessagesFragment : Fragment() {
              * TODO mayhap not here - but if another message arrives from a different chat - it has to be handled in some way otherwise it just gets lost
              */
             getAllMessagesFromChatLocalData(chat).subscribe(viewLifecycleOwner) {data ->
-                Timber.v("Updating message adapter's data with $data")
+                Timber.v("Updating message adapter's data with new data...")
+                data.apply {
+                    Timber.d("FROM COUNT: ${filter { 
+                        it.fromName == chat
+                    }.size}")
+                    Timber.d("TO COUNT: ${filter { 
+                        it.toName == chat
+                    }.size}")
+                }
                 val domainMessages = data.map { it.asDomain() }
                 messageAdapter.populate(domainMessages)
             }

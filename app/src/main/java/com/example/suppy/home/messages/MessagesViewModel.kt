@@ -39,7 +39,7 @@ class MessagesViewModel(val repo: MessageRepo) : ViewModel() {
          * TODO records that are fetched are not the latest data as the fetch does not wait for the update to finish
          */
         updateAllFromChatAsReceived(chatName)
-        return repo.allMessagesFrom(chatName)
+        return repo.chatMessages(chatName)
 
         // TODO
         /**

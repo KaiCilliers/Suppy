@@ -13,7 +13,7 @@ import timber.log.Timber
 import java.util.*
 import kotlin.random.Random
 
-class MessageRepo(val dao: MessageDao, val xmpp: Server) : MessageRepository {
+class MessageRepo(private val dao: MessageDao, private val xmpp: Server) : MessageRepository {
     // TODO this is a tester method, it needs a lot of work
     suspend fun send() {
         val msg = Message()
@@ -73,7 +73,13 @@ class MessageRepo(val dao: MessageDao, val xmpp: Server) : MessageRepository {
         Timber.d("Repo fetching all messages form $chatName")
         return dao.allMessagesFrom(chatName)
     }
-
+    /**
+     * Return all chats from a chat
+     */
+    fun chatMessages(chatName: String): LiveData<List<EntityMessage>> {
+        Timber.d("Fetching all messages from chat: $chatName (TO AND FROM)")
+        return dao.chatMessages(chatName)
+    }
     /**
      * Update description of chat item using an
      * updated partial object entity
