@@ -54,18 +54,20 @@ class MessagesFragment : Fragment() {
              * the recyclerview if the new message belongs to the opened chat
              * TODO mayhap not here - but if another message arrives from a different chat - it has to be handled in some way otherwise it just gets lost
              */
-            getAllMessagesFromChatLocalData(chat).subscribe(viewLifecycleOwner) {data ->
+            getAllMessagesFromChatLocalData(chat).subscribe(viewLifecycleOwner) { data ->
                 Timber.v("Updating message adapter's data with new data...")
                 data.apply {
-                    Timber.d("FROM COUNT: ${filter { 
+                    Timber.d("FROM COUNT: ${filter {
                         it.fromName == chat
                     }.size}")
-                    Timber.d("TO COUNT: ${filter { 
+                    Timber.d("TO COUNT: ${filter {
                         it.toName == chat
                     }.size}")
                 }
                 val domainMessages = data.map { it.asDomain() }
                 messageAdapter.populate(domainMessages)
+                // recyclerview scrolling to last message
+                rc_messages.scrollToPosition(messageAdapter.itemCount - 1)
             }
         }
         //TODO Navigation does not work with binding.apply{viewModel}
