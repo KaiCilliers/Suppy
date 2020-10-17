@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.repository.impl.MessageRepo
 import com.example.suppy.databinding.FragmentMessageListBinding
 import com.example.suppy.home.HomeActivity
-import com.example.suppy.util.argument
-import com.example.suppy.util.observeEvent
-import com.example.suppy.util.onClick
-import com.example.suppy.util.subscribe
+import com.example.suppy.util.*
 import kotlinx.android.synthetic.main.fragment_message_list.*
 import timber.log.Timber
 
@@ -101,5 +98,7 @@ class MessagesFragment : Fragment() {
         viewModel.send(
             "${et_chatbox.text}"
         )
+        // clear chat box after send clicked
+        et_chatbox.setText("")
     }
 }
