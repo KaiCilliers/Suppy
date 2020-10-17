@@ -13,6 +13,7 @@ import com.example.suppy.databinding.FragmentMessageListBinding
 import com.example.suppy.home.HomeActivity
 import com.example.suppy.util.argument
 import com.example.suppy.util.observeEvent
+import com.example.suppy.util.onClick
 import com.example.suppy.util.subscribe
 import kotlinx.android.synthetic.main.fragment_message_list.*
 import timber.log.Timber
@@ -73,6 +74,12 @@ class MessagesFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /**
+         * Send a message
+         */
+        btn_send.onClick {
+            send()
+        }
         setupUI()
     }
     /**
@@ -83,5 +90,14 @@ class MessagesFragment : Fragment() {
         rc_messages.setItemViewCacheSize(20)
         rc_messages.layoutManager = LinearLayoutManager(context)
         rc_messages.adapter = messageAdapter
+    }
+
+    /**
+     * Send a message
+     */
+    fun send() {
+        viewModel.send(
+            "${et_chatbox.text}"
+        )
     }
 }

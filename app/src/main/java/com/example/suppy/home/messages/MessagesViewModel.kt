@@ -11,9 +11,12 @@ import com.example.repository.webservice.Server
 import timber.log.Timber
 
 class MessagesViewModel(val repo: MessageRepo) : ViewModel() {
-    fun send() {
+    /**
+     * Send a message
+     */
+    fun send(msg: String) {
         viewModelIO {
-            repo.send()
+            repo.send(msg)
         }
     }
     /**

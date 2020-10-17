@@ -14,16 +14,22 @@ import java.util.*
 import kotlin.random.Random
 
 class MessageRepo(private val dao: MessageDao, private val xmpp: Server) : MessageRepository {
+    /**
+     * Send a message
+     */
     // TODO this is a tester method, it needs a lot of work
-    suspend fun send() {
+    // TODO lots of hardcoded strings
+    suspend fun send(msgs: String) {
         val msg = Message()
         msg.type = Message.Type.chat
-        msg.body = "My favourite number is: ${Random.nextInt(9999)}"
+        msg.body = "My favourite number is: ${Random.nextInt(9999)}" +
+                " oh and the actual message: $msg"
         val msgTwo = Message(
             JidCreate.bareFrom("weedle@jabber-hosting.de"),
             Message.Type.chat
         )
-        msgTwo.body = "I dislike the ${Random.nextInt(444)} rats in my garden"
+        msgTwo.body = "I dislike the ${Random.nextInt(444)} rats in my garden" +
+                " oh and the actual message: $msgs"
         Timber.d("My message as XML: ${msgTwo.toXML("hotdog")}")
         xmpp.connection().sendStanza(msgTwo)
         val temp = Temp(
