@@ -1,19 +1,19 @@
-package com.example.webservice.impl
+package com.example.repository.webservice.impl
 
-import com.example.webservice.configuration.AuthDetails
-import com.example.webservice.Confguration
-import com.example.webservice.configuration.DomainDetails
+import com.example.repository.webservice.configuration.AuthDetails
+import com.example.repository.webservice.Confguration
+import com.example.repository.webservice.configuration.DomainDetails
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
 
 /**
  * Basic implementation of [Confguration]
  */
 class BaseConfiguration(
-    val domain: DomainDetails,
-    val authDetails: AuthDetails,
+    val domain: com.example.repository.webservice.configuration.DomainDetails,
+    val authDetails: com.example.repository.webservice.configuration.AuthDetails,
     val resource: String,
     val timeout: Int
-) : Confguration {
+) : com.example.repository.webservice.Confguration {
     override fun build(): XMPPTCPConnectionConfiguration =
         XMPPTCPConnectionConfiguration.builder()
             .setUsernameAndPassword(authDetails.username, authDetails.password)

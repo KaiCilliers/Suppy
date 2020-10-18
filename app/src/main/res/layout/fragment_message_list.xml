@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".home.messages.MessagesFragment">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.suppy.home.messages.MessagesViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- TODO the list goes underneath the chat box which is a problem :( -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rc_messages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Horizontal line between Recyclerview and chatbox -->
+
+        <View
+            android:id="@+id/horizontal_line"
+            android:layout_width="0sp"
+            android:layout_height="2sp"
+            android:background="#dfdfdf"
+            android:layout_marginBottom="0sp"
+            app:layout_constraintBottom_toTopOf="@+id/layout_chatbox"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layout_chatbox"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:minHeight="48sp"
+            android:background="#ffffff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" >
+
+            <EditText
+                android:id="@+id/et_chatbox"
+                android:hint="Enter message"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16sp"
+                android:layout_marginRight="16sp"
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:maxLines="6"/>
+
+            <Button
+                android:id="@+id/btn_send"
+                android:layout_width="64sp"
+                android:layout_height="48sp"
+                android:layout_gravity="bottom"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="SEND"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

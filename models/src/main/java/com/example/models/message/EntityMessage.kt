@@ -46,6 +46,27 @@ data class EntityMessage(
     @ColumnInfo(name = "counter_temp")
     val counter: Int
 ) : DomainMapper<DomainMessage> {
+    // TODO all these harcoded strings can be moved somewhere else
+    constructor(xmlMessage: Temp) : this(
+        id = xmlMessage.id,
+        toBareJid = xmlMessage.to.split('/')[0],
+        toJid = xmlMessage.to,
+        toName = xmlMessage.to.split('@')[0],
+        toResource = "",
+        fromBareJid = "scyther@jabber-hosting.de",
+        fromJid = "scyther@jabber-hosting.de/MobileAndroid",
+        fromName = "scyther",
+        fromResource = "MobileAndroid",
+        type = xmlMessage.type,
+        body = xmlMessage.body,
+        subject = "",
+        fromDomain = "jabber-hosting.de",
+        error = "",
+        extensions = "",
+        recived = true,
+        timestamp = xmlMessage.timestamp,
+        counter = 0
+    )
     override fun asDomain(): DomainMessage {
         return DomainMessage(
             fromName = fromName,
@@ -58,3 +79,11 @@ data class EntityMessage(
         )
     }
 }
+// TODO rename and refractor and move to seperate file
+data class Temp(
+    val id: String,
+    val to: String,
+    val type: String,
+    val body: String,
+    val timestamp: String
+)

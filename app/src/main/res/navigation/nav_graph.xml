@@ -17,7 +17,7 @@
         android:id="@+id/chatMessagesFragment"
         android:name="com.example.suppy.home.messages.MessagesFragment"
         android:label="fragment_chat_messages"
-        tools:layout="@layout/fragment_chat_messages" >
+        tools:layout="@layout/fragment_message_list" >
         <action
             android:id="@+id/action_chatMessagesFragment_to_chatsFragment"
             app:destination="@id/chatsFragment" />

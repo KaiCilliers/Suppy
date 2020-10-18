@@ -34,6 +34,7 @@ class ChatsFragment : Fragment() {
     /**
      * Initialize at first call then afterwards return value
      */
+    private val server by lazy { (activity as HomeActivity).server }
     private val database by lazy { (activity as HomeActivity).database }
     private val chatAdapter by lazy { ChatsAdapter(context = requireContext(), itemClicked = viewModel) }
     private val viewModel by lazy { ViewModelProvider(this, factory).get(ChatsViewModel::class.java) }
@@ -41,7 +42,8 @@ class ChatsFragment : Fragment() {
     private val chatRepo by lazy { ChatRepo(database.chatDao()) }
     private val msgRepo by lazy {
         MessageRepo(
-            database.msgDao()
+            database.msgDao(),
+            server
         )
     }
 

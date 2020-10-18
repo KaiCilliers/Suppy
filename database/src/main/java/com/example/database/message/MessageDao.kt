@@ -39,6 +39,12 @@ abstract class MessageDao : BaseDao<EntityMessage>{
     abstract fun allMessagesFrom(chatName: String): LiveData<List<EntityMessage>>
 
     /**
+     * Method that returns all messages from a chat
+     */
+    @Query("SELECT * FROM table_message WHERE from_name = :chatName OR to_name = :chatName ORDER BY counter_temp ASC")
+    abstract fun chatMessages(chatName: String): LiveData<List<EntityMessage>>
+
+    /**
      * Update message received value with partial entity object
      */
     @Update(entity = EntityMessage::class)

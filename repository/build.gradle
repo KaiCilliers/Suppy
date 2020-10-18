@@ -39,6 +39,7 @@ dependencies {
      */
     implementation project(":models")
     implementation project(":database")
+    implementation project(":webservice")
 
     // XMPP TODO version numbers extraction
     implementation 'org.igniterealtime.smack:smack-android:4.3.4'

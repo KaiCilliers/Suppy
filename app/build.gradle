@@ -40,7 +40,6 @@ dependencies {
     // Local Dependencies
     implementation project(":repository")
     implementation project(":models")
-    // TODO used for debugging i.e. remove
     implementation project(":database")
     implementation project(":webservice")
 

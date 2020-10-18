@@ -1,4 +1,4 @@
-package com.example.webservice
+package com.example.repository.webservice
 
 import org.jivesoftware.smack.tcp.XMPPTCPConnection
 
@@ -9,4 +9,5 @@ interface Server {
     fun login(): XMPPTCPConnection
     fun connect()
     fun monitor(listener: ConnectionListener)
+    fun connection(): XMPPTCPConnection
 }

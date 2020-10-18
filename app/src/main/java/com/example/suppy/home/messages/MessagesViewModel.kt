@@ -7,9 +7,18 @@ import com.example.models.message.EntityMessage
 import com.example.repository.impl.MessageRepo
 import com.example.suppy.util.VoidEvent
 import com.example.suppy.util.viewModelIO
+import com.example.repository.webservice.Server
 import timber.log.Timber
 
 class MessagesViewModel(val repo: MessageRepo) : ViewModel() {
+    /**
+     * Send a message
+     */
+    fun send(msg: String) {
+        viewModelIO {
+            repo.send(msg)
+        }
+    }
     /**
      * Update all messages from a specific chat to true
      */
@@ -33,7 +42,18 @@ class MessagesViewModel(val repo: MessageRepo) : ViewModel() {
          * TODO records that are fetched are not the latest data as the fetch does not wait for the update to finish
          */
         updateAllFromChatAsReceived(chatName)
-        return repo.allMessagesFrom(chatName)
+        return repo.chatMessages(chatName)
+
+        // TODO
+        /**
+         * OK so you need to call a new method from repo
+         * this method will return all messages from
+         * XXX and messages to XXX
+         * You can encapsulate the two sets of messages
+         * in a new object that take two arrays :)
+         * The adapter will have to contain the logic
+         * to seperate the messages
+         */
     }
     /**
      * Basic navigation to Chats screen

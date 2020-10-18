@@ -1,8 +1,8 @@
-package com.example.webservice.impl
+package com.example.repository.webservice.impl
 
-import com.example.webservice.Confguration
-import com.example.webservice.ConnectionListener
-import com.example.webservice.Server
+import com.example.repository.webservice.Confguration
+import com.example.repository.webservice.ConnectionListener
+import com.example.repository.webservice.Server
 import org.jivesoftware.smack.*
 import org.jivesoftware.smack.chat2.ChatManager
 import org.jivesoftware.smack.filter.StanzaFilter
@@ -15,9 +15,9 @@ import timber.log.Timber
  * XMPP connection with a default configuration
  */
 class BaseServer(
-    val configuration: Confguration = DefaultConfiguration()
-) : Server {
-    val connection: XMPPTCPConnection by lazy { connection() }
+    val configuration: com.example.repository.webservice.Confguration = com.example.repository.webservice.impl.DefaultConfiguration()
+) : com.example.repository.webservice.Server {
+    val connection: XMPPTCPConnection by lazy { build() }
     val roster: Roster by lazy { Roster.getInstanceFor(connection) }
     val reconnectManager: ReconnectionManager by lazy { ReconnectionManager.getInstanceFor(connection) }
     val chatManager: ChatManager by lazy { ChatManager.getInstanceFor(connection) }
@@ -54,5 +54,7 @@ class BaseServer(
         Timber.v("Server listeners setup complete...")
     }
 
-    private fun connection(): XMPPTCPConnection = XMPPTCPConnection(configuration.build())
+    override fun connection(): XMPPTCPConnection = connection
+
+    private fun build(): XMPPTCPConnection = XMPPTCPConnection(configuration.build())
 }
