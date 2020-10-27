@@ -1,2 +1,6 @@
+include ':webservice'
+include ':repository'
+include ':models'
+include ':database'
 include ':app'
 rootProject.name = "Suppy"
